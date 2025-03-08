@@ -1,0 +1,11 @@
+@source "./index.css";
+
+@theme inline {
+  --color-accent-9: var(--accent-9);
+  --color-ui-background: var(--ui-background);
+  --color-ui-fg-heading: var(--ui-fg-heading);
+  --color-ui-fg-text: var(--ui-fg-text);
+  --color-ui-border: var(--ui-border);
+  --color-ui-shadow: var(--ui-shadow);
+  --color-ui-surface: var(--ui-surface);
+}

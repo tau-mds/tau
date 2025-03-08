@@ -1,0 +1,33 @@
+{
+  "name": "@tau/assets",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./assets": "./dist/assets",
+    "./icons": "./dist/icons.ts",
+    ".": {
+      "import": {
+        "types": "./dist/dist/esm/index.d.ts",
+        "default": "./dist/dist/esm/index.js"
+      }
+    },
+    "./fonts/jetbrains-mono.css": "./src/fonts/jetbrains-mono/styles.css",
+    "./fonts/overused-grotesk.css": "./src/fonts/overused-grotesk/styles.css",
+    "./fonts/overused-grotesk.woff2": "./src/fonts/overused-grotesk/overused-grotesk-VF.woff2"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.2.0",
+    "@tau/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@tanstack/config": "^0.16.3",
+    "@tau/tsconfig": "workspace:*",
+    "ajv": "^8.17.1",
+    "vite": "^6.1.1",
+    "vite-plugin-icons-spritesheet": "^3.0.1",
+    "vite-plugin-static-copy": "^2.2.0"
+  }
+}

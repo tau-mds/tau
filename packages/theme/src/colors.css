@@ -1,0 +1,403 @@
+[data-theme="light"] {
+  --accent-1: #fdfdfe;
+  --accent-2: #f7f9ff;
+  --accent-3: #edf2fe;
+  --accent-4: #dfeaff;
+  --accent-5: #d0dfff;
+  --accent-6: #bdd1ff;
+  --accent-7: #a6bff9;
+  --accent-8: #87a5ef;
+  --accent-9: #3d63dd;
+  --accent-10: #3657c3;
+  --accent-11: #395bc7;
+  --accent-12: #1d2e5c;
+
+  --accent-a1: #00008002;
+  --accent-a2: #0040ff08;
+  --accent-a3: #0047f112;
+  --accent-a4: #0058ff20;
+  --accent-a5: #0052ff2f;
+  --accent-a6: #004eff42;
+  --accent-a7: #0048ee59;
+  --accent-a8: #0040dd78;
+  --accent-a9: #0032d2c2;
+  --accent-a10: #002ab3c9;
+  --accent-a11: #002cb7c6;
+  --accent-a12: #001347e2;
+
+  --accent-contrast: #fff;
+  --accent-surface: #f5f8ffcc;
+  --accent-indicator: #3d63dd;
+  --accent-track: #3d63dd;
+
+  --surface-0: #f2eff3;
+  --surface-1: #fcfcfd;
+  --surface-2: #f9f9fb;
+  --surface-3: #f0f0f4;
+  --surface-4: #e8e7ed;
+  --surface-5: #e1e0e7;
+  --surface-6: #dad8e0;
+  --surface-7: #cfcdd7;
+  --surface-8: #bcbac7;
+  --surface-9: #8e8c99;
+  --surface-10: #84818d;
+  --surface-11: #65636d;
+  --surface-12: #201f26;
+
+  --surface-a0: #f2eff301;
+  --surface-a1: #00005503;
+  --surface-a2: #00005506;
+  --surface-a3: #0000440f;
+  --surface-a4: #0b004018;
+  --surface-a5: #09003a1f;
+  --surface-a6: #0e003527;
+  --surface-a7: #0b003332;
+  --surface-a8: #08003145;
+  --surface-a9: #05001d73;
+  --surface-a10: #0700197e;
+  --surface-a11: #0400119c;
+  --surface-a12: #010008e0;
+
+  --surface-contrast: #ffffff;
+  --surface-surface: #ffffffcc;
+  --surface-indicator: #8e8c99;
+  --surface-track: #8e8c99;
+
+  --danger-1: #fffcfc;
+  --danger-2: #fff7f7;
+  --danger-3: #ffebea;
+  --danger-4: #ffdcd9;
+  --danger-5: #ffcdca;
+  --danger-6: #febdb9;
+  --danger-7: #f5a9a5;
+  --danger-8: #eb8f8b;
+  --danger-9: #e5484d;
+  --danger-10: #d73840;
+  --danger-11: #cc2e39;
+  --danger-12: #64181b;
+
+  --danger-a1: #ff000003;
+  --danger-a2: #ff000008;
+  --danger-a3: #ff0d0015;
+  --danger-a4: #ff150026;
+  --danger-a5: #ff0f0035;
+  --danger-a6: #fc0f0046;
+  --danger-a7: #e30c015a;
+  --danger-a8: #d4090074;
+  --danger-a9: #db0007b7;
+  --danger-a10: #cc000ac7;
+  --danger-a11: #c1000ed1;
+  --danger-a12: #540003e7;
+
+  --danger-contrast: #fff;
+  --danger-surface: #fff5f5cc;
+  --danger-indicator: #e5484d;
+  --danger-track: #e5484d;
+
+  @supports (color: color(display-p3 1 1 1)) {
+    @media (color-gamut: p3) {
+      --accent-1: oklch(99.4% 0.001 266.8);
+      --accent-2: oklch(98.3% 0.008 266.8);
+      --accent-3: oklch(96.1% 0.017 266.8);
+      --accent-4: oklch(93.5% 0.034 266.8);
+      --accent-5: oklch(90.3% 0.051 266.8);
+      --accent-6: oklch(86.3% 0.071 266.8);
+      --accent-7: oklch(80.7% 0.087 266.8);
+      --accent-8: oklch(73% 0.113 266.8);
+      --accent-9: oklch(54.3% 0.191 266.8);
+      --accent-10: oklch(49.7% 0.173 266.8);
+      --accent-11: oklch(51% 0.173 266.8);
+      --accent-12: oklch(31.3% 0.086 266.8);
+
+      --accent-a1: color(display-p3 0.02 0.02 0.51 / 0.008);
+      --accent-a2: color(display-p3 0.02 0.267 0.878 / 0.032);
+      --accent-a3: color(display-p3 0.008 0.239 0.886 / 0.067);
+      --accent-a4: color(display-p3 0.004 0.306 0.937 / 0.118);
+      --accent-a5: color(display-p3 0.004 0.278 0.933 / 0.173);
+      --accent-a6: color(display-p3 0.004 0.247 0.937 / 0.244);
+      --accent-a7: color(display-p3 0.004 0.231 0.871 / 0.33);
+      --accent-a8: color(display-p3 0.004 0.204 0.808 / 0.448);
+      --accent-a9: color(display-p3 0 0.153 0.773 / 0.726);
+      --accent-a10: color(display-p3 0 0.129 0.655 / 0.761);
+      --accent-a11: color(display-p3 0 0.133 0.667 / 0.746);
+      --accent-a12: color(display-p3 0 0.059 0.251 / 0.871);
+
+      --accent-contrast: #fff;
+      --accent-surface: color(display-p3 0.961 0.973 1 / 0.8);
+      --accent-indicator: oklch(54.3% 0.191 266.8);
+      --accent-track: oklch(54.3% 0.191 266.8);
+
+      --surface-0: oklch(95.5% 0.0062 318);
+      --surface-1: oklch(99.2% 0.002 295.3);
+      --surface-2: oklch(98.3% 0.003 295.3);
+      --surface-3: oklch(95.6% 0.006 295.3);
+      --surface-4: oklch(93.2% 0.007 295.3);
+      --surface-5: oklch(90.9% 0.01 295.3);
+      --surface-6: oklch(88.6% 0.011 295.3);
+      --surface-7: oklch(85.4% 0.014 295.3);
+      --surface-8: oklch(79.4% 0.019 295.3);
+      --surface-9: oklch(64.6% 0.019 295.3);
+      --surface-10: oklch(61% 0.018 295.3);
+      --surface-11: oklch(50.4% 0.015 295.3);
+      --surface-12: oklch(24.4% 0.012 295.3);
+
+      --surface-a0: color(display-p3 0.94902 0.937255 0.952941 / 0.1);
+      --surface-a1: color(display-p3 0.024 0.024 0.349 / 0.024);
+      --surface-a2: color(display-p3 0.024 0.024 0.349 / 0.024);
+      --surface-a3: color(display-p3 0.004 0.004 0.271 / 0.059);
+      --surface-a4: color(display-p3 0.051 0.012 0.216 / 0.095);
+      --surface-a5: color(display-p3 0.039 0.004 0.2 / 0.122);
+      --surface-a6: color(display-p3 0.055 0.004 0.18 / 0.153);
+      --surface-a7: color(display-p3 0.047 0.008 0.184 / 0.197);
+      --surface-a8: color(display-p3 0.031 0.004 0.176 / 0.271);
+      --surface-a9: color(display-p3 0.02 0.004 0.106 / 0.451);
+      --surface-a10: color(display-p3 0.02 0.004 0.09 / 0.495);
+      --surface-a11: color(display-p3 0.016 0 0.059 / 0.612);
+      --surface-a12: color(display-p3 0.004 0 0.027 / 0.879);
+
+      --surface-contrast: #ffffff;
+      --surface-surface: color(display-p3 1 1 1 / 80%);
+      --surface-indicator: oklch(64.6% 0.019 295.3);
+      --surface-track: oklch(64.6% 0.019 295.3);
+
+      --danger-1: oklch(99.4% 0.003 23.03);
+      --danger-2: oklch(98.3% 0.008 23.03);
+      --danger-3: oklch(95.6% 0.021 23.03);
+      --danger-4: oklch(92.8% 0.047 23.03);
+      --danger-5: oklch(89.6% 0.062 23.03);
+      --danger-6: oklch(85.7% 0.075 23.03);
+      --danger-7: oklch(80.7% 0.089 23.03);
+      --danger-8: oklch(74.5% 0.113 23.03);
+      --danger-9: oklch(62.6% 0.193 23.03);
+      --danger-10: oklch(58.4% 0.195 23.03);
+      --danger-11: oklch(55.7% 0.193 23.03);
+      --danger-12: oklch(33.9% 0.109 23.03);
+
+      --danger-a1: color(display-p3 0.675 0.024 0.024 / 0.012);
+      --danger-a2: color(display-p3 0.878 0.02 0.02 / 0.032);
+      --danger-a3: color(display-p3 0.859 0.106 0.008 / 0.083);
+      --danger-a4: color(display-p3 0.839 0.09 0.008 / 0.146);
+      --danger-a5: color(display-p3 0.847 0.078 0.004 / 0.204);
+      --danger-a6: color(display-p3 0.839 0.078 0.004 / 0.267);
+      --danger-a7: color(display-p3 0.765 0.059 0.004 / 0.346);
+      --danger-a8: color(display-p3 0.71 0.047 0.004 / 0.444);
+      --danger-a9: color(display-p3 0.749 0.008 0 / 0.675);
+      --danger-a10: color(display-p3 0.69 0 0 / 0.726);
+      --danger-a11: color(display-p3 0.655 0 0.012 / 0.761);
+      --danger-a12: color(display-p3 0.275 0 0 / 0.883);
+
+      --danger-contrast: #fff;
+      --danger-surface: color(display-p3 0.996 0.965 0.961 / 0.8);
+      --danger-indicator: oklch(62.6% 0.193 23.03);
+      --danger-track: oklch(62.6% 0.193 23.03);
+    }
+  }
+
+  --ui-fg-heading: var(--surface-12);
+  --ui-fg-text: var(--surface-11);
+  --ui-border: var(--surface-11);
+  --ui-shadow: var(--surface-7);
+  --ui-background: var(--surface-0);
+  --ui-surface: var(--surface-a0);
+}
+
+[data-theme="dark"] {
+  --accent-1: #0c111c;
+  --accent-2: #111725;
+  --accent-3: #172448;
+  --accent-4: #1d2e61;
+  --accent-5: #243974;
+  --accent-6: #2d4484;
+  --accent-7: #375098;
+  --accent-8: #405eb2;
+  --accent-9: #3d63dd;
+  --accent-10: #3f5cb0;
+  --accent-11: #93b4ff;
+  --accent-12: #d5e2ff;
+
+  --accent-a1: #0012fb0c;
+  --accent-a2: #1156f916;
+  --accent-a3: #2b64ff3b;
+  --accent-a4: #3567ff56;
+  --accent-a5: #3f71fd6b;
+  --accent-a6: #4b7afd7c;
+  --accent-a7: #5480ff91;
+  --accent-a8: #5783ffad;
+  --accent-a9: #4571ffdb;
+  --accent-a10: #5580feab;
+  --accent-a11: #93b4ff;
+  --accent-a12: #d5e2ff;
+
+  --accent-contrast: #fff;
+  --accent-surface: #111d3980;
+  --accent-indicator: #3d63dd;
+  --accent-track: #3d63dd;
+
+  --surface-0: #1a191b;
+  --surface-1: #111113;
+  --surface-2: #1a191b;
+  --surface-3: #232225;
+  --surface-4: #2a292d;
+  --surface-5: #323035;
+  --surface-6: #3b393f;
+  --surface-7: #49474e;
+  --surface-8: #625f69;
+  --surface-9: #706d77;
+  --surface-10: #7d7a85;
+  --surface-11: #b5b2bc;
+  --surface-12: #eeeef0;
+
+  --surface-a1: #00000000;
+  --surface-a2: #f7dee00a;
+  --surface-a3: #f7eaf814;
+  --surface-a4: #ede5f81d;
+  --surface-a5: #f4e6fe25;
+  --surface-a6: #f1e6fd30;
+  --surface-a7: #f1e9ff40;
+  --surface-a8: #efe7ff5d;
+  --surface-a9: #efe8fd6d;
+  --surface-a10: #efe9fd7c;
+  --surface-a11: #f5f1ffb7;
+  --surface-a12: #fdfdffef;
+
+  --surface-contrast: #ffffff;
+  --surface-surface: rgba(0, 0, 0, 0.05);
+  --surface-indicator: #706d77;
+  --surface-track: #706d77;
+
+  --danger-1: #170f0e;
+  --danger-2: #201312;
+  --danger-3: #3b1212;
+  --danger-4: #510f13;
+  --danger-5: #61171a;
+  --danger-6: #732425;
+  --danger-7: #8c3434;
+  --danger-8: #b54546;
+  --danger-9: #e5484d;
+  --danger-10: #d63941;
+  --danger-11: #ff8e8a;
+  --danger-12: #ffd2ce;
+
+  --danger-a1: #ec000007;
+  --danger-a2: #f22f0411;
+  --danger-a3: #ff170e2d;
+  --danger-a4: #fe0a1345;
+  --danger-a5: #ff232856;
+  --danger-a6: #ff403f69;
+  --danger-a7: #ff555384;
+  --danger-a8: #ff5d5db0;
+  --danger-a9: #fe4e54e4;
+  --danger-a10: #fe414bd4;
+  --danger-a11: #ff8e8a;
+  --danger-a12: #ffd2ce;
+
+  --danger-contrast: #fff;
+  --danger-surface: #2f151280;
+  --danger-indicator: #e5484d;
+  --danger-track: #e5484d;
+
+  @supports (color: color(display-p3 1 1 1)) {
+    @media (color-gamut: p3) {
+      --accent-1: oklch(17.8% 0.025 266.8);
+      --accent-2: oklch(20.7% 0.03 266.8);
+      --accent-3: oklch(27.1% 0.069 266.8);
+      --accent-4: oklch(31.8% 0.093 266.8);
+      --accent-5: oklch(36.1% 0.105 266.8);
+      --accent-6: oklch(40.4% 0.111 266.8);
+      --accent-7: oklch(45% 0.12 266.8);
+      --accent-8: oklch(50.3% 0.137 266.8);
+      --accent-9: oklch(54.3% 0.191 266.8);
+      --accent-10: oklch(49.7% 0.137 266.8);
+      --accent-11: oklch(77.7% 0.123 266.8);
+      --accent-12: oklch(91.1% 0.043 266.8);
+
+      --accent-a1: color(display-p3 0 0.071 0.98 / 0.043);
+      --accent-a2: color(display-p3 0.118 0.361 1 / 0.08);
+      --accent-a3: color(display-p3 0.227 0.404 1 / 0.223);
+      --accent-a4: color(display-p3 0.263 0.42 1 / 0.324);
+      --accent-a5: color(display-p3 0.302 0.451 1 / 0.4);
+      --accent-a6: color(display-p3 0.345 0.49 1 / 0.467);
+      --accent-a7: color(display-p3 0.373 0.51 1 / 0.547);
+      --accent-a8: color(display-p3 0.384 0.525 1 / 0.652);
+      --accent-a9: color(display-p3 0.318 0.451 1 / 0.824);
+      --accent-a10: color(display-p3 0.384 0.518 1 / 0.643);
+      --accent-a11: color(display-p3 0.62 0.722 1 / 0.975);
+      --accent-a12: color(display-p3 0.855 0.898 1 / 0.988);
+
+      --accent-contrast: #fff;
+      --accent-surface: color(display-p3 0.071 0.11 0.212 / 0.5);
+      --accent-indicator: oklch(54.3% 0.191 266.8);
+      --accent-track: oklch(54.3% 0.191 266.8);
+
+      --surface-0: oklch(21.5% 0.00415 308);
+      --surface-1: oklch(17.9% 0.004 298.9);
+      --surface-2: oklch(21.5% 0.004 298.9);
+      --surface-3: oklch(25.5% 0.005 298.9);
+      --surface-4: oklch(28.4% 0.007 298.9);
+      --surface-5: oklch(31.4% 0.009 298.9);
+      --surface-6: oklch(35% 0.01 298.9);
+      --surface-7: oklch(40.1% 0.012 298.9);
+      --surface-8: oklch(49.2% 0.015 298.9);
+      --surface-9: oklch(54% 0.017 298.9);
+      --surface-10: oklch(58.6% 0.016 298.9);
+      --surface-11: oklch(77% 0.014 298.9);
+      --surface-12: oklch(94.9% 0.003 298.9);
+
+      --surface-a1: color(display-p3 0 0 0 / 0);
+      --surface-a2: color(display-p3 0.996 0.894 0.902 / 0.038);
+      --surface-a3: color(display-p3 0.984 0.933 0.992 / 0.077);
+      --surface-a4: color(display-p3 0.953 0.918 0.996 / 0.111);
+      --surface-a5: color(display-p3 0.957 0.906 0.996 / 0.145);
+      --surface-a6: color(display-p3 0.949 0.906 1 / 0.187);
+      --surface-a7: color(display-p3 0.961 0.929 1 / 0.246);
+      --surface-a8: color(display-p3 0.937 0.918 1 / 0.361);
+      --surface-a9: color(display-p3 0.945 0.925 1 / 0.42);
+      --surface-a10: color(display-p3 0.945 0.925 1 / 0.479);
+      --surface-a11: color(display-p3 0.965 0.953 1 / 0.712);
+      --surface-a12: color(display-p3 0.992 0.992 1 / 0.937);
+
+      --surface-contrast: #ffffff;
+      --surface-surface: color(display-p3 0 0 0 / 5%);
+      --surface-indicator: oklch(54% 0.017 298.9);
+      --surface-track: oklch(54% 0.017 298.9);
+
+      --danger-1: oklch(17.9% 0.013 23.03);
+      --danger-2: oklch(20.3% 0.022 23.03);
+      --danger-3: oklch(25% 0.064 23.03);
+      --danger-4: oklch(28.8% 0.096 23.03);
+      --danger-5: oklch(33.1% 0.106 23.03);
+      --danger-6: oklch(38.2% 0.111 23.03);
+      --danger-7: oklch(45% 0.121 23.03);
+      --danger-8: oklch(54.4% 0.146 23.03);
+      --danger-9: oklch(62.6% 0.193 23.03);
+      --danger-10: oklch(58.4% 0.193 23.03);
+      --danger-11: oklch(78.4% 0.162 23.03);
+      --danger-12: oklch(90.2% 0.053 23.03);
+
+      --danger-a1: color(display-p3 0.961 0 0 / 0.022);
+      --danger-a2: color(display-p3 0.996 0.282 0.004 / 0.055);
+      --danger-a3: color(display-p3 1 0.169 0.078 / 0.156);
+      --danger-a4: color(display-p3 1 0.133 0.11 / 0.24);
+      --danger-a5: color(display-p3 1 0.224 0.208 / 0.303);
+      --danger-a6: color(display-p3 1 0.329 0.298 / 0.374);
+      --danger-a7: color(display-p3 1 0.408 0.373 / 0.475);
+      --danger-a8: color(display-p3 1 0.431 0.416 / 0.635);
+      --danger-a9: color(display-p3 1 0.388 0.384 / 0.82);
+      --danger-a10: color(display-p3 1 0.341 0.341 / 0.757);
+      --danger-a11: color(display-p3 1 0.616 0.584 / 0.937);
+      --danger-a12: color(display-p3 1 0.855 0.831 / 0.971);
+
+      --danger-contrast: #fff;
+      --danger-surface: color(display-p3 0.165 0.078 0.067 / 0.5);
+      --danger-indicator: oklch(62.6% 0.193 23.03);
+      --danger-track: oklch(62.6% 0.193 23.03);
+    }
+  }
+
+  --ui-fg-heading: var(--surface-11);
+  --ui-fg-text: var(--surface-11);
+  --ui-border: var(--surface-12);
+  --ui-shadow: var(--surface-1);
+  --ui-background: var(--surface-1);
+  --ui-surface: var(--surface-a2);
+}

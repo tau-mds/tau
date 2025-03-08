@@ -1,0 +1,17 @@
+[data-theme] {
+  --border-primary:
+    0 1px var(--surface-a2), 0 -1px var(--surface-a3),
+    0 0 0 1px var(--surface-a4);
+  --border-secondary:
+    0 1px var(--surface-a7), 0 -1px var(--surface-a8),
+    0 0 0 1px var(--surface-a9);
+  --border-danger:
+    0 1px var(--danger-a5), 0 -1px var(--danger-a4), 0 0 0 1px var(--danger-a3);
+  --border-accent:
+    0 1px var(--accent-a5), 0 -1px var(--accent-a4), 0 0 0 1px var(--accent-a3);
+  --border-disabled:
+    0 1px var(--surface-a1), 0 -1px var(--surface-a2),
+    0 0 0 1px var(--surface-a3);
+
+  --focus-ring: 0 0 0 2px var(--surface-1), 0 0 0 4px var(--accent-a9);
+}

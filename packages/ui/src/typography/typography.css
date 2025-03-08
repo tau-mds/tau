@@ -1,0 +1,168 @@
+.tau-text {
+  &[data-size="xs"] {
+    --size: var(--txt-xs);
+  }
+
+  &[data-size="sm"] {
+    --size: var(--txt-sm);
+  }
+
+  &[data-size="md"] {
+    --size: var(--txt-md);
+  }
+
+  &[data-size="lg"] {
+    --size: var(--txt-lg);
+  }
+
+  &[data-size="xl"] {
+    --size: var(--txt-xl);
+  }
+
+  &[data-weight="normal"] {
+    --weight: var(--txt-weight-normal);
+  }
+
+  &[data-weight="plus"] {
+    --weight: var(--txt-weight-plus);
+  }
+
+  &[data-font="sans"] {
+    --font: var(--font-overused-grotesk);
+  }
+
+  &[data-font="mono"] {
+    --font: var(--font-jetbrains-mono);
+  }
+
+  &[data-leading="normal"] {
+    --leading: var(--txt-leading-normal);
+  }
+
+  &[data-leading="compact"] {
+    --leading: var(--txt-leading-compact);
+  }
+
+  &[data-align="left"] {
+    --align: left;
+  }
+
+  &[data-align="center"] {
+    --align: center;
+  }
+
+  &[data-align="right"] {
+    --align: right;
+  }
+
+  &[data-balance="true"] {
+    text-wrap: pretty;
+  }
+
+  &[data-color="contrast"] {
+    --color: var(--ui-fg-text);
+  }
+
+  &[data-color="muted"] {
+    --color: var(--surface-10);
+  }
+
+  font: var(--weight) var(--size) / var(--leading) var(--font);
+  text-align: var(--align);
+  color: var(--color);
+}
+
+.tau-heading {
+  &[data-size="xs"] {
+    --size: var(--txt-2xl);
+    --leading: var(--txt-leading-large);
+  }
+
+  &[data-size="sm"] {
+    --size: var(--txt-3xl);
+    --leading: var(--txt-leading-large);
+  }
+
+  &[data-size="md"] {
+    --size: var(--txt-4xl);
+    --leading: var(--txt-leading-large);
+  }
+
+  &[data-size="lg"] {
+    --size: var(--txt-5xl);
+    --leading: var(--txt-leading-xlarge);
+  }
+
+  &[data-size="xl"] {
+    --size: var(--txt-6xl);
+    --leading: 3.75rem;
+  }
+
+  &[data-weight="normal"] {
+    --weight: var(--txt-weight-normal);
+  }
+
+  &[data-weight="plus"] {
+    --weight: var(--txt-weight-plus);
+  }
+
+  &[data-font="sans"] {
+    --font: var(--font-overused-grotesk);
+  }
+
+  &[data-font="mono"] {
+    --font: var(--font-jetbrains-mono);
+  }
+
+  &[data-align="left"] {
+    --align: left;
+  }
+
+  &[data-align="center"] {
+    --align: center;
+  }
+
+  &[data-align="right"] {
+    --align: right;
+  }
+
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  font: var(--weight) var(--size) / var(--leading) var(--font);
+  text-align: var(--align);
+  color: var(--ui-fg-heading);
+}
+
+.tau-label {
+  &[data-size="xs"] {
+    --font: var(--txt-compact-xs);
+  }
+
+  &[data-size="sm"] {
+    --font: var(--txt-compact-sm);
+  }
+
+  &[data-size="base"] {
+    --font: var(--txt-compact-md);
+  }
+
+  &[data-size="lg"] {
+    --font: var(--txt-compact-lg);
+  }
+
+  &[data-weight="regular"] {
+    --weight: var(--txt-weight-normal);
+  }
+
+  &[data-weight="plus"] {
+    --weight: var(--txt-weight-plus);
+  }
+
+  font: var(--font);
+  font-family: var(--font-overused-grotesk);
+  font-weight: var(--weight);
+  color: var(--surface-12);
+}

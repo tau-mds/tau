@@ -1,0 +1,10 @@
+{
+  "name": "@tau/theme",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.css",
+    "./tailwind.css": "./src/tailwind.css"
+  }
+}

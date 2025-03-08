@@ -1,0 +1,27 @@
+@import "./borders.css";
+@import "./colors.css";
+@import "./motion.css";
+@import "./spacing.css";
+@import "./transition.css";
+@import "./typography.css";
+
+[data-theme] {
+  --shadow:
+    0 1px 1px oklch(from var(--ui-shadow) l c h / 0.3),
+    0 2px 2px oklch(from var(--ui-shadow) l c h / 0.3);
+  --shadow-lg:
+    0 15px 30px oklch(from var(--ui-shadow) l c h / 0.3),
+    0 30px 60px oklch(from var(--ui-shadow) l c h / 0.3);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

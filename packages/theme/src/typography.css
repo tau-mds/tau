@@ -1,0 +1,25 @@
+:root {
+  --txt-xs: 0.75rem;
+  --txt-sm: 0.8125rem;
+  --txt-md: 0.875rem;
+  --txt-lg: 1rem;
+  --txt-xl: 1.125rem;
+  --txt-2xl: 1.25rem;
+  --txt-3xl: 1.5rem;
+  --txt-4xl: 1.75rem;
+  --txt-5xl: 2.25rem;
+  --txt-6xl: 3.75rem;
+
+  --txt-leading-compact: 1.25rem;
+  --txt-leading-normal: 1.5rem;
+  --txt-leading-large: 1.875rem;
+  --txt-leading-xlarge: 2.5rem;
+
+  --txt-weight-normal: 400;
+  --txt-weight-plus: 500;
+
+  --txt-compact-xs: 500 0.75rem / 1.25rem var(--font-overused-grotesk);
+  --txt-compact-sm: 500 0.8125rem / 1.25rem var(--font-overused-grotesk);
+  --txt-compact-md: 500 0.875rem / 1.25rem var(--font-overused-grotesk);
+  --txt-compact-lg: 500 1rem / 1.25rem var(--font-overused-grotesk);
+}

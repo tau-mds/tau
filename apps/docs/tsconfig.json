@@ -1,0 +1,5 @@
+{
+  "extends": ["astro/tsconfigs/strict", "@tau/tsconfig/react.json"],
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}

@@ -1,0 +1,18 @@
+node_modules
+
+/.cache
+/build
+.env
+.wrangler
+.turbo
+dist
+build
+
+# TypeScript cache
+*.tsbuildinfo
+*storybook.log
+.direnv
+.react-router
+.output
+.astro
+.vinxi

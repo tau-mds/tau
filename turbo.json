@@ -1,0 +1,46 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "tasks": {
+    "install": {
+      "outputs": ["node_modules/**", "pnpm-lock.yaml"]
+    },
+    "build": {
+      "dependsOn": ["format", "^build"],
+      "outputs": ["dist/**", ".output/**"]
+    },
+    "format": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
+      "cache": false
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
+      "outputs": ["*.tsbuildinfo"]
+    },
+    "clean": { "cache": false },
+    "start": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "preview": {
+      "dependsOn": ["^build", "build"],
+      "cache": false,
+      "persistent": true
+    }
+  },
+  "ui": "tui"
+}

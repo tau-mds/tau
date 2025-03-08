@@ -1,0 +1,32 @@
+{
+  "name": "@tau/ui",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./ui.css": "./src/ui.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "biome check . --write",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@ark-ui/react": "^4.9.2",
+    "@tau/assets": "workspace:*",
+    "@tau/theme": "workspace:*",
+    "@tau/utils": "workspace:*",
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
+  },
+  "devDependencies": {
+    "@tau/tsconfig": "workspace:*",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react"
+  }
+}
