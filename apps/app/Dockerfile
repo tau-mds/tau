@@ -26,17 +26,6 @@ RUN pnpm install --frozen-lockfile
 COPY --from=builder /app/out/full/ .
 RUN pnpm turbo run build
 
-
-# ARG DATABASE_CONN_TYPE
-# ENV DATABASE_CONN_TYPE=$DATABASE_CONN_TYPE
-
-# ARG DATABASE_URL
-# ENV DATABASE_URL=$DATABASE_URL
-
-# ARG DATABASE_AUTH_TOKEN
-# ENV DATABASE_AUTH_TOKEN=$DATABASE_AUTH_TOKEN
-# RUN pnpm migrate
-
 RUN --mount=type=secret,id=DATABASE_URL \
     --mount=type=secret,id=DATABASE_CONN_TYPE \
     --mount=type=secret,id=DATABASE_AUTH_TOKEN \

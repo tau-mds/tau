@@ -54,6 +54,10 @@ jobs:
         with:
           config: apps/app/fly.toml
           secrets: DATABASE_CONN_TYPE=remote DATABASE_URL=libsql://${{ steps.create-db.outputs.hostname }} DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
+          build_secrets: |
+            DATABASE_CONN_TYPE=${{ secrets.DATABASE_CONN_TYPE }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
