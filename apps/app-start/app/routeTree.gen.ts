@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as CreateAppointmentIndexImport } from './routes/create-appointment/index'
 import { Route as AppointmentHashedroomidHasheduseridIndexImport } from './routes/appointment/$hashed_room_id/$hashed_user_id/index'
 
 // Create/Update Routes
@@ -19,6 +20,12 @@ import { Route as AppointmentHashedroomidHasheduseridIndexImport } from './route
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CreateAppointmentIndexRoute = CreateAppointmentIndexImport.update({
+  id: '/create-appointment/',
+  path: '/create-appointment/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -40,6 +47,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/create-appointment/': {
+      id: '/create-appointment/'
+      path: '/create-appointment'
+      fullPath: '/create-appointment'
+      preLoaderRoute: typeof CreateAppointmentIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/appointment/$hashed_room_id/$hashed_user_id/': {
       id: '/appointment/$hashed_room_id/$hashed_user_id/'
       path: '/appointment/$hashed_room_id/$hashed_user_id'
@@ -54,36 +68,51 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/create-appointment': typeof CreateAppointmentIndexRoute
   '/appointment/$hashed_room_id/$hashed_user_id': typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/create-appointment': typeof CreateAppointmentIndexRoute
   '/appointment/$hashed_room_id/$hashed_user_id': typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/create-appointment/': typeof CreateAppointmentIndexRoute
   '/appointment/$hashed_room_id/$hashed_user_id/': typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/appointment/$hashed_room_id/$hashed_user_id'
+  fullPaths:
+    | '/'
+    | '/create-appointment'
+    | '/appointment/$hashed_room_id/$hashed_user_id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/appointment/$hashed_room_id/$hashed_user_id'
-  id: '__root__' | '/' | '/appointment/$hashed_room_id/$hashed_user_id/'
+  to:
+    | '/'
+    | '/create-appointment'
+    | '/appointment/$hashed_room_id/$hashed_user_id'
+  id:
+    | '__root__'
+    | '/'
+    | '/create-appointment/'
+    | '/appointment/$hashed_room_id/$hashed_user_id/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CreateAppointmentIndexRoute: typeof CreateAppointmentIndexRoute
   AppointmentHashedroomidHasheduseridIndexRoute: typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CreateAppointmentIndexRoute: CreateAppointmentIndexRoute,
   AppointmentHashedroomidHasheduseridIndexRoute:
     AppointmentHashedroomidHasheduseridIndexRoute,
 }
@@ -99,11 +128,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/create-appointment/",
         "/appointment/$hashed_room_id/$hashed_user_id/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/create-appointment/": {
+      "filePath": "create-appointment/index.tsx"
     },
     "/appointment/$hashed_room_id/$hashed_user_id/": {
       "filePath": "appointment/$hashed_room_id/$hashed_user_id/index.tsx"
