@@ -13,10 +13,12 @@
 import { Route as rootRoute } from "./routes/__root";
 import { Route as AppLayoutImport } from "./routes/app/layout";
 import { Route as LandingLayoutImport } from "./routes/_landing/layout";
+import { Route as CreateAppointmentIndexImport } from "./routes/create-appointment/index";
 import { Route as AppIndexImport } from "./routes/app/index";
 import { Route as LandingIndexImport } from "./routes/_landing/index";
 import { Route as AppSettingsLayoutImport } from "./routes/app/settings/layout";
 import { Route as AppSettingsAccountLayoutImport } from "./routes/app/settings/account/layout";
+import { Route as AppointmentHashedroomidHasheduseridIndexImport } from "./routes/appointment/$hashed_room_id/$hashed_user_id/index";
 import { Route as AppSettingsAccountProfileImport } from "./routes/app/settings/account/profile";
 import { Route as AppSettingsAccountNotificationsImport } from "./routes/app/settings/account/notifications";
 import { Route as AppSettingsAccountBerbecaruImport } from "./routes/app/settings/account/berbecaru";
@@ -31,6 +33,12 @@ const AppLayoutRoute = AppLayoutImport.update({
 
 const LandingLayoutRoute = LandingLayoutImport.update({
   id: "/_landing",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const CreateAppointmentIndexRoute = CreateAppointmentIndexImport.update({
+  id: "/create-appointment/",
+  path: "/create-appointment/",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -57,6 +65,13 @@ const AppSettingsAccountLayoutRoute = AppSettingsAccountLayoutImport.update({
   path: "/account",
   getParentRoute: () => AppSettingsLayoutRoute,
 } as any);
+
+const AppointmentHashedroomidHasheduseridIndexRoute =
+  AppointmentHashedroomidHasheduseridIndexImport.update({
+    id: "/appointment/$hashed_room_id/$hashed_user_id/",
+    path: "/appointment/$hashed_room_id/$hashed_user_id/",
+    getParentRoute: () => rootRoute,
+  } as any);
 
 const AppSettingsAccountProfileRoute = AppSettingsAccountProfileImport.update({
   id: "/profile",
@@ -117,6 +132,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppIndexImport;
       parentRoute: typeof AppLayoutImport;
     };
+    "/create-appointment/": {
+      id: "/create-appointment/";
+      path: "/create-appointment";
+      fullPath: "/create-appointment";
+      preLoaderRoute: typeof CreateAppointmentIndexImport;
+      parentRoute: typeof rootRoute;
+    };
     "/app/settings/account": {
       id: "/app/settings/account";
       path: "/account";
@@ -144,6 +166,13 @@ declare module "@tanstack/react-router" {
       fullPath: "/app/settings/account/profile";
       preLoaderRoute: typeof AppSettingsAccountProfileImport;
       parentRoute: typeof AppSettingsAccountLayoutImport;
+    };
+    "/appointment/$hashed_room_id/$hashed_user_id/": {
+      id: "/appointment/$hashed_room_id/$hashed_user_id/";
+      path: "/appointment/$hashed_room_id/$hashed_user_id";
+      fullPath: "/appointment/$hashed_room_id/$hashed_user_id";
+      preLoaderRoute: typeof AppointmentHashedroomidHasheduseridIndexImport;
+      parentRoute: typeof rootRoute;
     };
   }
 }
@@ -211,20 +240,24 @@ export interface FileRoutesByFullPath {
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
+  "/create-appointment": typeof CreateAppointmentIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
   "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
+  "/appointment/$hashed_room_id/$hashed_user_id": typeof AppointmentHashedroomidHasheduseridIndexRoute;
 }
 
 export interface FileRoutesByTo {
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/": typeof LandingIndexRoute;
   "/app": typeof AppIndexRoute;
+  "/create-appointment": typeof CreateAppointmentIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
   "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
+  "/appointment/$hashed_room_id/$hashed_user_id": typeof AppointmentHashedroomidHasheduseridIndexRoute;
 }
 
 export interface FileRoutesById {
@@ -234,10 +267,12 @@ export interface FileRoutesById {
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/_landing/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
+  "/create-appointment/": typeof CreateAppointmentIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
   "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
+  "/appointment/$hashed_room_id/$hashed_user_id/": typeof AppointmentHashedroomidHasheduseridIndexRoute;
 }
 
 export interface FileRouteTypes {
@@ -248,19 +283,23 @@ export interface FileRouteTypes {
     | "/app/settings"
     | "/"
     | "/app/"
+    | "/create-appointment"
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile";
+    | "/app/settings/account/profile"
+    | "/appointment/$hashed_room_id/$hashed_user_id";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/app/settings"
     | "/"
     | "/app"
+    | "/create-appointment"
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile";
+    | "/app/settings/account/profile"
+    | "/appointment/$hashed_room_id/$hashed_user_id";
   id:
     | "__root__"
     | "/_landing"
@@ -268,21 +307,28 @@ export interface FileRouteTypes {
     | "/app/settings"
     | "/_landing/"
     | "/app/"
+    | "/create-appointment/"
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile";
+    | "/app/settings/account/profile"
+    | "/appointment/$hashed_room_id/$hashed_user_id/";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   LandingLayoutRoute: typeof LandingLayoutRouteWithChildren;
   AppLayoutRoute: typeof AppLayoutRouteWithChildren;
+  CreateAppointmentIndexRoute: typeof CreateAppointmentIndexRoute;
+  AppointmentHashedroomidHasheduseridIndexRoute: typeof AppointmentHashedroomidHasheduseridIndexRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LandingLayoutRoute: LandingLayoutRouteWithChildren,
   AppLayoutRoute: AppLayoutRouteWithChildren,
+  CreateAppointmentIndexRoute: CreateAppointmentIndexRoute,
+  AppointmentHashedroomidHasheduseridIndexRoute:
+    AppointmentHashedroomidHasheduseridIndexRoute,
 };
 
 export const routeTree = rootRoute
@@ -296,7 +342,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_landing",
-        "/app"
+        "/app",
+        "/create-appointment/",
+        "/appointment/$hashed_room_id/$hashed_user_id/"
       ]
     },
     "/_landing": {
@@ -327,6 +375,9 @@ export const routeTree = rootRoute
       "filePath": "app/index.tsx",
       "parent": "/app"
     },
+    "/create-appointment/": {
+      "filePath": "create-appointment/index.tsx"
+    },
     "/app/settings/account": {
       "filePath": "app/settings/account/layout.tsx",
       "parent": "/app/settings",
@@ -347,6 +398,9 @@ export const routeTree = rootRoute
     "/app/settings/account/profile": {
       "filePath": "app/settings/account/profile.tsx",
       "parent": "/app/settings/account"
+    },
+    "/appointment/$hashed_room_id/$hashed_user_id/": {
+      "filePath": "appointment/$hashed_room_id/$hashed_user_id/index.tsx"
     }
   }
 }
