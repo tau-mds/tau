@@ -3,31 +3,26 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./assets": "./dist/assets",
-    "./icons": "./dist/icons.ts",
     ".": {
-      "import": {
-        "types": "./dist/dist/esm/index.d.ts",
-        "default": "./dist/dist/esm/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "./fonts/jetbrains-mono.css": "./src/fonts/jetbrains-mono/styles.css",
-    "./fonts/overused-grotesk.css": "./src/fonts/overused-grotesk/styles.css",
-    "./fonts/overused-grotesk.woff2": "./src/fonts/overused-grotesk/overused-grotesk-VF.woff2"
+    "./css": "./dist/index.css",
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "vite build"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "biome check . --write",
+    "typecheck": "tsc"
   },
   "dependencies": {
-    "@fontsource-variable/jetbrains-mono": "^5.2.0",
-    "@tau/utils": "workspace:*"
+    "@fontsource-variable/jetbrains-mono": "^5.2.0"
   },
   "devDependencies": {
-    "@tanstack/config": "^0.16.3",
     "@tau/tsconfig": "workspace:*",
-    "ajv": "^8.17.1",
-    "vite": "^6.1.1",
-    "vite-plugin-icons-spritesheet": "^3.0.1",
-    "vite-plugin-static-copy": "^2.2.0"
+    "@tau/vite": "workspace:*",
+    "lightningcss": "^1.29.3",
+    "vite": "catalog:"
   }
 }

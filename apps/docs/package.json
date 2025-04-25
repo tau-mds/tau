@@ -13,22 +13,21 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^6.2.0",
-    "@astrojs/react": "^4.2.1",
-    "@astrojs/starlight": "^0.32.2",
-    "@astrojs/starlight-tailwind": "^3.0.0",
-    "@fontsource-variable/jetbrains-mono": "^5.2.0",
+    "@astrojs/markdown-remark": "^6.3.1",
+    "@astrojs/react": "^4.2.4",
+    "@astrojs/starlight": "^0.34.0",
+    "@tailwindcss/vite": "catalog:",
     "@tau/assets": "workspace:*",
     "@tau/theme": "workspace:*",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "astro": "^5.1.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "astro": "^5.7.4",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
     "rehype-autolink-headings": "^7.1.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.34.1"
   },
   "devDependencies": {
-    "@tau/tsconfig": "workspace:*"
+    "@tau/tsconfig": "workspace:*",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react"
   }
 }

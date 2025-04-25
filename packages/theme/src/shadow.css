@@ -1,0 +1,16 @@
+[data-theme="light"] {
+  ---shadow: var(--surface-7);
+}
+
+[data-theme="dark"] {
+  ---shadow: var(--surface-1);
+}
+
+[data-theme] {
+  --shadow:
+    0 1px 1px --alpha(var(---shadow) / 30%),
+    0 2px 2px --alpha(var(---shadow) / 30%);
+  --shadow-lg:
+    0 15px 30px --alpha(var(---shadow) / 30%),
+    0 30px 60px --alpha(var(---shadow) / 30%);
+}

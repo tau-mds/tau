@@ -25,6 +25,9 @@
         ".env"
       ]
     },
+    "test": {
+      "cache": false
+    },
     "typecheck": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],

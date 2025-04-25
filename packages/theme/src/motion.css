@@ -1,49 +1,36 @@
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+:root {
+  --timing-ease: cubic-bezier(0.42, 0, 1, 1);
+
+  --transition-color:
+    color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    text-decoration-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    fill 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes button-loading {
-  0% {
-    background-position-x: 50%;
-    color: var(--surface-a8);
-  }
-
-  25% {
-    background-position-x: 50%;
-  }
-
-  75% {
-    background-position-x: 0;
-    color: var(--surface-a5);
-  }
-
-  to {
-    background-position-x: -150%;
-    color: var(--surface-a8);
-  }
-}
-
-@keyframes fade-in {
-  0% {
+@keyframes smooth-down {
+  from {
+    max-height: 0;
     opacity: 0;
     transform: translateY(-4px);
   }
-
   to {
+    max-height: var(--radix-collapsible-content-height);
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes fade-out {
-  0% {
+@keyframes smooth-up {
+  from {
+    max-height: var(--radix-collapsible-content-height);
     opacity: 1;
     transform: translateY(0);
   }
-
   to {
+    max-height: 0;
     opacity: 0;
     transform: translateY(-4px);
   }

@@ -1,3 +1,9 @@
 {
-  "extends": ["@tau/tsconfig/base.json"]
+  "extends": ["@tau/tsconfig/base.json"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  }
 }

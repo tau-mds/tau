@@ -1,19 +1,22 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "@tanstack/react-start/config";
 import tsConfigPaths from "vite-tsconfig-paths";
+import icons from "unplugin-icons/vite";
 
 export default defineConfig({
-	// server: {
-	// 	preset: "cloudflare-pages",
-	// 	unenv: cloudflare,
-	// },
+  tsr: {
+    routeToken: "layout",
+    quoteStyle: "double",
+    semicolons: true,
+  },
 
-	vite: {
-		plugins: [
-			tailwindcss(),
-			tsConfigPaths({
-				projects: ["./tsconfig.json"],
-			}),
-		],
-	},
+  vite: {
+    plugins: [
+      tailwindcss(),
+      icons({ compiler: "jsx", jsx: "react" }),
+      tsConfigPaths({
+        projects: ["./tsconfig.json"],
+      }),
+    ],
+  },
 });

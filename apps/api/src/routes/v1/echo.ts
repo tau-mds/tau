@@ -1,109 +1,54 @@
 import { Hono } from "hono";
 import { describeRoute } from "hono-openapi";
-import { resolver, validator } from "hono-openapi/valibot";
 import * as v from "valibot";
-// import { z } from "zod";
 
-// import { result } from "~/lib/result";
-
-function jsonContent<T extends v.GenericSchema>(
-	schema: T,
-	description: string,
-	example?: unknown,
-) {
-	return {
-		content: {
-			"application/json": { schema: resolver(schema), example },
-		},
-		description,
-	};
-}
-
-// const safeParseSchema: v.GenericSchema<v.SafeParseResult<any>> = v.object({
-// 	typed: v.boolean(),
-// 	success: v.boolean(),
-// 	issues: v.array(
-// 		v.object({
-// 			kind: v.string(),
-// 			type: v.string(),
-// 			expected: v.nullable(v.string()),
-// 			received: v.string(),
-// 			message: v.string(),
-// 			path: v.optional(v.array(v.lazy(() => safeParseSchema))),
-// 		}),
-// 	),
-// });
-
-function validationError<T extends v.GenericSchema>(_: T) {
-	// @ts-ignore
-	const res: v.GenericSchema<v.SafeParseResult<T>> = v.object({
-		typed: v.boolean(),
-		output: v.unknown(),
-		success: v.boolean(),
-		issues: v.array(
-			v.object({
-				kind: v.string(),
-				type: v.string(),
-				expected: v.nullable(v.string()),
-				received: v.string(),
-				message: v.string(),
-				path: v.optional(v.array(v.lazy(() => res))),
-			}),
-		),
-	});
-	return res;
-}
+import { response } from "~/lib/response";
+import { openapi } from "~/lib/openapi";
+import { validator } from "~/lib/validator";
+import { db, foo } from "@tau/db";
 
 export namespace EchoApi {
-	const request = v.object({
-		message: v.pipe(
-			v.string(),
-			v.minLength(1),
-			v.maxLength(255),
-			v.description("Message for echoing"),
-		),
-	});
-	// const request = z.object({
-	// 	message: z.string().min(1).max(255),
-	// });
+  export const request = v.object({
+    salute: v.picklist(["Hi", "Hello", "Hola"]),
+    message: v.pipe(
+      v.string(),
+      v.minLength(1),
+      v.maxLength(255),
+      v.description("Message for echoing"),
+    ),
+  });
+  export type request = v.InferOutput<typeof request>;
 
-	const response = v.pipe(
-		v.object({
-			message: v.pipe(v.string(), v.description("The echoed message")),
-		}),
-	);
+  const route = describeRoute({
+    tags: ["echo"],
+    operationId: "echo",
+    method: "post",
+    path: "/v1/echo",
+    security: [{ bearerAuth: [] }],
+    responses: {
+      ...openapi.ok(
+        v.object({
+          message: v.pipe(v.string(), v.description("The echoed message")),
+        }),
+        "Ba o mers",
+      ),
+      ...openapi.validation(),
+    },
+  });
 
-	const route = describeRoute({
-		tags: ["echo"],
-		operationId: "echo",
-		method: "post",
-		path: "/v1/echo",
-		summary: "Echo message",
-		description: "Echo a sent message.",
-		security: [{ bearerAuth: [] }],
-		responses: {
-			200: jsonContent(response, ""),
-			400: jsonContent(
-				validationError(request),
-				"Validation errors",
-				v.safeParse(request, { message: "" }),
-			),
-
-			// {
-			// 	content: {
-			// 		"application/json": {
-			// 			schema: result(response),
-			// 			example: { data: { message: "Hello, world" } },
-			// 		},
-			// 	},
-			// },
-			// 400: jsonContent(request["~run"]({ value: {} }, ""), "Errors"),
-		},
-	});
-
-	export const register = new Hono().post("/", route, validator("json", request), (c) => {
-		console.debug("called");
-		const body = c.req.valid("json");
-		return c.json({ data: { message: `Hello, ${body.message}` } }, 201);
-	});
+  export const register = new Hono().post(
+    "/",
+    route,
+    validator("json", request),
+    async (c) => {
+      const body = c.req.valid("json");
+      const res = await db
+        .select({ id: foo.table.id, bar: foo.table.bar })
+        .from(foo.table)
+        .then((r) => r[0]);
+      return response.ok(c, {
+        message: `${body.salute}, ${body.message}, ${res?.id}`,
+      });
+    },
+  );
 }

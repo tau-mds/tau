@@ -1,8 +1,0 @@
-.tau-icon {
-  display: inline;
-  align-self: center;
-  --size: 4;
-
-  width: calc(var(--size) * var(--spacing));
-  height: calc(var(--size) * var(--spacing));
-}

@@ -16,10 +16,13 @@
     "typecheck": "tsc"
   },
   "devDependencies": {
-    "@tau/tsconfig": "workspace:*"
+    "@tau/tsconfig": "workspace:*",
+    "pino-pretty": "^13.0.0"
   },
   "dependencies": {
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.0.2"
+    "nanoid": "^5.1.5",
+    "pino": "^9.6.0",
+    "tailwind-merge": "^3.2.0"
   }
 }

@@ -1,5 +1,4 @@
 @import "tailwindcss";
 @import "@tau/theme/tailwind.css";
-@import "@tau/ui/ui.css";
-@import "@tau/assets/fonts/jetbrains-mono.css";
-@import "@tau/assets/fonts/overused-grotesk.css";
+@import "@tau/assets/css";
+@source "../../../packages/ui/src/**/*.{ts,tsx}";

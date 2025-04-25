@@ -1,6 +1,7 @@
 {
   "extends": ["@tau/tsconfig/react.json"],
   "compilerOptions": {
+    "types": ["unplugin-icons/types/react"],
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]

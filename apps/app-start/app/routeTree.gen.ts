@@ -10,66 +10,284 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as AppLayoutImport } from "./routes/app/layout";
+import { Route as LandingLayoutImport } from "./routes/_landing/layout";
+import { Route as AppIndexImport } from "./routes/app/index";
+import { Route as LandingIndexImport } from "./routes/_landing/index";
+import { Route as AppSettingsLayoutImport } from "./routes/app/settings/layout";
+import { Route as AppSettingsAccountLayoutImport } from "./routes/app/settings/account/layout";
+import { Route as AppSettingsAccountProfileImport } from "./routes/app/settings/account/profile";
+import { Route as AppSettingsAccountNotificationsImport } from "./routes/app/settings/account/notifications";
+import { Route as AppSettingsAccountBerbecaruImport } from "./routes/app/settings/account/berbecaru";
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const AppLayoutRoute = AppLayoutImport.update({
+  id: "/app",
+  path: "/app",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const LandingLayoutRoute = LandingLayoutImport.update({
+  id: "/_landing",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const AppIndexRoute = AppIndexImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AppLayoutRoute,
+} as any);
+
+const LandingIndexRoute = LandingIndexImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => LandingLayoutRoute,
+} as any);
+
+const AppSettingsLayoutRoute = AppSettingsLayoutImport.update({
+  id: "/settings",
+  path: "/settings",
+  getParentRoute: () => AppLayoutRoute,
+} as any);
+
+const AppSettingsAccountLayoutRoute = AppSettingsAccountLayoutImport.update({
+  id: "/account",
+  path: "/account",
+  getParentRoute: () => AppSettingsLayoutRoute,
+} as any);
+
+const AppSettingsAccountProfileRoute = AppSettingsAccountProfileImport.update({
+  id: "/profile",
+  path: "/profile",
+  getParentRoute: () => AppSettingsAccountLayoutRoute,
+} as any);
+
+const AppSettingsAccountNotificationsRoute =
+  AppSettingsAccountNotificationsImport.update({
+    id: "/notifications",
+    path: "/notifications",
+    getParentRoute: () => AppSettingsAccountLayoutRoute,
+  } as any);
+
+const AppSettingsAccountBerbecaruRoute =
+  AppSettingsAccountBerbecaruImport.update({
+    id: "/berbecaru",
+    path: "/berbecaru",
+    getParentRoute: () => AppSettingsAccountLayoutRoute,
+  } as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
+    "/_landing": {
+      id: "/_landing";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof LandingLayoutImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/app": {
+      id: "/app";
+      path: "/app";
+      fullPath: "/app";
+      preLoaderRoute: typeof AppLayoutImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/app/settings": {
+      id: "/app/settings";
+      path: "/settings";
+      fullPath: "/app/settings";
+      preLoaderRoute: typeof AppSettingsLayoutImport;
+      parentRoute: typeof AppLayoutImport;
+    };
+    "/_landing/": {
+      id: "/_landing/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof LandingIndexImport;
+      parentRoute: typeof LandingLayoutImport;
+    };
+    "/app/": {
+      id: "/app/";
+      path: "/";
+      fullPath: "/app/";
+      preLoaderRoute: typeof AppIndexImport;
+      parentRoute: typeof AppLayoutImport;
+    };
+    "/app/settings/account": {
+      id: "/app/settings/account";
+      path: "/account";
+      fullPath: "/app/settings/account";
+      preLoaderRoute: typeof AppSettingsAccountLayoutImport;
+      parentRoute: typeof AppSettingsLayoutImport;
+    };
+    "/app/settings/account/berbecaru": {
+      id: "/app/settings/account/berbecaru";
+      path: "/berbecaru";
+      fullPath: "/app/settings/account/berbecaru";
+      preLoaderRoute: typeof AppSettingsAccountBerbecaruImport;
+      parentRoute: typeof AppSettingsAccountLayoutImport;
+    };
+    "/app/settings/account/notifications": {
+      id: "/app/settings/account/notifications";
+      path: "/notifications";
+      fullPath: "/app/settings/account/notifications";
+      preLoaderRoute: typeof AppSettingsAccountNotificationsImport;
+      parentRoute: typeof AppSettingsAccountLayoutImport;
+    };
+    "/app/settings/account/profile": {
+      id: "/app/settings/account/profile";
+      path: "/profile";
+      fullPath: "/app/settings/account/profile";
+      preLoaderRoute: typeof AppSettingsAccountProfileImport;
+      parentRoute: typeof AppSettingsAccountLayoutImport;
+    };
   }
 }
 
 // Create and export the route tree
 
+interface LandingLayoutRouteChildren {
+  LandingIndexRoute: typeof LandingIndexRoute;
+}
+
+const LandingLayoutRouteChildren: LandingLayoutRouteChildren = {
+  LandingIndexRoute: LandingIndexRoute,
+};
+
+const LandingLayoutRouteWithChildren = LandingLayoutRoute._addFileChildren(
+  LandingLayoutRouteChildren,
+);
+
+interface AppSettingsAccountLayoutRouteChildren {
+  AppSettingsAccountBerbecaruRoute: typeof AppSettingsAccountBerbecaruRoute;
+  AppSettingsAccountNotificationsRoute: typeof AppSettingsAccountNotificationsRoute;
+  AppSettingsAccountProfileRoute: typeof AppSettingsAccountProfileRoute;
+}
+
+const AppSettingsAccountLayoutRouteChildren: AppSettingsAccountLayoutRouteChildren =
+  {
+    AppSettingsAccountBerbecaruRoute: AppSettingsAccountBerbecaruRoute,
+    AppSettingsAccountNotificationsRoute: AppSettingsAccountNotificationsRoute,
+    AppSettingsAccountProfileRoute: AppSettingsAccountProfileRoute,
+  };
+
+const AppSettingsAccountLayoutRouteWithChildren =
+  AppSettingsAccountLayoutRoute._addFileChildren(
+    AppSettingsAccountLayoutRouteChildren,
+  );
+
+interface AppSettingsLayoutRouteChildren {
+  AppSettingsAccountLayoutRoute: typeof AppSettingsAccountLayoutRouteWithChildren;
+}
+
+const AppSettingsLayoutRouteChildren: AppSettingsLayoutRouteChildren = {
+  AppSettingsAccountLayoutRoute: AppSettingsAccountLayoutRouteWithChildren,
+};
+
+const AppSettingsLayoutRouteWithChildren =
+  AppSettingsLayoutRoute._addFileChildren(AppSettingsLayoutRouteChildren);
+
+interface AppLayoutRouteChildren {
+  AppSettingsLayoutRoute: typeof AppSettingsLayoutRouteWithChildren;
+  AppIndexRoute: typeof AppIndexRoute;
+}
+
+const AppLayoutRouteChildren: AppLayoutRouteChildren = {
+  AppSettingsLayoutRoute: AppSettingsLayoutRouteWithChildren,
+  AppIndexRoute: AppIndexRoute,
+};
+
+const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
+  AppLayoutRouteChildren,
+);
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  "": typeof LandingLayoutRouteWithChildren;
+  "/app": typeof AppLayoutRouteWithChildren;
+  "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
+  "/": typeof LandingIndexRoute;
+  "/app/": typeof AppIndexRoute;
+  "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
+  "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
+  "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
+  "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
+  "/": typeof LandingIndexRoute;
+  "/app": typeof AppIndexRoute;
+  "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
+  "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
+  "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
+  "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  __root__: typeof rootRoute;
+  "/_landing": typeof LandingLayoutRouteWithChildren;
+  "/app": typeof AppLayoutRouteWithChildren;
+  "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
+  "/_landing/": typeof LandingIndexRoute;
+  "/app/": typeof AppIndexRoute;
+  "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
+  "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
+  "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
+  "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths:
+    | ""
+    | "/app"
+    | "/app/settings"
+    | "/"
+    | "/app/"
+    | "/app/settings/account"
+    | "/app/settings/account/berbecaru"
+    | "/app/settings/account/notifications"
+    | "/app/settings/account/profile";
+  fileRoutesByTo: FileRoutesByTo;
+  to:
+    | "/app/settings"
+    | "/"
+    | "/app"
+    | "/app/settings/account"
+    | "/app/settings/account/berbecaru"
+    | "/app/settings/account/notifications"
+    | "/app/settings/account/profile";
+  id:
+    | "__root__"
+    | "/_landing"
+    | "/app"
+    | "/app/settings"
+    | "/_landing/"
+    | "/app/"
+    | "/app/settings/account"
+    | "/app/settings/account/berbecaru"
+    | "/app/settings/account/notifications"
+    | "/app/settings/account/profile";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  LandingLayoutRoute: typeof LandingLayoutRouteWithChildren;
+  AppLayoutRoute: typeof AppLayoutRouteWithChildren;
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-}
+  LandingLayoutRoute: LandingLayoutRouteWithChildren,
+  AppLayoutRoute: AppLayoutRouteWithChildren,
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -77,11 +295,58 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/_landing",
+        "/app"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_landing": {
+      "filePath": "_landing/layout.tsx",
+      "children": [
+        "/_landing/"
+      ]
+    },
+    "/app": {
+      "filePath": "app/layout.tsx",
+      "children": [
+        "/app/settings",
+        "/app/"
+      ]
+    },
+    "/app/settings": {
+      "filePath": "app/settings/layout.tsx",
+      "parent": "/app",
+      "children": [
+        "/app/settings/account"
+      ]
+    },
+    "/_landing/": {
+      "filePath": "_landing/index.tsx",
+      "parent": "/_landing"
+    },
+    "/app/": {
+      "filePath": "app/index.tsx",
+      "parent": "/app"
+    },
+    "/app/settings/account": {
+      "filePath": "app/settings/account/layout.tsx",
+      "parent": "/app/settings",
+      "children": [
+        "/app/settings/account/berbecaru",
+        "/app/settings/account/notifications",
+        "/app/settings/account/profile"
+      ]
+    },
+    "/app/settings/account/berbecaru": {
+      "filePath": "app/settings/account/berbecaru.tsx",
+      "parent": "/app/settings/account"
+    },
+    "/app/settings/account/notifications": {
+      "filePath": "app/settings/account/notifications.tsx",
+      "parent": "/app/settings/account"
+    },
+    "/app/settings/account/profile": {
+      "filePath": "app/settings/account/profile.tsx",
+      "parent": "/app/settings/account"
     }
   }
 }

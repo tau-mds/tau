@@ -1,0 +1,31 @@
+{
+  "name": "@tau/db",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "dotenvx run -- drizzle-kit studio",
+    "lint": "biome check . --write",
+    "typecheck": "tsc",
+    "drizzle": "drizzle-kit"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.41.0",
+    "@tau/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.31.0"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.4",
+    "@tau/utils": "workspace:*",
+    "drizzle-orm": "^0.42.0",
+    "ulid": "^3.0.0",
+    "valibot": "catalog:"
+  }
+}

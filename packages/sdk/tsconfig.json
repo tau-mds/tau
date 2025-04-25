@@ -1,0 +1,6 @@
+{
+  "extends": ["@tau/tsconfig/base.json"],
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": false
+  }
+}
