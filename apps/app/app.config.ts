@@ -4,19 +4,23 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import icons from "unplugin-icons/vite";
 
 export default defineConfig({
-  tsr: {
-    routeToken: "layout",
-    quoteStyle: "double",
-    semicolons: true,
-  },
+	tsr: {
+		routeToken: "layout",
+		quoteStyle: "double",
+		semicolons: true,
+	},
 
-  vite: {
-    plugins: [
-      tailwindcss(),
-      icons({ compiler: "jsx", jsx: "react" }),
-      tsConfigPaths({
-        projects: ["./tsconfig.json"],
-      }),
-    ],
-  },
+	server: {
+		preset: "node-server",
+	},
+
+	vite: {
+		plugins: [
+			tailwindcss(),
+			icons({ compiler: "jsx", jsx: "react" }),
+			tsConfigPaths({
+				projects: ["./tsconfig.json"],
+			}),
+		],
+	},
 });
