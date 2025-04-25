@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppointmentHashedroomidHasheduseridIndexImport } from './routes/appointment/$hashed_room_id/$hashed_user_id/index'
 
 // Create/Update Routes
 
@@ -20,6 +21,13 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AppointmentHashedroomidHasheduseridIndexRoute =
+  AppointmentHashedroomidHasheduseridIndexImport.update({
+    id: '/appointment/$hashed_room_id/$hashed_user_id/',
+    path: '/appointment/$hashed_room_id/$hashed_user_id/',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -32,6 +40,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/appointment/$hashed_room_id/$hashed_user_id/': {
+      id: '/appointment/$hashed_room_id/$hashed_user_id/'
+      path: '/appointment/$hashed_room_id/$hashed_user_id'
+      fullPath: '/appointment/$hashed_room_id/$hashed_user_id'
+      preLoaderRoute: typeof AppointmentHashedroomidHasheduseridIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +54,38 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/appointment/$hashed_room_id/$hashed_user_id': typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/appointment/$hashed_room_id/$hashed_user_id': typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/appointment/$hashed_room_id/$hashed_user_id/': typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/appointment/$hashed_room_id/$hashed_user_id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/appointment/$hashed_room_id/$hashed_user_id'
+  id: '__root__' | '/' | '/appointment/$hashed_room_id/$hashed_user_id/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppointmentHashedroomidHasheduseridIndexRoute: typeof AppointmentHashedroomidHasheduseridIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppointmentHashedroomidHasheduseridIndexRoute:
+    AppointmentHashedroomidHasheduseridIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +98,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/appointment/$hashed_room_id/$hashed_user_id/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/appointment/$hashed_room_id/$hashed_user_id/": {
+      "filePath": "appointment/$hashed_room_id/$hashed_user_id/index.tsx"
     }
   }
 }

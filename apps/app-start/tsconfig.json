@@ -1,6 +1,7 @@
 {
   "extends": ["@tau/tsconfig/react.json"],
   "compilerOptions": {
+    "jsx": "react",
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
