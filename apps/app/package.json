@@ -21,7 +21,6 @@
     "@tanstack/react-router-devtools": "^1.116.0",
     "@tau/assets": "workspace:*",
     "@tau/db": "workspace:*",
-    "@tau/sdk": "workspace:*",
     "@tau/theme": "workspace:*",
     "@tau/ui": "workspace:*",
     "@tau/utils": "workspace:*",
