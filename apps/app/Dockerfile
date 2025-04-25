@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.4
+
 FROM node:22-alpine3.20 AS base
 
 ENV PNPM_HOME="/pnpm"
@@ -25,15 +27,23 @@ COPY --from=builder /app/out/full/ .
 RUN pnpm turbo run build
 
 
-ARG DATABASE_CONN_TYPE
-ENV DATABASE_CONN_TYPE=$DATABASE_CONN_TYPE
+# ARG DATABASE_CONN_TYPE
+# ENV DATABASE_CONN_TYPE=$DATABASE_CONN_TYPE
 
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
+# ARG DATABASE_URL
+# ENV DATABASE_URL=$DATABASE_URL
 
-ARG DATABASE_AUTH_TOKEN
-ENV DATABASE_AUTH_TOKEN=$DATABASE_AUTH_TOKEN
-RUN pnpm migrate
+# ARG DATABASE_AUTH_TOKEN
+# ENV DATABASE_AUTH_TOKEN=$DATABASE_AUTH_TOKEN
+# RUN pnpm migrate
+
+RUN --mount=type=secret,id=DATABASE_URL \
+    --mount=type=secret,id=DATABASE_CONN_TYPE \
+    --mount=type=secret,id=DATABASE_AUTH_TOKEN \
+    DATABASE_URL=$(cat /run/secrets/DATABASE_URL) \
+    DATABASE_CONN_TYPE=$(cat /run/secrets/DATABASE_CONN_TYPE) \
+    DATABASE_AUTH_TOKEN=$(cat /run/secrets/DATABASE_AUTH_TOKEN) \
+    pnpm migrate
 
 
 FROM base AS runner
