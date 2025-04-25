@@ -20,9 +20,7 @@ jobs:
     concurrency:
       group: pr-${{ github.event.number }}
 
-    environment:
-      name: pr-${{ github.event.number }}
-      url: ${{ steps.deploy.outputs.url }}
+    environment: Preview
 
     steps:
       - name: Checkout
@@ -32,7 +30,10 @@ jobs:
 
       - name: Deploy PR app to Fly.io
         id: deploy
-        uses: superfly/fly-pr-review-apps@1.3.0
+        uses: superfly/fly-pr-review-apps@1.5.0
         with:
-          launch_options: "--build-arg TURBO_TEAM=${{ env.TURBO_TEAM }} --build-secret TURBO_TOKEN=${{ env.TURBO_TOKEN }}"
           config: apps/app/fly.toml
+          build_secrets: |
+            DATABASE_CONN_TYPE=${{ secrets.DATABASE_CONN_TYPE }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
