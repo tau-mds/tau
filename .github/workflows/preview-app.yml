@@ -1,0 +1,68 @@
+name: "@tau/app Preview Deployment"
+on:
+  pull_request:
+      types: [opened, reopened]
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  FLY_REGION: otp
+  FLY_ORG: personal
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
+
+    concurrency:
+      group: pr-${{ github.event.number }}
+
+    environment:
+      name: pr-${{ github.event.number }}
+      url: ${{ steps.deploy.outputs.url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get git branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8
+
+      - name: Get database name
+        id: db-name
+        run: |
+          BRANCH_NAME=$(echo "${{ steps.branch-name.outputs.current_branch }}" | tr -cd '[:alnum:]' | sed 's/./\L&/g' | cut -c 1-32)
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create Database
+        id: create-db
+        uses: ./.github/actions/preview-db
+        with:
+          organization_name: ${{ secrets.TURSO_ORGANIZATION_NAME }}
+          group_name: ${{ secrets.TURSO_GROUP_NAME }}
+          api_token: ${{ secrets.TURSO_API_TOKEN }}
+          existing_database_name: ${{ secrets.TURSO_DB_NAME }}
+          new_database_name: ${{ steps.db-name.outputs.branch_name }}
+
+      - name: Deploy PR app to Fly.io
+        id: deploy
+        uses: superfly/fly-pr-review-apps@1.3.0
+        with:
+          config: apps/app/fly.toml
+          secrets: DATABASE_CONN_TYPE=remote DATABASE_URL=libsql://${{ steps.create-db.outputs.hostname }} DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
+
+      - name: Comment on Pull Request
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            🚀 **Preview Deployment Ready!**
+
+            The preview for this PR has been successfully deployed. You can check it out here:
+
+            🔗 [View Preview](${{ steps.deploy.outputs.url }})
+
+            Feel free to test things out and let us know if anything looks off!

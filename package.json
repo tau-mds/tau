@@ -9,7 +9,7 @@
 		"turbo": "turbo",
 		"test": "turbo run test --concurrency=1",
 		"local": "pnpm --dir=tools/local local",
-		"migrate": "pnpm --dir=packages/db drizzle migrate",
+		"migrate": "pnpm --dir=packages/db drizzle:prod migrate",
 		"gen:package": "turbo gen workspace --copy @tau/template --type package"
 	},
 	"devDependencies": {
