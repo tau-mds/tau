@@ -1,25 +1,68 @@
 :root {
-  --txt-xs: 0.75rem;
-  --txt-sm: 0.8125rem;
-  --txt-md: 0.875rem;
-  --txt-lg: 1rem;
-  --txt-xl: 1.125rem;
-  --txt-2xl: 1.25rem;
-  --txt-3xl: 1.5rem;
-  --txt-4xl: 1.75rem;
-  --txt-5xl: 2.25rem;
-  --txt-6xl: 3.75rem;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    var(--font-overused-grotesk), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
-  --txt-leading-compact: 1.25rem;
-  --txt-leading-normal: 1.5rem;
-  --txt-leading-large: 1.875rem;
-  --txt-leading-xlarge: 2.5rem;
+.txt-xsmall {
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+}
 
-  --txt-weight-normal: 400;
-  --txt-weight-plus: 500;
+.txt-compact-xsmall {
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+}
 
-  --txt-compact-xs: 500 0.75rem / 1.25rem var(--font-overused-grotesk);
-  --txt-compact-sm: 500 0.8125rem / 1.25rem var(--font-overused-grotesk);
-  --txt-compact-md: 500 0.875rem / 1.25rem var(--font-overused-grotesk);
-  --txt-compact-lg: 500 1rem / 1.25rem var(--font-overused-grotesk);
+.txt-small {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.21875rem;
+}
+
+.txt-compact-small {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.txt-medium {
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.3125rem;
+}
+
+.txt-compact-medium {
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.txt-large {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.txt-compact-large {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.txt-xlarge {
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.6875rem;
+}
+
+.txt-compact-xlarge {
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.25rem;
 }

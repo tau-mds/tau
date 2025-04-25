@@ -10,7 +10,8 @@
 		"attributePosition": "auto"
 	},
 	"files": {
-		"ignoreUnknown": true
+		"ignoreUnknown": true,
+		"ignore": ["*.gen.ts", ".changeset/"]
 	},
 	"vcs": {
 		"enabled": true,

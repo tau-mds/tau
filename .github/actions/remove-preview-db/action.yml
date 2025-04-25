@@ -1,0 +1,36 @@
+name: "Delete Turso Database"
+
+description: "Automatically delete a Turso database"
+
+branding:
+  color: "red"
+  icon: "database"
+
+inputs:
+  api_token:
+    description: "The API key that has access to the organization or account."
+    required: true
+
+  organization_name:
+    description: "The name of the organization or account where this action will be performed."
+    required: true
+
+  database_name:
+    description: "The name of the database."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Delete Database
+      id: delete-database
+      shell: bash
+      run: |
+        RESPONSE=$(curl -L -X DELETE \
+          -H 'Authorization: Bearer ${{ inputs.api_token }}' \
+          "https://api.turso.tech/v1/organizations/${{ inputs.organization_name }}/databases/${{ inputs.database_name }}")
+
+        if [ $? -ne 0 ]; then
+          echo "Could not delete database"
+          exit 1
+        fi

@@ -7,7 +7,6 @@ node_modules
 .turbo
 dist
 build
-*.db
 
 # TypeScript cache
 *.tsbuildinfo
@@ -17,3 +16,5 @@ build
 .output
 .astro
 .vinxi
+.DS_Store
+tau.db
