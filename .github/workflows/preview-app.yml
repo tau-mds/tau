@@ -20,6 +20,9 @@ jobs:
 
     environment: Preview
 
+    permissions:
+       pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,14 +54,14 @@ jobs:
         uses: superfly/fly-pr-review-apps@1.5.0
         with:
           config: apps/app/fly.toml
-          secrets: DATABASE_CONN_TYPE=remote DATABASE_URL=libsql://${{ steps.create-db.outputs.hostname }} DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
+          secrets: DATABASE_CONN_TYPE=${{ secrets.DATABASE_CONN_TYPE }} DATABASE_URL=libsql://${{ steps.create-db.outputs.hostname }} DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
           build_secrets: |
             DATABASE_CONN_TYPE=${{ secrets.DATABASE_CONN_TYPE }}
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
 
       - name: Comment on Pull Request
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
             🚀 **Preview Deployment Ready!**
