@@ -34,7 +34,7 @@ jobs:
         id: deploy
         run: |
           flyctl deploy --remote-only -c apps/app/fly.toml \
-            --build-secret DATABASE_CONN_TYPE=${{ secrects.DATABASE_CONN_TYPE }} \
+            --build-secret DATABASE_CONN_TYPE=${{ secrets.DATABASE_CONN_TYPE }} \
             --build-secret DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --build-secret DATABASE_AUTH_TOKEN=${{ secrets.DATABASE_AUTH_TOKEN }}
         env:
