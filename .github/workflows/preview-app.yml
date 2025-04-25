@@ -18,9 +18,7 @@ jobs:
     concurrency:
       group: pr-${{ github.event.number }}
 
-    environment:
-      name: pr-${{ github.event.number }}
-      url: ${{ steps.deploy.outputs.url }}
+    environment: Preview
 
     steps:
       - name: Checkout
