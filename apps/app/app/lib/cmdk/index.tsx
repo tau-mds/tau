@@ -7,20 +7,20 @@ import { useShortcut } from "~/lib/use-shortcut";
 import { Cmdk } from "./cmdk";
 
 export function CommandPalette() {
-  useShortcut(cmdk.SHORTCUT, cmdk.action.toggle, {
-    allowInEditable: true,
-  });
+	useShortcut(cmdk.SHORTCUT, cmdk.action.toggle, {
+		allowInEditable: true,
+	});
 
-  return (
-    <>
-      <Cmdk route="root">
-        <Settings.ItemsGroup />
-        <Miscellaneous.ItemsGroup />
+	return (
+		<>
+			<Cmdk route="root">
+				<Settings.ItemsGroup />
+				<Miscellaneous.ItemsGroup />
 
-        <Command.Empty>No results found.</Command.Empty>
-      </Cmdk>
+				<Command.Empty>No results found.</Command.Empty>
+			</Cmdk>
 
-      <Settings.Dialogs />
-    </>
-  );
+			<Settings.Dialogs />
+		</>
+	);
 }

@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 import { Header } from "~/components/header";
 import { AppSidebar } from "~/components/sidebar/app";
@@ -6,21 +6,21 @@ import { CommandPalette } from "~/lib/cmdk";
 import { sidebar } from "~/lib/sidebar";
 
 export const Route = createFileRoute("/app")({
-  loader: async (ctx) => {
-    await ctx.context.queryClient.ensureQueryData(sidebar.queries.get());
-  },
+	loader: async (ctx) => {
+		await ctx.context.queryClient.ensureQueryData(sidebar.queries.get());
+	},
 
-  component: Component,
+	component: Component,
 });
 
 function Component() {
-  return (
-    <AppSidebar>
-      <Header />
+	return (
+		<AppSidebar>
+			<Header />
 
-      <Outlet />
+			<Outlet />
 
-      <CommandPalette />
-    </AppSidebar>
-  );
+			<CommandPalette />
+		</AppSidebar>
+	);
 }
