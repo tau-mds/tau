@@ -8,6 +8,13 @@
       "when": 1744558559893,
       "tag": "0000_nebulous_swarm",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1745929577715,
+      "tag": "0001_setup_schema",
+      "breakpoints": true
     }
   ]
 }
