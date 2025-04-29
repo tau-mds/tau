@@ -18,19 +18,5 @@ export const dbCmd = command({
 		p.on("message", console.log);
 		p.on("error", console.error);
 		p.on("exit", (c) => console.log(`Exited with code ${c}`));
-
-		const cwdAuth = path.join("../../packages/auth");
-		const pAuth = exec("pnpm drizzle push", {
-			env: {
-				DATABASE_CONN_TYPE: "local",
-				...process.env,
-			},
-			cwd: cwdAuth,
-		});
-
-		pAuth.stdout?.on("data", console.log);
-		pAuth.on("message", console.log);
-		pAuth.on("error", console.error);
-		pAuth.on("exit", (c) => console.log(`Exited with code ${c}`));
 	},
 });

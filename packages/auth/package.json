@@ -14,8 +14,7 @@
     "dev": "tsc -w -p tsconfig.build.json",
     "lint": "biome check . --write",
     "typecheck": "tsc",
-    "generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y",
-    "generate:local": "npx @better-auth/cli generate --output ./src/schema/auth-schema.ts -y"
+    "generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y"
   },
   "devDependencies": {
     "@tau/tsconfig": "workspace:*",
@@ -23,10 +22,8 @@
     "tsx": "^4.19.3"
   },
   "dependencies": {
-    "@libsql/client": "^0.15.4",
     "@tau/db": "workspace:*",
     "better-auth": "^1.2.7",
-    "dotenv": "^16.5.0",
-    "drizzle-orm": "^0.42.0"
+    "dotenv": "^16.5.0"
   }
 }
