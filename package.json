@@ -6,7 +6,7 @@
     "lint": "biome check . --write",
     "format": "biome format . --write",
     "typecheck": "tsc",
-    "turbo": "turbo --concurrency=15",
+    "turbo": "turbo",
     "test": "turbo run test --concurrency=1",
     "local": "pnpm --dir=tools/local local",
     "migrate": "pnpm --dir=packages/db drizzle:prod migrate",
