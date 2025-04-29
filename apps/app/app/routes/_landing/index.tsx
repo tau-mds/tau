@@ -1,28 +1,15 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { auth } from "@tau/auth";
+import { authClient } from "@tau/auth-client";
+// import { useSession } from "@tau/auth";
 import { Button, Dialog } from "@tau/ui";
-import React from "react";
+import React, { useEffect } from "react";
 import { echo } from "~/lib/api/echo";
 import { env } from "~/lib/env";
 
 export const Route = createFileRoute("/_landing/")({
   component: Component,
   loader: async (opts) => {
-    // auth.api.signInEmail({
-    //   body: {
-    //     email: "user@email.com",
-    //     password: "password",
-    //   },
-    // });
-    auth.api.signUpEmail({
-      body: {
-        email: "user@email.com",
-        password: "password",
-        name: "John Doe",
-      },
-    });
-
     opts.context.queryClient.ensureQueryData(
       echo.queries.plm({ salute: "Hi", message: "there" })
     );
@@ -34,6 +21,23 @@ function Component() {
   const echoQuery = useSuspenseQuery(
     echo.queries.plm({ salute: "Hi", message: "there" })
   );
+
+  const { data, isPending, error } = authClient.useSession();
+  // const { data, isPending, error } = useSession();
+
+  useEffect(() => {
+    authClient.signIn.email({
+      email: "user@email.com",
+      password: "password",
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+    if (!data?.user) {
+      console.log(data);
+    }
+  }, [data]);
 
   return (
     <main>

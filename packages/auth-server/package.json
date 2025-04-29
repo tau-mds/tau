@@ -1,5 +1,5 @@
 {
-  "name": "@tau/auth",
+  "name": "@tau/auth-server",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -13,17 +13,13 @@
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -w -p tsconfig.build.json",
     "lint": "biome check . --write",
-    "typecheck": "tsc",
-    "generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y"
+    "typecheck": "tsc"
   },
   "devDependencies": {
-    "@tau/tsconfig": "workspace:*",
-    "drizzle-kit": "^0.31.0",
-    "tsx": "^4.19.3"
+    "@tau/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "@tau/db": "workspace:*",
     "better-auth": "^1.2.7",
-    "dotenv": "^16.5.0"
+    "@tau/db": "workspace:*"
   }
 }

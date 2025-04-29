@@ -6,7 +6,7 @@ import { db, foo } from "@tau/db";
 
 export * as echo from "./echo";
 
-const handler = createServerFn({ method: "GET" })
+export const handler = createServerFn({ method: "GET" })
 	.validator(
 		v.object({
 			salute: v.picklist(["Hi", "Hello", "Hola"]),
@@ -19,6 +19,18 @@ const handler = createServerFn({ method: "GET" })
 		}),
 	)
 	.handler(async (ctx) => {
+		// await auth.api.signInEmail({
+		// 	body: {
+		// 		email: "user@email.com",
+		// 		password: "password",
+		// 	},
+		// });
+		// await auth.api.signUpEmail({ body: {
+		// 		email: "user@email.com",
+		// 		password: "password",
+		// 		name: "John Doe",
+		// 	},
+		// });
 		const res = await db
 			.select({ id: foo.table.id, bar: foo.table.bar })
 			.from(foo.table)
