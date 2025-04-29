@@ -10,6 +10,7 @@ export const auth = betterAuth({
 	}),
 
 	// Here we can add custom user fields
+	// IMPORTANT: After modifying `additionalFields`, run `pnpm generate` in the `packages/auth-server` directory to update the database schema.
 	user: {
 		additionalFields: {},
 	},

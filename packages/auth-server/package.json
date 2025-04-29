@@ -13,7 +13,8 @@
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -w -p tsconfig.build.json",
     "lint": "biome check . --write",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "generate": "better-auth generate --output ../db/src/schema/auth-schema.ts -y"
   },
   "devDependencies": {
     "@tau/tsconfig": "workspace:*"
