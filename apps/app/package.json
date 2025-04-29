@@ -25,6 +25,7 @@
 		"@tau/theme": "workspace:*",
 		"@tau/ui": "workspace:*",
 		"@tau/utils": "workspace:*",
+		"@tau/auth": "workspace:*",
 		"@xstate/store": "^3.5.1",
 		"react": "catalog:react",
 		"react-dom": "catalog:react",
