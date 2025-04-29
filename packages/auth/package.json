@@ -1,32 +1,32 @@
 {
-	"name": "@tau/auth",
-	"private": true,
-	"type": "module",
-	"sideEffects": false,
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
-		}
-	},
-	"scripts": {
-		"build": "tsc -p tsconfig.build.json",
-		"dev": "tsc -w -p tsconfig.build.json",
-		"lint": "biome check . --write",
-		"typecheck": "tsc",
-		"generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y",
-		"generate:local": "npx @better-auth/cli generate --output ./src/schema/auth-schema.ts -y"
-	},
-	"devDependencies": {
-		"@tau/tsconfig": "workspace:*",
-		"drizzle-kit": "^0.31.0",
-		"tsx": "^4.19.3"
-	},
-	"dependencies": {
-		"@libsql/client": "^0.15.4",
-		"@tau/db": "workspace:*",
-		"better-auth": "^1.2.7",
-		"dotenv": "^16.5.0",
-		"drizzle-orm": "^0.42.0"
-	}
+  "name": "@tau/auth",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -w -p tsconfig.build.json",
+    "lint": "biome check . --write",
+    "typecheck": "tsc",
+    "generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y",
+    "generate:local": "npx @better-auth/cli generate --output ./src/schema/auth-schema.ts -y"
+  },
+  "devDependencies": {
+    "@tau/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.3"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.4",
+    "@tau/db": "workspace:*",
+    "better-auth": "^1.2.7",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.42.0"
+  }
 }
