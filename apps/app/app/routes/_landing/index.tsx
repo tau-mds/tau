@@ -22,7 +22,7 @@ function Component() {
     echo.queries.plm({ salute: "Hi", message: "there" })
   );
 
-  const { data, isPending, error } = authClient.useSession();
+  const { data } = authClient.useSession();
   // const { data, isPending, error } = useSession();
 
   useEffect(() => {
