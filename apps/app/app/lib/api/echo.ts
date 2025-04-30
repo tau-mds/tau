@@ -2,11 +2,11 @@ import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { db, foo } from "@tau/db";
+import { db } from "@tau/db";
 
 export * as echo from "./echo";
 
-export const handler = createServerFn({ method: "GET" })
+const handler = createServerFn({ method: "GET" })
 	.validator(
 		v.object({
 			salute: v.picklist(["Hi", "Hello", "Hola"]),
@@ -18,24 +18,8 @@ export const handler = createServerFn({ method: "GET" })
 			),
 		}),
 	)
-	.handler(async (ctx) => {
-		// await auth.api.signInEmail({
-		// 	body: {
-		// 		email: "user@email.com",
-		// 		password: "password",
-		// 	},
-		// });
-		// await auth.api.signUpEmail({ body: {
-		// 		email: "user@email.com",
-		// 		password: "password",
-		// 		name: "John Doe",
-		// 	},
-		// });
-		const res = await db
-			.select({ id: foo.table.id, bar: foo.table.bar })
-			.from(foo.table)
-			.then((r) => r[0]);
-		return `${ctx.data.salute}, ${ctx.data.message}, ${res?.id}`;
+	.handler(async () => {
+		return "Hello, this is hardcoded, tho";
 	});
 
 export const queries = {
