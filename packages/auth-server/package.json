@@ -14,13 +14,13 @@
     "dev": "tsc -w -p tsconfig.build.json",
     "lint": "biome check . --write",
     "typecheck": "tsc",
-    "generate": "better-auth generate --output ../db/src/schema/auth-schema.ts -y"
+    "generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y"
   },
   "devDependencies": {
     "@tau/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "better-auth": "^1.2.7",
-    "@tau/db": "workspace:*"
+    "@tau/db": "workspace:*",
+    "better-auth": "^1.2.7"
   }
 }
