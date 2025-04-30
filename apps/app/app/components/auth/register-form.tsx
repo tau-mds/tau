@@ -1,5 +1,6 @@
 "use client";
 import { Link } from "@tanstack/react-router";
+import { authClient } from "@tau/auth-client";
 import { Button, Card, Input, Label } from "@tau/ui";
 import type React from "react";
 import { toast } from "sonner";
@@ -10,7 +11,7 @@ export function RegisterForm() {
     const form = e.target as HTMLFormElement;
     const data = new FormData(form);
     console.log(data);
-    signUp.email(
+    authClient.signUp.email(
       {
         name: data.get("name") as string,
         email: data.get("email") as string,

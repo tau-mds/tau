@@ -15,7 +15,6 @@ import { Route as AppLayoutImport } from "./routes/app/layout";
 import { Route as LandingLayoutImport } from "./routes/_landing/layout";
 import { Route as AppIndexImport } from "./routes/app/index";
 import { Route as LandingIndexImport } from "./routes/_landing/index";
-import { Route as AuthTwoFactorImport } from "./routes/auth/two-factor";
 import { Route as AuthSignupImport } from "./routes/auth/signup";
 import { Route as AuthSigninImport } from "./routes/auth/signin";
 import { Route as AppSettingsLayoutImport } from "./routes/app/settings/layout";
@@ -47,12 +46,6 @@ const LandingIndexRoute = LandingIndexImport.update({
   id: "/",
   path: "/",
   getParentRoute: () => LandingLayoutRoute,
-} as any);
-
-const AuthTwoFactorRoute = AuthTwoFactorImport.update({
-  id: "/auth/two-factor",
-  path: "/auth/two-factor",
-  getParentRoute: () => rootRoute,
 } as any);
 
 const AuthSignupRoute = AuthSignupImport.update({
@@ -136,13 +129,6 @@ declare module "@tanstack/react-router" {
       path: "/auth/signup";
       fullPath: "/auth/signup";
       preLoaderRoute: typeof AuthSignupImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auth/two-factor": {
-      id: "/auth/two-factor";
-      path: "/auth/two-factor";
-      fullPath: "/auth/two-factor";
-      preLoaderRoute: typeof AuthTwoFactorImport;
       parentRoute: typeof rootRoute;
     };
     "/_landing/": {
@@ -253,7 +239,6 @@ export interface FileRoutesByFullPath {
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/auth/signin": typeof AuthSigninRoute;
   "/auth/signup": typeof AuthSignupRoute;
-  "/auth/two-factor": typeof AuthTwoFactorRoute;
   "/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
@@ -266,7 +251,6 @@ export interface FileRoutesByTo {
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/auth/signin": typeof AuthSigninRoute;
   "/auth/signup": typeof AuthSignupRoute;
-  "/auth/two-factor": typeof AuthTwoFactorRoute;
   "/": typeof LandingIndexRoute;
   "/app": typeof AppIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
@@ -282,7 +266,6 @@ export interface FileRoutesById {
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/auth/signin": typeof AuthSigninRoute;
   "/auth/signup": typeof AuthSignupRoute;
-  "/auth/two-factor": typeof AuthTwoFactorRoute;
   "/_landing/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
@@ -299,7 +282,6 @@ export interface FileRouteTypes {
     | "/app/settings"
     | "/auth/signin"
     | "/auth/signup"
-    | "/auth/two-factor"
     | "/"
     | "/app/"
     | "/app/settings/account"
@@ -311,7 +293,6 @@ export interface FileRouteTypes {
     | "/app/settings"
     | "/auth/signin"
     | "/auth/signup"
-    | "/auth/two-factor"
     | "/"
     | "/app"
     | "/app/settings/account"
@@ -325,7 +306,6 @@ export interface FileRouteTypes {
     | "/app/settings"
     | "/auth/signin"
     | "/auth/signup"
-    | "/auth/two-factor"
     | "/_landing/"
     | "/app/"
     | "/app/settings/account"
@@ -340,7 +320,6 @@ export interface RootRouteChildren {
   AppLayoutRoute: typeof AppLayoutRouteWithChildren;
   AuthSigninRoute: typeof AuthSigninRoute;
   AuthSignupRoute: typeof AuthSignupRoute;
-  AuthTwoFactorRoute: typeof AuthTwoFactorRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -348,7 +327,6 @@ const rootRouteChildren: RootRouteChildren = {
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AuthSigninRoute: AuthSigninRoute,
   AuthSignupRoute: AuthSignupRoute,
-  AuthTwoFactorRoute: AuthTwoFactorRoute,
 };
 
 export const routeTree = rootRoute
@@ -364,8 +342,7 @@ export const routeTree = rootRoute
         "/_landing",
         "/app",
         "/auth/signin",
-        "/auth/signup",
-        "/auth/two-factor"
+        "/auth/signup"
       ]
     },
     "/_landing": {
@@ -393,9 +370,6 @@ export const routeTree = rootRoute
     },
     "/auth/signup": {
       "filePath": "auth/signup.tsx"
-    },
-    "/auth/two-factor": {
-      "filePath": "auth/two-factor.tsx"
     },
     "/_landing/": {
       "filePath": "_landing/index.tsx",
