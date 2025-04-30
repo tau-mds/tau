@@ -1,5 +1,7 @@
 import { drizzle } from "drizzle-orm/libsql/node";
 import { env } from "./env";
+// import { schema } from "./schema";
+// import * as schema from "./schema";
 // import { relations } from "./relations";
 
 export function connection() {
@@ -13,10 +15,16 @@ export function connection() {
 	} as const;
 }
 
+// console.dir(schema);
+
 export const db = drizzle({
 	connection: connection(),
 	logger: {
 		logQuery: (query, params) => console.info(`[DB Query] ${query} ${params}`),
 	},
+	// schema,
+	// schema: {
+	// 	user,
+	// }, // schema is optional, but recommended for type safety
 	// relations,
 });

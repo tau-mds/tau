@@ -1,2 +1,2 @@
-export { db } from "./connection";
+export { db, connection } from "./connection";
 export * from "./schema";
