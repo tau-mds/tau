@@ -15,6 +15,13 @@
       "when": 1745929577715,
       "tag": "0001_setup_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1746017626976,
+      "tag": "0002_auth_added",
+      "breakpoints": true
     }
   ]
 }

@@ -7,7 +7,7 @@ import { sql } from "drizzle-orm";
 import { interviewerTable } from "./interviewer";
 import { intervieweeTable } from "./interviewee";
 
-export const interviewerSlotTable = t.sqliteTable(
+export const interviewSlotTable = t.sqliteTable(
   "interview_slots",
   {
     id: typedId(ids.interviewSlot).primaryKey(),
@@ -44,5 +44,5 @@ export const interviewerSlotTable = t.sqliteTable(
   }
 );
 
-export type InterviewerSlot = typeof interviewerSlotTable.$inferSelect;
-export type NewInterviewerSlot = typeof interviewerSlotTable.$inferInsert;
+export type InterviewerSlot = typeof interviewSlotTable.$inferSelect;
+export type NewInterviewerSlot = typeof interviewSlotTable.$inferInsert;

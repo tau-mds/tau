@@ -3,10 +3,9 @@ import { sql } from "drizzle-orm";
 import { ids } from "../ids";
 import { typedId } from "../lib/id";
 
-
-
 export const interviewRoundTable = t.sqliteTable("interview_rounds", {
   id: typedId(ids.interviewRound).primaryKey(),
+  organizer_id: t.text("id").notNull(),
   title: t.text().notNull(),
   description: t.text(),
   interview_duration: t.integer(),
