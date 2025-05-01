@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AuthFormContainer } from "~/components/auth/auth-form-container";
 import { RegisterForm } from "~/components/auth/register-form";
 
 export const Route = createFileRoute("/auth/signup")({
@@ -7,8 +8,8 @@ export const Route = createFileRoute("/auth/signup")({
 
 function SignUp() {
   return (
-    <div className="container">
+    <AuthFormContainer>
       <RegisterForm />
-    </div>
+    </AuthFormContainer>
   );
 }
