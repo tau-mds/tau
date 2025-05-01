@@ -3,6 +3,9 @@ import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
 import { db } from "@tau/db";
+import { getWebRequest } from "@tanstack/react-start/server";
+import { authClient } from "@tau/auth-client";
+import { auth } from "@tau/auth-server";
 
 export * as echo from "./echo";
 
@@ -19,6 +22,16 @@ const handler = createServerFn({ method: "GET" })
 		}),
 	)
 	.handler(async () => {
+		// // Getting the user session
+		// const request = getWebRequest();
+		// if (!request) {
+		// 	return "No request found";
+		// }
+
+		// const { headers } = request;
+		// const session = await auth.api.getSession({ headers });
+		// console.log(session);
+
 		return "Hello, this is hardcoded, tho";
 	});
 
