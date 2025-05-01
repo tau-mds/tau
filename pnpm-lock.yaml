@@ -15,6 +15,9 @@ catalogs:
     valibot:
       specifier: ^1.0.0
       version: 1.0.0
+    vite:
+      specifier: ^6.3.2
+      version: 6.3.2
   react:
     '@types/react':
       specifier: ^19.0.10
@@ -108,6 +111,9 @@ importers:
       '@xstate/store':
         specifier: ^3.5.1
         version: 3.5.1(react@19.0.0)(solid-js@1.9.5)
+      lucide-react:
+        specifier: ^0.503.0
+        version: 0.503.0(react@19.0.0)
       react:
         specifier: catalog:react
         version: 19.0.0
@@ -6447,6 +6453,11 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
+
+  lucide-react@0.503.0:
+    resolution: {integrity: sha512-HGGkdlPWQ0vTF8jJ5TdIqhQXZi6uh3LnNgfZ8MHiuxFfX3RZeA79r2MW2tHAZKlAVfoNE8esm3p+O6VkIvpj6w==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   luxon@3.6.1:
     resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
@@ -12843,7 +12854,7 @@ snapshots:
 
   '@types/better-sqlite3@7.6.13':
     dependencies:
-      '@types/node': 22.14.1
+      '@types/node': 20.17.22
     optional: true
 
   '@types/braces@3.0.5': {}
@@ -15963,6 +15974,10 @@ snapshots:
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
+
+  lucide-react@0.503.0(react@19.0.0):
+    dependencies:
+      react: 19.0.0
 
   luxon@3.6.1: {}
 

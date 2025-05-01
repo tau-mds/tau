@@ -29,6 +29,7 @@
 		"@tau/ui": "workspace:*",
 		"@tau/utils": "workspace:*",
 		"@xstate/store": "^3.5.1",
+		"lucide-react": "^0.503.0",
 		"react": "catalog:react",
 		"react-dom": "catalog:react",
 		"unenv": "^1.10.0",
