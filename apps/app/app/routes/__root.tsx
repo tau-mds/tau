@@ -53,19 +53,18 @@ function Component() {
 
 function Document(props: Readonly<{ children: React.ReactNode }>) {
   const themeData = theme.useWithPrefference();
-  //   const { data, isPending } = authClient.useSession();
-  //   const { navigate } = useRouter();
-  //   console.log();
+  const { data } = authClient.useSession();
+  const { navigate } = useRouter();
+  console.log();
 
-  //   useEffect(() => {
-  //     if (!data?.user) {
-  //       if (!location.pathname.includes("auth/")) {
-  //         navigate({ to: "/auth/signin" });
-  //       }
-  //     } else {
-  //       navigate({ to: "/app" });
-  //     }
-  //   }, [data, navigate]);
+  //   TODO: add loading spinner
+  useEffect(() => {
+    if (!data?.user) {
+      if (location.pathname.includes("auth/")) {
+        navigate({ to: "/app" });
+      }
+    }
+  }, [data, navigate]);
 
   return (
     <html lang="en" data-theme={themeData}>
