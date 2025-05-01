@@ -2,10 +2,10 @@ import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { db } from "@tau/db";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { authClient } from "@tau/auth-client";
 import { auth } from "@tau/auth-server";
+import { db } from "@tau/db";
 
 export * as echo from "./echo";
 
