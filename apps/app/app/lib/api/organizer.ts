@@ -2,13 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import * as v from "valibot";
-import {
-  db,
-  interviewRoundTable,
-  intervieweeTable,
-  interviewerTable,
-  interviewSlotTable,
-} from "@tau/db";
+import { db, schema } from "@tau/db";
 import { eq } from "drizzle-orm";
 import { auth } from "@tau/auth-server";
 
@@ -55,7 +49,6 @@ const RoundIdValidator = v.object({
   roundId: v.string("Round ID must be a string"),
 });
 
-// Helper function to get authenticated user ID or throw Unauthorized error
 const getAuthenticatedUserId = async (): Promise<string> => {
   const request = getWebRequest();
   if (!request) {
@@ -87,7 +80,7 @@ const getInterviewRoundOrganizerPreviewHandler = createServerFn({
     const userId = await getAuthenticatedUserId();
     const { roundId } = data;
     console.log(
-      `Fetching interview round preview for organizer ID: ${userId}, Round ID: ${roundId}`
+      `Workspaceing interview round preview for organizer ID: ${userId}, Round ID: ${roundId}`
     );
 
     try {
@@ -104,17 +97,17 @@ const getInterviewRoundOrganizerPreviewHandler = createServerFn({
       }
 
       const interviewersDrizzle = await db.query.interviewerTable.findMany({
-        where: eq(interviewerTable.interview_round_id, roundDrizzle.id),
+        where: eq(schema.interviewer.interview_round_id, roundDrizzle.id),
       });
 
       const intervieweeAssignedDrizzle =
         await db.query.intervieweeTable.findMany({
-          where: eq(intervieweeTable.interview_round_id, roundDrizzle.id),
+          where: eq(schema.interviewee.interview_round_id, roundDrizzle.id),
         });
 
       const interviewSlotsAssignedDrizzle =
         await db.query.interviewSlotTable.findMany({
-          where: eq(interviewSlotTable.interview_round_id, roundDrizzle.id),
+          where: eq(schema.interview_slot.interview_round_id, roundDrizzle.id),
         });
 
       const previewSerializable: InterviewRoundData = JSON.parse(
@@ -168,23 +161,23 @@ const getHostedInterviewRoundsHandler = createServerFn({
   method: "GET",
 }).handler<InterviewRoundData[]>(async (context: any) => {
   const userId = await getAuthenticatedUserId();
-  console.log(`Fetching interview rounds for organizer ID: ${userId}`);
+  console.log(`Workspaceing interview rounds for organizer ID: ${userId}`);
 
   try {
     const usersRoundsDrizzle = await db
       .select({
-        id: interviewRoundTable.id,
-        title: interviewRoundTable.title,
-        description: interviewRoundTable.description,
-        interview_duration: interviewRoundTable.interview_duration,
-        status: interviewRoundTable.status,
-        start_date: interviewRoundTable.start_date,
-        end_date: interviewRoundTable.end_date,
-        created_at: interviewRoundTable.created_at,
-        updated_at: interviewRoundTable.updated_at,
+        id: schema.interview_round.id,
+        title: schema.interview_round.title,
+        description: schema.interview_round.description,
+        interview_duration: schema.interview_round.interview_duration,
+        status: schema.interview_round.status,
+        start_date: schema.interview_round.start_date,
+        end_date: schema.interview_round.end_date,
+        created_at: schema.interview_round.created_at,
+        updated_at: schema.interview_round.updated_at,
       })
-      .from(interviewRoundTable)
-      .where(eq(interviewRoundTable.organizer_id, userId));
+      .from(schema.interview_round)
+      .where(eq(schema.interview_round.organizer_id, userId));
 
     const usersRoundsSerializable: InterviewRoundData[] = JSON.parse(
       JSON.stringify(usersRoundsDrizzle)
@@ -217,7 +210,7 @@ const createInterviewRoundHandler = createServerFn({ method: "POST" })
     const intervieRoundDTO: InterviewRoundDTO = data;
 
     try {
-      const result = await db.insert(interviewRoundTable).values({
+      const result = await db.insert(schema.interview_round).values({
         title: intervieRoundDTO.title,
         description: intervieRoundDTO.description,
         organizer_id: userId,
