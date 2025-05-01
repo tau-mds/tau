@@ -120,6 +120,9 @@ importers:
       react-dom:
         specifier: catalog:react
         version: 19.0.0(react@19.0.0)
+      sonner:
+        specifier: ^2.0.3
+        version: 2.0.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       unenv:
         specifier: ^1.10.0
         version: 1.10.0
