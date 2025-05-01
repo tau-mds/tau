@@ -6,10 +6,12 @@ import { getWebRequest } from "@tanstack/react-start/server";
 import { authClient } from "@tau/auth-client";
 import { auth } from "@tau/auth-server";
 import { db } from "@tau/db";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 export * as echo from "./echo";
 
 const handler = createServerFn({ method: "GET" })
+	.middleware([authMiddleware])
 	.validator(
 		v.object({
 			salute: v.picklist(["Hi", "Hello", "Hola"]),
@@ -21,16 +23,8 @@ const handler = createServerFn({ method: "GET" })
 			),
 		}),
 	)
-	.handler(async () => {
-		// // Getting the user session
-		// const request = getWebRequest();
-		// if (!request) {
-		// 	return "No request found";
-		// }
-
-		// const { headers } = request;
-		// const session = await auth.api.getSession({ headers });
-		// console.log(session);
+	.handler(async ({ context }) => {
+		context.session?.user;
 
 		return "Hello, this is hardcoded, tho";
 	});
