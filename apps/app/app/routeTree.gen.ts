@@ -11,10 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as AuthLayoutImport } from "./routes/auth/layout";
 import { Route as AppLayoutImport } from "./routes/app/layout";
 import { Route as LandingLayoutImport } from "./routes/_landing/layout";
 import { Route as AppIndexImport } from "./routes/app/index";
 import { Route as LandingIndexImport } from "./routes/_landing/index";
+import { Route as AuthSignupImport } from "./routes/auth/signup";
+import { Route as AuthSigninImport } from "./routes/auth/signin";
 import { Route as AppSettingsLayoutImport } from "./routes/app/settings/layout";
 import { Route as AppSettingsAccountLayoutImport } from "./routes/app/settings/account/layout";
 import { Route as AppSettingsAccountProfileImport } from "./routes/app/settings/account/profile";
@@ -22,6 +25,12 @@ import { Route as AppSettingsAccountNotificationsImport } from "./routes/app/set
 import { Route as AppSettingsAccountBerbecaruImport } from "./routes/app/settings/account/berbecaru";
 
 // Create/Update Routes
+
+const AuthLayoutRoute = AuthLayoutImport.update({
+  id: "/auth",
+  path: "/auth",
+  getParentRoute: () => rootRoute,
+} as any);
 
 const AppLayoutRoute = AppLayoutImport.update({
   id: "/app",
@@ -44,6 +53,18 @@ const LandingIndexRoute = LandingIndexImport.update({
   id: "/",
   path: "/",
   getParentRoute: () => LandingLayoutRoute,
+} as any);
+
+const AuthSignupRoute = AuthSignupImport.update({
+  id: "/signup",
+  path: "/signup",
+  getParentRoute: () => AuthLayoutRoute,
+} as any);
+
+const AuthSigninRoute = AuthSigninImport.update({
+  id: "/signin",
+  path: "/signin",
+  getParentRoute: () => AuthLayoutRoute,
 } as any);
 
 const AppSettingsLayoutRoute = AppSettingsLayoutImport.update({
@@ -96,12 +117,33 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppLayoutImport;
       parentRoute: typeof rootRoute;
     };
+    "/auth": {
+      id: "/auth";
+      path: "/auth";
+      fullPath: "/auth";
+      preLoaderRoute: typeof AuthLayoutImport;
+      parentRoute: typeof rootRoute;
+    };
     "/app/settings": {
       id: "/app/settings";
       path: "/settings";
       fullPath: "/app/settings";
       preLoaderRoute: typeof AppSettingsLayoutImport;
       parentRoute: typeof AppLayoutImport;
+    };
+    "/auth/signin": {
+      id: "/auth/signin";
+      path: "/signin";
+      fullPath: "/auth/signin";
+      preLoaderRoute: typeof AuthSigninImport;
+      parentRoute: typeof AuthLayoutImport;
+    };
+    "/auth/signup": {
+      id: "/auth/signup";
+      path: "/signup";
+      fullPath: "/auth/signup";
+      preLoaderRoute: typeof AuthSignupImport;
+      parentRoute: typeof AuthLayoutImport;
     };
     "/_landing/": {
       id: "/_landing/";
@@ -205,10 +247,27 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
   AppLayoutRouteChildren,
 );
 
+interface AuthLayoutRouteChildren {
+  AuthSigninRoute: typeof AuthSigninRoute;
+  AuthSignupRoute: typeof AuthSignupRoute;
+}
+
+const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
+  AuthSigninRoute: AuthSigninRoute,
+  AuthSignupRoute: AuthSignupRoute,
+};
+
+const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
+  AuthLayoutRouteChildren,
+);
+
 export interface FileRoutesByFullPath {
   "": typeof LandingLayoutRouteWithChildren;
   "/app": typeof AppLayoutRouteWithChildren;
+  "/auth": typeof AuthLayoutRouteWithChildren;
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
+  "/auth/signin": typeof AuthSigninRoute;
+  "/auth/signup": typeof AuthSignupRoute;
   "/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
@@ -218,7 +277,10 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  "/auth": typeof AuthLayoutRouteWithChildren;
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
+  "/auth/signin": typeof AuthSigninRoute;
+  "/auth/signup": typeof AuthSignupRoute;
   "/": typeof LandingIndexRoute;
   "/app": typeof AppIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
@@ -231,7 +293,10 @@ export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/_landing": typeof LandingLayoutRouteWithChildren;
   "/app": typeof AppLayoutRouteWithChildren;
+  "/auth": typeof AuthLayoutRouteWithChildren;
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
+  "/auth/signin": typeof AuthSigninRoute;
+  "/auth/signup": typeof AuthSignupRoute;
   "/_landing/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
@@ -245,7 +310,10 @@ export interface FileRouteTypes {
   fullPaths:
     | ""
     | "/app"
+    | "/auth"
     | "/app/settings"
+    | "/auth/signin"
+    | "/auth/signup"
     | "/"
     | "/app/"
     | "/app/settings/account"
@@ -254,7 +322,10 @@ export interface FileRouteTypes {
     | "/app/settings/account/profile";
   fileRoutesByTo: FileRoutesByTo;
   to:
+    | "/auth"
     | "/app/settings"
+    | "/auth/signin"
+    | "/auth/signup"
     | "/"
     | "/app"
     | "/app/settings/account"
@@ -265,7 +336,10 @@ export interface FileRouteTypes {
     | "__root__"
     | "/_landing"
     | "/app"
+    | "/auth"
     | "/app/settings"
+    | "/auth/signin"
+    | "/auth/signup"
     | "/_landing/"
     | "/app/"
     | "/app/settings/account"
@@ -278,11 +352,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   LandingLayoutRoute: typeof LandingLayoutRouteWithChildren;
   AppLayoutRoute: typeof AppLayoutRouteWithChildren;
+  AuthLayoutRoute: typeof AuthLayoutRouteWithChildren;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LandingLayoutRoute: LandingLayoutRouteWithChildren,
   AppLayoutRoute: AppLayoutRouteWithChildren,
+  AuthLayoutRoute: AuthLayoutRouteWithChildren,
 };
 
 export const routeTree = rootRoute
@@ -296,7 +372,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_landing",
-        "/app"
+        "/app",
+        "/auth"
       ]
     },
     "/_landing": {
@@ -312,12 +389,27 @@ export const routeTree = rootRoute
         "/app/"
       ]
     },
+    "/auth": {
+      "filePath": "auth/layout.tsx",
+      "children": [
+        "/auth/signin",
+        "/auth/signup"
+      ]
+    },
     "/app/settings": {
       "filePath": "app/settings/layout.tsx",
       "parent": "/app",
       "children": [
         "/app/settings/account"
       ]
+    },
+    "/auth/signin": {
+      "filePath": "auth/signin.tsx",
+      "parent": "/auth"
+    },
+    "/auth/signup": {
+      "filePath": "auth/signup.tsx",
+      "parent": "/auth"
     },
     "/_landing/": {
       "filePath": "_landing/index.tsx",

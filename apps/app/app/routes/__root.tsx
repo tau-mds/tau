@@ -5,6 +5,7 @@ import {
 	Outlet,
 	Scripts,
 	createRootRouteWithContext,
+	useRouter,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type React from "react";
@@ -14,6 +15,9 @@ import { theme } from "~/lib/theme";
 
 import styles from "~/root.css?url";
 
+import { authClient } from "@tau/auth-client";
+import { Toaster } from "@tau/ui";
+import { useEffect } from "react";
 import { ErrorBoundary } from "~/components/error-boundary";
 
 type Context = {
@@ -44,12 +48,25 @@ function Component() {
 	return (
 		<Document>
 			<Outlet />
+			<Toaster richColors position="bottom-center" />
 		</Document>
 	);
 }
 
 function Document(props: Readonly<{ children: React.ReactNode }>) {
 	const themeData = theme.useWithPrefference();
+	const { data } = authClient.useSession();
+	const { navigate } = useRouter();
+	console.log();
+
+	//   TODO: add loading spinner
+	useEffect(() => {
+		if (!data?.user) {
+			if (location.pathname.includes("auth/")) {
+				navigate({ to: "/app" });
+			}
+		}
+	}, [data, navigate]);
 
 	return (
 		<html lang="en" data-theme={themeData}>
@@ -62,7 +79,8 @@ function Document(props: Readonly<{ children: React.ReactNode }>) {
 				{props.children}
 
 				<TanStackRouterDevtools position="bottom-right" />
-				<ReactQueryDevtools buttonPosition="bottom-left" />
+				{/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
+				<ReactQueryDevtools buttonPosition="top-right" />
 				<Scripts />
 			</body>
 		</html>

@@ -1,15 +1,28 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { getWebRequest } from "@tanstack/react-start/server";
 import { authClient } from "@tau/auth-client";
+import { auth } from "@tau/auth-server";
 // import { useSession } from "@tau/auth";
 import { Button, Dialog } from "@tau/ui";
 import React, { useEffect } from "react";
+import { toast } from "sonner";
 import { echo } from "~/lib/api/echo";
 import { env } from "~/lib/env";
 
 export const Route = createFileRoute("/_landing/")({
 	component: Component,
 	loader: async (opts) => {
+		// Getting the user session in backend
+		// const request = getWebRequest();
+		// if (!request) {
+		//   return "No request found";
+		// }
+
+		// const { headers } = request;
+		// const session = await auth.api.getSession({ headers });
+		// console.log(session);
+
 		opts.context.queryClient.ensureQueryData(
 			echo.queries.plm({ salute: "Hi", message: "there" }),
 		);
@@ -22,15 +35,8 @@ function Component() {
 		echo.queries.plm({ salute: "Hi", message: "there" }),
 	);
 
-  const { data } = authClient.useSession();
-
-
-	// useEffect(() => {
-	//   authClient.signIn.email({
-	//     email: "user@email.com",
-	//     password: "password",
-	//   });
-	// }, []);
+	//   Getting the user session in frontend
+	const { data } = authClient.useSession();
 
 	useEffect(() => {
 		console.log(data);
@@ -54,6 +60,25 @@ function Component() {
 				<pre>{env.VITE_API_URL}</pre>
 				<pre>{JSON.stringify(echoQuery.data, null, 2)}</pre>
 			</div>
+			<p>{count}</p>
+			<div className="container">
+				<Button
+					size="icon"
+					onClick={() => {
+						toast.error("Error");
+					}}
+				>
+					<span>Error</span>
+				</Button>
+				<Button
+					size="icon"
+					onClick={() => {
+						toast.info("Error");
+					}}
+				>
+					<span>Info</span>
+				</Button>
+			</div>
 
 			<Dialog.Root>
 				<Dialog.Trigger asChild>
@@ -65,6 +90,12 @@ function Component() {
 					<Dialog.Close>Close</Dialog.Close>
 				</Dialog.Content>
 			</Dialog.Root>
+			<Button>
+				<Link to="/auth/signin">Sign In</Link>
+			</Button>
+			<Button>
+				<Link to="/app">App</Link>
+			</Button>
 		</main>
 	);
 }
