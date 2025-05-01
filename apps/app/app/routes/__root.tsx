@@ -77,7 +77,8 @@ function Document(props: Readonly<{ children: React.ReactNode }>) {
         {props.children}
 
         <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
+        {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
+        <ReactQueryDevtools buttonPosition="top-right" />
         <Scripts />
       </body>
     </html>
