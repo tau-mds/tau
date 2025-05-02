@@ -9,93 +9,97 @@ import React, { useEffect } from "react";
 import { toast } from "sonner";
 import { echo } from "~/lib/api/echo";
 import { env } from "~/lib/env";
+import { InviteForm } from "~/components/auth/invite-form";
 
 export const Route = createFileRoute("/_landing/")({
-	component: Component,
-	loader: async (opts) => {
-		// Getting the user session in backend
-		// const request = getWebRequest();
-		// if (!request) {
-		//   return "No request found";
-		// }
+  component: Component,
+  loader: async (opts) => {
+    // Getting the user session in backend
+    // const request = getWebRequest();
+    // if (!request) {
+    //   return "No request found";
+    // }
 
-		// const { headers } = request;
-		// const session = await auth.api.getSession({ headers });
-		// console.log(session);
+    // const { headers } = request;
+    // const session = await auth.api.getSession({ headers });
+    // console.log(session);
 
-		opts.context.queryClient.ensureQueryData(
-			echo.queries.plm({ salute: "Hi", message: "there" }),
-		);
-	},
+    opts.context.queryClient.ensureQueryData(
+      echo.queries.plm({ salute: "Hi", message: "there" })
+    );
+  },
 });
 
 function Component() {
-	const [count, setCount] = React.useState(0);
-	const echoQuery = useSuspenseQuery(
-		echo.queries.plm({ salute: "Hi", message: "there" }),
-	);
+  const [count, setCount] = React.useState(0);
+  const echoQuery = useSuspenseQuery(
+    echo.queries.plm({ salute: "Hi", message: "there" })
+  );
 
-	//   Getting the user session in frontend
-	const { data } = authClient.useSession();
+  //   Getting the user session in frontend
+  const { data } = authClient.useSession();
 
-	useEffect(() => {
-		console.log(data);
-		if (!data?.user) {
-			console.log(data);
-		}
-	}, [data]);
+  useEffect(() => {
+    console.log(data);
+    if (!data?.user) {
+      console.log(data);
+    }
+  }, [data]);
 
-	return (
-		<main>
-			<h1>Proj. Tau</h1>
-			<div className="inline-flex items-center justify-between gap-3">
-				<Button size="icon" onClick={() => setCount((prev) => prev - 1)}>
-					<span className="size-5 grid place-content-center">-</span>
-				</Button>
-				<p>{count}</p>
-				<Button size="icon" onClick={() => setCount((prev) => prev + 1)}>
-					<span className="size-5 grid place-content-center">+</span>
-				</Button>
+  return (
+    <main>
+      <h1>Proj. Tau</h1>
+      <div className="inline-flex items-center justify-between gap-3">
+        <Button size="icon" onClick={() => setCount((prev) => prev - 1)}>
+          <span className="size-5 grid place-content-center">-</span>
+        </Button>
+        <p>{count}</p>
+        <Button size="icon" onClick={() => setCount((prev) => prev + 1)}>
+          <span className="size-5 grid place-content-center">+</span>
+        </Button>
 
-				<pre>{env.VITE_API_URL}</pre>
-				<pre>{JSON.stringify(echoQuery.data, null, 2)}</pre>
-			</div>
-			<p>{count}</p>
-			<div className="container">
-				<Button
-					size="icon"
-					onClick={() => {
-						toast.error("Error");
-					}}
-				>
-					<span>Error</span>
-				</Button>
-				<Button
-					size="icon"
-					onClick={() => {
-						toast.info("Error");
-					}}
-				>
-					<span>Info</span>
-				</Button>
-			</div>
+        <pre>{env.VITE_API_URL}</pre>
+        <pre>{JSON.stringify(echoQuery.data, null, 2)}</pre>
+      </div>
+      <p>{count}</p>
+      {/* Invite form start */}
+      <InviteForm />
+      {/* Invite form end */}
+      <div className="container">
+        <Button
+          size="icon"
+          onClick={() => {
+            toast.error("Error");
+          }}
+        >
+          <span>Error</span>
+        </Button>
+        <Button
+          size="icon"
+          onClick={() => {
+            toast.info("Error");
+          }}
+        >
+          <span>Info</span>
+        </Button>
+      </div>
 
-			<Dialog.Root>
-				<Dialog.Trigger asChild>
-					<Button>Open Dialog</Button>
-				</Dialog.Trigger>
-				<Dialog.Content>
-					<Dialog.Title>Dialog Title</Dialog.Title>
-					<Dialog.Description>Dialog Description</Dialog.Description>
-					<Dialog.Close>Close</Dialog.Close>
-				</Dialog.Content>
-			</Dialog.Root>
-			<Button>
-				<Link to="/auth/signin">Sign In</Link>
-			</Button>
-			<Button>
-				<Link to="/app">App</Link>
-			</Button>
-		</main>
-	);
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <Button>Open Dialog</Button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Title>Dialog Title</Dialog.Title>
+          <Dialog.Description>Dialog Description</Dialog.Description>
+          <Dialog.Close>Close</Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Root>
+      <Button>
+        <Link to="/auth/signin">Sign In</Link>
+      </Button>
+      <Button>
+        <Link to="/app">App</Link>
+      </Button>
+    </main>
+  );
 }

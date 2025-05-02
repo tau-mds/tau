@@ -1,6 +1,7 @@
 import { db } from "@tau/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { magicLink } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 // import { string as valibotString, minLength } from "valibot"; // add valibot import
 
@@ -23,7 +24,19 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 	},
-	plugins: [reactStartCookies()],
+	plugins: [
+		reactStartCookies(),
+
+		magicLink({
+			sendMagicLink: async ({ email, token, url }, request) => {
+				// send email to user
+				console.log("Sending magic link to email:", email);
+				console.log("Token:", token);
+				console.log("URL:", url);
+				console.log("Request:", request);
+			},
+		}),
+	],
 	// databaseHooks: {
 	// 	user: {
 	// 		create: {
