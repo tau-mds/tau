@@ -1,6 +1,7 @@
 import { db } from "@tau/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { magicLink } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 // import { string as valibotString, minLength } from "valibot"; // add valibot import
 
@@ -23,7 +24,45 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 	},
-	plugins: [reactStartCookies()],
+	account: {
+		accountLinking: {
+			enabled: true,
+		},
+	},
+	socialProviders: {
+		discord: {
+			clientId: (process.env["DISCORD_CLIENT_ID"] as string) || "1367818396065861652",
+			clientSecret:
+				(process.env["DISCORD_CLIENT_SECRET"] as string) ||
+				"dN8hXnj0KFUG_TiUc-CI2l3N-wYu7Lh_",
+			overrideUserInfoOnSignIn: true,
+		},
+		github: {
+			clientId: (process.env["GITHUB_CLIENT_ID"] as string) || "Ov23licSlCyUv3cqDYKS",
+			clientSecret:
+				(process.env["GITHUB_CLIENT_SECRET"] as string) ||
+				"7e965f219399e8641147c9e989035d97ef7a6d0e",
+			overrideUserInfoOnSignIn: true,
+		},
+	},
+	plugins: [
+		reactStartCookies(),
+
+		magicLink({
+			sendMagicLink: async ({ email, url }) => {
+				// send email to user
+				console.log("Sending magic link to email:", email);
+				// console.log("Token:", token);
+				console.log("URL:", url);
+				// console.log("Request:", request);
+			},
+			generateToken(email) {
+				// Generate a token for the user
+				// This is a simple example, you can use any token generation method
+				return `${email}-${new Date().getTime()}`;
+			},
+		}),
+	],
 	// databaseHooks: {
 	// 	user: {
 	// 		create: {

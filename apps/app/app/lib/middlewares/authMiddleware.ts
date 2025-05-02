@@ -2,7 +2,7 @@ import { createMiddleware } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { type Session, auth } from "@tau/auth-server";
 
-export const authMiddleware = createMiddleware().server(async ({ next, data }) => {
+export const authMiddleware = createMiddleware().server(async ({ next }) => {
 	// Getting the user session in backend
 	const request = getWebRequest();
 
@@ -18,9 +18,7 @@ export const authMiddleware = createMiddleware().server(async ({ next, data }) =
 
 	const { headers } = request;
 	session = await auth.api.getSession({ headers });
-	console.log("Session:", session);
 
-	console.log("Request received:", data);
 	return next({
 		context: {
 			session,

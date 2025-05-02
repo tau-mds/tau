@@ -1,3 +1,7 @@
 {
-  "extends": ["./tsconfig.json", "@tau/tsconfig/build.json"]
+  "extends": ["./tsconfig.json", "@tau/tsconfig/build.json"],
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false
+  }
 }

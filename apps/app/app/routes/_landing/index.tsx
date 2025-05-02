@@ -7,6 +7,7 @@ import { auth } from "@tau/auth-server";
 import { Button, Dialog } from "@tau/ui";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
+import { InviteForm } from "~/components/auth/invite-form";
 import { echo } from "~/lib/api/echo";
 import { env } from "~/lib/env";
 
@@ -61,6 +62,9 @@ function Component() {
 				<pre>{JSON.stringify(echoQuery.data, null, 2)}</pre>
 			</div>
 			<p>{count}</p>
+			{/* Invite form start */}
+			<InviteForm />
+			{/* Invite form end */}
 			<div className="container">
 				<Button
 					size="icon"
