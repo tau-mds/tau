@@ -1,4 +1,4 @@
-import { Button } from "@tau/ui";
+import { Button, Input } from "@tau/ui";
 import { toast } from "sonner";
 import React from "react";
 // import { authClient } from "@tau/auth-client";
@@ -14,12 +14,15 @@ export function InviteForm() {
           const email = (form.elements.namedItem("email") as HTMLInputElement)
             ?.value;
           if (email) {
-            await authClient.signIn.magicLink({ email });
+            await authClient.signIn.magicLink({
+              email,
+              callbackURL: "/app/settings/account/profile",
+            });
             toast.success("Magic link sent!");
           }
         }}
       >
-        <input
+        <Input
           type="email"
           name="email"
           placeholder="Enter email"
@@ -28,6 +31,17 @@ export function InviteForm() {
         />
         <Button type="submit">Invite</Button>
       </form>
+      <Button
+        type="button"
+        onClick={() => {
+          //   authClient.forgetPassword({
+          //     email: "tacustefan21@gmail.com",
+          //     redirectTo: "/",
+          //   });
+        }}
+      >
+        Invite
+      </Button>
     </div>
   );
 }

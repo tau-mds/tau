@@ -23,17 +23,38 @@ export const auth = betterAuth({
 	},
 	emailAndPassword: {
 		enabled: true,
+		sendResetPassword: async ({ user, url, token }, request) => {
+			console.log(user, url, token);
+		},
+	},
+	account: {
+		accountLinking: {
+			enabled: true,
+		},
+	},
+	socialProviders: {
+		discord: {
+			clientId: (process.env.DISCORD_CLIENT_ID as string) || "1367818396065861652",
+			clientSecret:
+				(process.env.DISCORD_CLIENT_SECRET as string) ||
+				"dN8hXnj0KFUG_TiUc-CI2l3N-wYu7Lh_",
+		},
 	},
 	plugins: [
 		reactStartCookies(),
 
 		magicLink({
-			sendMagicLink: async ({ email, token, url }, request) => {
+			sendMagicLink: async ({ email, url }) => {
 				// send email to user
 				console.log("Sending magic link to email:", email);
-				console.log("Token:", token);
+				// console.log("Token:", token);
 				console.log("URL:", url);
-				console.log("Request:", request);
+				// console.log("Request:", request);
+			},
+			generateToken(email) {
+				// Generate a token for the user
+				// This is a simple example, you can use any token generation method
+				return `${email}-${new Date().getTime()}`;
 			},
 		}),
 	],
