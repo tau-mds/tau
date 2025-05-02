@@ -32,7 +32,7 @@ RUN --mount=type=secret,id=DATABASE_URL \
     DATABASE_URL=$(cat /run/secrets/DATABASE_URL) \
     DATABASE_CONN_TYPE=$(cat /run/secrets/DATABASE_CONN_TYPE) \
     DATABASE_AUTH_TOKEN=$(cat /run/secrets/DATABASE_AUTH_TOKEN) \
-    pnpm migrate
+    pnpm migrate:prod
 
 
 FROM base AS runner
