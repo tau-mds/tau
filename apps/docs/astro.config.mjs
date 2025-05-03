@@ -10,47 +10,47 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [
-    starlight({
-      title: "Tau",
-      social: [
-        {
-          icon: "github",
-          href: "https://github.com/withastro/starlight",
-          label: "Github",
-        },
-      ],
-      components: {
-        Header: "./src/components/header.astro",
-      },
-      sidebar: [
-        {
-          label: "Guides",
-          items: [{ label: "Example Guide", slug: "guides/example" }],
-        },
-        {
-          label: "Reference",
-          autogenerate: { directory: "reference" },
-        },
-        {
-          label: "Dummy",
-          items: [{ label: "Markdown", slug: "dummy/markdown" }],
-        },
-      ],
-      customCss: [
-        "./src/styles/global.css",
-        "./src/styles/custom.css",
-        "./src/styles/heading.css",
-        "./src/styles/markdown.css",
-      ],
-    }),
-    react(),
-  ],
+	integrations: [
+		starlight({
+			title: "Tau",
+			social: [
+				{
+					icon: "github",
+					href: "https://github.com/withastro/starlight",
+					label: "Github",
+				},
+			],
+			components: {
+				Header: "./src/components/header.astro",
+			},
+			sidebar: [
+				{
+					label: "Guides",
+					items: [
+						{ label: "Example Guide", slug: "guides/example" },
+						{ label: "Contributing", slug: "guides/contributing" },
+					],
+				},
+				{
+					label: "Reference",
+					autogenerate: { directory: "reference" },
+				},
+				{
+					label: "Dummy",
+					items: [{ label: "Markdown", slug: "dummy/markdown" }],
+				},
+			],
+			customCss: [
+				"./src/styles/global.css",
+				"./src/styles/custom.css",
+				"./src/styles/heading.css",
+				"./src/styles/markdown.css",
+			],
+		}),
+		react(),
+	],
 
-  markdown: {
-    rehypePlugins: [
-      rehypeHeadingIds,
-      [rehypeAutolinkHeadings, { behavior: "wrap" }],
-    ],
-  },
+	markdown: {
+		rehypePlugins: [rehypeHeadingIds, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
+	},
 });

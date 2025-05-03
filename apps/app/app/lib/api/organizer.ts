@@ -1,10 +1,13 @@
 import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
-import { getWebRequest } from "@tanstack/react-start/server";
 import * as v from "valibot";
 import { db, schema } from "@tau/db";
-import { eq } from "drizzle-orm";
-import { auth } from "@tau/auth-server";
+import { ids } from "@tau/db/ids";
+import { eq, and } from "drizzle-orm";
+import { authMiddleware } from "../middlewares/authMiddleware";
+import { organizerMiddleware } from "../middlewares/organizerMiddleware";
+
+export * as organizer from "./organizer";
 
 interface InterviewRoundData {
   id: string;
@@ -23,7 +26,7 @@ interface InterviewRoundDTO {
   description: string | null;
   interview_duration: number | null;
   start_date: string;
-  end_date: string | null;
+  end_date: string;
 }
 
 interface InterviewRoundViewData {
@@ -45,46 +48,45 @@ const InterviewRoundValidator = v.object({
   end_date: v.optional(v.string("End date must be a string")),
 });
 
+const InteriviewRoundUpdateValidator = v.object({
+  id: v.string("Round ID must be a string"),
+  title: v.optional(v.string("Title must be a string")),
+  description: v.optional(v.string("Description must be a string")),
+  interview_duration: v.optional(v.number("Duration must be a number")),
+  start_date: v.optional(v.string("Start date must be a string")),
+  end_date: v.optional(v.string("End date must be a string")),
+});
+
 const RoundIdValidator = v.object({
   roundId: v.string("Round ID must be a string"),
 });
 
-const getAuthenticatedUserId = async (): Promise<string> => {
-  const request = getWebRequest();
-  if (!request) {
-    console.error("getWebRequest() returned null during authentication check");
-    throw new Error(
-      "Server error: Could not access request context for authentication."
-    );
-  }
-
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
-
-  const authenticatedUser = session?.user;
-
-  if (!authenticatedUser || !authenticatedUser.id) {
-    console.warn("Access denied: Authentication failed.");
-    throw new Error("Unauthorized: Please log in.");
-  }
-
-  return authenticatedUser.id;
-};
-
+const EmailListValidator = v.object({
+  roundId: v.string("Round ID must be a string"),
+  emails: v.array(v.pipe(v.string(), v.email("Invalid email format"))),
+});
 const getInterviewRoundOrganizerPreviewHandler = createServerFn({
   method: "GET",
 })
+  .middleware([organizerMiddleware])
   .validator(RoundIdValidator)
-  .handler<InterviewRoundViewData>(async ({ data, context }: any) => {
-    const userId = await getAuthenticatedUserId();
-    const { roundId } = data;
+  .handler<InterviewRoundViewData>(async ({ data, context }) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in GET preview handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+
+    const roundId = data.roundId as string & v.Brand<"ivro_id">;
     console.log(
       `Workspaceing interview round preview for organizer ID: ${userId}, Round ID: ${roundId}`
     );
 
     try {
-      const roundDrizzle = await db.query.interviewRoundTable.findOne({
+      const roundDrizzle = await db.query.interview_round.findFirst({
         where: (rounds, { eq, and }) =>
           and(eq(rounds.id, roundId), eq(rounds.organizer_id, userId)),
       });
@@ -96,17 +98,19 @@ const getInterviewRoundOrganizerPreviewHandler = createServerFn({
         throw new Error("Interview round not found or access denied.");
       }
 
-      const interviewersDrizzle = await db.query.interviewerTable.findMany({
+      const interviewersDrizzle = await db.query.interviewer.findMany({
         where: eq(schema.interviewer.interview_round_id, roundDrizzle.id),
       });
 
-      const intervieweeAssignedDrizzle =
-        await db.query.intervieweeTable.findMany({
-          where: eq(schema.interviewee.interview_round_id, roundDrizzle.id),
-        });
+      const intervieweeAssignedDrizzle = await db.query.interviewee.findMany({
+        where: eq(
+          schema.interviewee.interview_round_id,
+          roundDrizzle.id as string & v.Brand<"ivro_id">
+        ),
+      });
 
       const interviewSlotsAssignedDrizzle =
-        await db.query.interviewSlotTable.findMany({
+        await db.query.interview_slot.findMany({
           where: eq(schema.interview_slot.interview_round_id, roundDrizzle.id),
         });
 
@@ -159,50 +163,69 @@ const getInterviewRoundOrganizerPreviewHandler = createServerFn({
 
 const getHostedInterviewRoundsHandler = createServerFn({
   method: "GET",
-}).handler<InterviewRoundData[]>(async (context: any) => {
-  const userId = await getAuthenticatedUserId();
-  console.log(`Workspaceing interview rounds for organizer ID: ${userId}`);
+})
+  .middleware([authMiddleware])
+  .handler<InterviewRoundData[]>(async ({ context }) => {
+    const userId = context.session?.user?.id;
 
-  try {
-    const usersRoundsDrizzle = await db
-      .select({
-        id: schema.interview_round.id,
-        title: schema.interview_round.title,
-        description: schema.interview_round.description,
-        interview_duration: schema.interview_round.interview_duration,
-        status: schema.interview_round.status,
-        start_date: schema.interview_round.start_date,
-        end_date: schema.interview_round.end_date,
-        created_at: schema.interview_round.created_at,
-        updated_at: schema.interview_round.updated_at,
-      })
-      .from(schema.interview_round)
-      .where(eq(schema.interview_round.organizer_id, userId));
+    if (!context.session?.user) {
+      console.error(
+        "Middleware failed to attach user or user ID in GET list handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
 
-    const usersRoundsSerializable: InterviewRoundData[] = JSON.parse(
-      JSON.stringify(usersRoundsDrizzle)
-    );
+    console.log(`Workspaceing interview rounds for organizer ID: ${userId}`);
 
-    console.log(
-      `Successfully fetched ${usersRoundsSerializable.length} interview rounds for organizer ${userId}`
-    );
+    try {
+      const usersRoundsDrizzle = await db
+        .select({
+          id: schema.interview_round.id,
+          title: schema.interview_round.title,
+          description: schema.interview_round.description,
+          interview_duration: schema.interview_round.interview_duration,
+          status: schema.interview_round.status,
+          start_date: schema.interview_round.start_date,
+          end_date: schema.interview_round.end_date,
+          created_at: schema.interview_round.created_at,
+          updated_at: schema.interview_round.updated_at,
+        })
+        .from(schema.interview_round)
+        .where(eq(schema.interview_round.organizer_id, userId as string));
 
-    return usersRoundsSerializable;
-  } catch (error) {
-    console.error(
-      `Database error fetching interview rounds for organizer ${userId}:`,
-      error
-    );
-    throw new Error(
-      "Failed to retrieve interview rounds due to a server error."
-    );
-  }
-});
+      const usersRoundsSerializable: InterviewRoundData[] = JSON.parse(
+        JSON.stringify(usersRoundsDrizzle)
+      );
+
+      console.log(
+        `Successfully fetched ${usersRoundsSerializable.length} interview rounds for organizer ${userId}`
+      );
+
+      return usersRoundsSerializable;
+    } catch (error) {
+      console.error(
+        `Database error fetching interview rounds for organizer ${userId}:`,
+        error
+      );
+      throw new Error(
+        "Failed to retrieve interview rounds due to a server error."
+      );
+    }
+  });
 
 const createInterviewRoundHandler = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
   .validator(InterviewRoundValidator)
-  .handler<{ lastInsertRowId: number }>(async ({ data, context }: any) => {
-    const userId = await getAuthenticatedUserId();
+  .handler(async ({ data, context }: any) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+
     console.log(
       `Attempting to create an interview round for organizer ID: ${userId}`
     );
@@ -210,23 +233,22 @@ const createInterviewRoundHandler = createServerFn({ method: "POST" })
     const intervieRoundDTO: InterviewRoundDTO = data;
 
     try {
+      const newId = ids.interviewRound.new();
       const result = await db.insert(schema.interview_round).values({
+        id: newId,
         title: intervieRoundDTO.title,
         description: intervieRoundDTO.description,
         organizer_id: userId,
         interview_duration: intervieRoundDTO.interview_duration,
         status: "created",
         start_date: new Date(intervieRoundDTO.start_date),
-        end_date: intervieRoundDTO.end_date
-          ? new Date(intervieRoundDTO.end_date)
-          : null,
+        end_date: new Date(intervieRoundDTO.end_date),
       });
 
       console.log(
         `Successfully created an interview round for organizer ID: ${userId}`
       );
-
-      return result;
+      return { success: true, affectedRows: result.rowsAffected };
     } catch (error: any) {
       console.error(
         `Database error creating interview rounds for organizer ${userId}:`,
@@ -238,21 +260,338 @@ const createInterviewRoundHandler = createServerFn({ method: "POST" })
     }
   });
 
+const updateInteriviewRound = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
+  .validator(InteriviewRoundUpdateValidator)
+  .handler(async ({ data, context }: any) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+
+    console.log(
+      `Attempting to update an interview round for organizer ID: ${userId}`
+    );
+
+    const interviewRoundDTO = data;
+
+    const updateData: Partial<typeof schema.interview_round.$inferInsert> = {};
+
+    if (
+      interviewRoundDTO.title !== undefined &&
+      interviewRoundDTO.title !== null
+    ) {
+      updateData.title = interviewRoundDTO.title;
+    }
+    if (
+      interviewRoundDTO.description !== undefined &&
+      interviewRoundDTO.description !== null
+    ) {
+      updateData.description = interviewRoundDTO.description;
+    }
+    if (
+      interviewRoundDTO.interview_duration !== undefined &&
+      interviewRoundDTO.interview_duration !== null
+    ) {
+      updateData.interview_duration = interviewRoundDTO.interview_duration;
+    }
+    if (
+      interviewRoundDTO.start_date !== undefined &&
+      interviewRoundDTO.start_date !== null
+    ) {
+      const startDate = new Date(interviewRoundDTO.start_date);
+      if (!isNaN(startDate.getTime())) {
+        updateData.start_date = startDate;
+      } else {
+        console.warn(
+          "Received invalid start_date format:",
+          interviewRoundDTO.start_date
+        );
+        throw new Error("Invalid start date format.");
+      }
+    }
+    if (
+      interviewRoundDTO.end_date !== undefined &&
+      interviewRoundDTO.end_date !== null
+    ) {
+      const endDate = new Date(interviewRoundDTO.end_date);
+      if (!isNaN(endDate.getTime())) {
+        updateData.end_date = endDate;
+      } else {
+        console.warn(
+          "Received invalid end_date format:",
+          interviewRoundDTO.end_date
+        );
+        throw new Error("Invalid end date format.");
+      }
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      console.log(`No update data provided for interview round.`);
+    }
+
+    try {
+      const result = await db
+        .update(schema.interview_round)
+        .set(updateData)
+        .where(
+          and(
+            eq(schema.interview_round.id, interviewRoundDTO.id),
+            eq(schema.interview_round.organizer_id, userId)
+          )
+        );
+
+      console.log(
+        `Successfully updated interview round ID ${interviewRoundDTO.id} for organizer ID: ${userId}. Affected rows: ${result.rowsAffected}`
+      );
+
+      return { success: true, affectedRows: result.rowsAffected };
+    } catch (error: any) {
+      console.error(
+        `Database error updating interview round ID ${interviewRoundDTO.id} for organizer ${userId}:`,
+        error
+      );
+      throw new Error(
+        `Failed to update interview round: ${error.message || "Database error"}`
+      );
+    }
+  });
+
+const setIntervieweeListInInterviewRound = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
+  .validator(EmailListValidator)
+  .handler(async ({ data, context }) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+    const roundId: string & v.Brand<"ivro_id"> = data.roundId as string &
+      v.Brand<"ivro_id">;
+
+    const existingEmails = await db
+      .select()
+      .from(schema.interviewee)
+      .where(eq(schema.interviewee.interview_round_id, roundId));
+
+    existingEmails.forEach(async (interivee) => {
+      if (!data.emails.includes(interivee.email)) {
+        try {
+          await db
+            .delete(schema.interviewee)
+            .where(
+              and(
+                eq(schema.interviewee.email, interivee.email),
+                eq(schema.interviewee.interview_round_id, roundId)
+              )
+            );
+        } catch (error) {
+          throw new Error("Error deleting an interviewee!");
+        }
+      }
+    });
+
+    data.emails.forEach(async (email: string) => {
+      try {
+        const isSaved = await db
+          .select()
+          .from(schema.interviewee)
+          .where(
+            and(
+              eq(schema.interviewee.email, email),
+              eq(schema.interviewee.interview_round_id, roundId)
+            )
+          );
+        if (isSaved.length <= 0) {
+          await db.insert(schema.interviewee).values({
+            email: email,
+            interview_round_id: roundId,
+          });
+        }
+      } catch (error) {
+        throw new Error("Error inserting in database!");
+      }
+    });
+  });
+
+const setInterviewerListInInterviewRound = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
+  .validator(EmailListValidator)
+  .handler(async ({ data, context }) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+    const roundId: string & v.Brand<"ivro_id"> = data.roundId as string &
+      v.Brand<"ivro_id">;
+
+    const existingEmails = await db
+      .select()
+      .from(schema.interviewee)
+      .where(eq(schema.interviewee.interview_round_id, roundId));
+
+    existingEmails.forEach(async (interiver) => {
+      if (!data.emails.includes(interiver.email)) {
+        try {
+          await db
+            .delete(schema.interviewer)
+            .where(
+              and(
+                eq(schema.interviewer.email, interiver.email),
+                eq(schema.interviewer.interview_round_id, roundId)
+              )
+            );
+        } catch (error) {
+          throw new Error("Error deleting an interviewee!");
+        }
+      }
+    });
+
+    data.emails.forEach(async (email: string) => {
+      try {
+        const isSaved = await db
+          .select()
+          .from(schema.interviewer)
+          .where(
+            and(
+              eq(schema.interviewer.email, email),
+              eq(schema.interviewer.interview_round_id, roundId)
+            )
+          );
+        if (isSaved.length <= 0) {
+          await db.insert(schema.interviewer).values({
+            email: email,
+            interview_round_id: roundId,
+          });
+        }
+      } catch (error) {
+        throw new Error("Error inserting in database!");
+      }
+    });
+  });
+
+const scheduleInterviewRound = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
+  .validator(RoundIdValidator)
+  .handler(async ({ context, data }) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+    const roundId: string & v.Brand<"ivro_id"> = data.roundId as string &
+      v.Brand<"ivro_id">;
+    try {
+      await db
+        .update(schema.interview_round)
+        .set({ status: "schedule" })
+        .where(
+          and(
+            eq(schema.interview_round.id, roundId),
+            eq(schema.interview_round.status, "created")
+          )
+        );
+    } catch (error) {
+      throw new Error(
+        "Error updateing the status of an interview round in `started`"
+      );
+    }
+  });
+
+const openInterviewRound = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
+  .validator(RoundIdValidator)
+  .handler(async ({ context, data }) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+    const roundId: string & v.Brand<"ivro_id"> = data.roundId as string &
+      v.Brand<"ivro_id">;
+
+    try {
+      await db
+        .update(schema.interview_round)
+        .set({ status: "open" })
+        .where(
+          and(
+            eq(schema.interview_round.id, roundId),
+            eq(schema.interview_round.status, "schedule")
+          )
+        );
+    } catch (error) {
+      throw new Error(
+        "Error updateing the status of an interview round in `started`"
+      );
+    }
+  });
+
+const stopInterviewRound = createServerFn({ method: "POST" })
+  .middleware([organizerMiddleware])
+  .validator(RoundIdValidator)
+  .handler(async ({ context, data }) => {
+    const userId = context.session?.user?.id;
+
+    if (!userId) {
+      console.error(
+        "Middleware failed to attach user or user ID in POST handler."
+      );
+      throw new Error("Unauthorized: Authentication context missing.");
+    }
+    const roundId: string & v.Brand<"ivro_id"> = data.roundId as string &
+      v.Brand<"ivro_id">;
+
+    try {
+      await db
+        .update(schema.interview_round)
+        .set({ status: "ended" })
+        .where(eq(schema.interview_round.id, roundId));
+    } catch (error) {
+      throw new Error(
+        "Error updateing the status of an interview round in `ended`"
+      );
+    }
+  });
+
 export const queries = {
   userInterviewRounds: () =>
     queryOptions<InterviewRoundData[]>({
-      queryKey: ["userInterviewRounds", "authenticated"],
+      queryKey: ["userInterviewRounds"],
       queryFn: () => getHostedInterviewRoundsHandler({}),
     }),
 
   interviewRoundView: (roundId: string) =>
     queryOptions<InterviewRoundViewData>({
-      queryKey: ["interivewRoundView", roundId, "authenticated"],
+      queryKey: ["interivewRoundView", roundId],
       queryFn: () =>
         getInterviewRoundOrganizerPreviewHandler({ data: { roundId } }),
     }),
 };
 
-export const mutations = {
+export const mutations: any = {
   createInterviewRound: createInterviewRoundHandler,
+  updateInterviewRound: updateInteriviewRound,
+  setIntervieweeList: setIntervieweeListInInterviewRound,
+  setInterviewerList: setInterviewerListInInterviewRound,
+  scheduleInterviewRound: scheduleInterviewRound,
+  openInterviewRound: openInterviewRound,
+  endInterviewRound: stopInterviewRound,
 };

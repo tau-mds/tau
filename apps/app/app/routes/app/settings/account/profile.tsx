@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { authClient } from "@tau/auth-client";
 import { Avatar, Button, Input, Label, Separator } from "@tau/ui";
 
 export const Route = createFileRoute("/app/settings/account/profile")({
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/app/settings/account/profile")({
 });
 
 function RouteComponent() {
+	const { data } = authClient.useSession();
+
 	return (
 		<div className="flex flex-col gap-8">
 			<section className="grid gap-x-8 gap-y-6 items-center sm:grid-cols-2">
@@ -33,8 +36,9 @@ function RouteComponent() {
 				<div className="space-y-1">
 					<h3 className="font-medium">Name</h3>
 					<p className="max-w-[30ch] text-balance text-sm">
-						Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit
-						amet
+						{data?.user
+							? data.user.name
+							: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"}
 					</p>
 				</div>
 
@@ -55,6 +59,11 @@ function RouteComponent() {
 			<section className="grid gap-x-8 gap-y-6 items-center sm:grid-cols-2">
 				<div className="space-y-1">
 					<h3 className="font-medium">Email</h3>
+					<p className="max-w-[30ch] text-balance text-sm">
+						{data?.user
+							? data.user.email
+							: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"}
+					</p>
 				</div>
 			</section>
 

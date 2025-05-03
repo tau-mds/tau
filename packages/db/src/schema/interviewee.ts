@@ -8,18 +8,16 @@ export const intervieweeTable = t.sqliteTable(
   "interviewees",
   {
     email: t.text().notNull(),
-    interview_round_id: typedId(ids.interviewee).notNull(),
+    interview_round_id: typedId(ids.interviewRound).notNull(),
   },
-  (table) => {
-    return [
-      primaryKey({ columns: [table.email, table.interview_round_id] }),
-      foreignKey({
-        columns: [table.interview_round_id],
-        foreignColumns: [interviewRoundTable.id],
-      }),
-    ];
-  }
+  (table) => [
+    primaryKey({ columns: [table.email, table.interview_round_id] }),
+    foreignKey({
+      columns: [table.interview_round_id],
+      foreignColumns: [interviewRoundTable.id],
+    }),
+  ]
 );
 
-export type Interviewer = typeof intervieweeTable.$inferSelect;
-export type NewInterviewer = typeof intervieweeTable.$inferInsert;
+export type Interviewee = typeof intervieweeTable.$inferSelect;
+export type NewInterviewee = typeof intervieweeTable.$inferInsert;

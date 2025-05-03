@@ -5,6 +5,7 @@ import { Sidebar } from "./index";
 import { Link, type LinkProps } from "@tanstack/react-router";
 import CaretSort from "~icons/radix-icons/caret-sort";
 
+import { authClient } from "@tau/auth-client";
 import BarChart from "~icons/radix-icons/bar-chart";
 import Exit from "~icons/radix-icons/exit";
 import Person from "~icons/radix-icons/person";
@@ -18,7 +19,7 @@ const user = {
 const links = [
 	{
 		label: "Profile",
-		href: "/settings/account/profile",
+		href: "/app/settings/account/profile",
 		icon: Person,
 	},
 	{
@@ -30,6 +31,13 @@ const links = [
 
 export function SidebarUserMenu() {
 	const isMobile = useIsMobile();
+	const { data } = authClient.useSession();
+
+	if (data?.user) {
+		user.name = data.user.name;
+		user.email = data.user.email;
+		// user.avatar = data.user.image;
+	}
 
 	return (
 		<Sidebar.Menu>
@@ -84,7 +92,12 @@ export function SidebarUserMenu() {
 						<DropdownMenu.Separator />
 
 						<DropdownMenu.Item variant="destructive">
-							<Exit />
+							<Exit
+								onClick={async (e) => {
+									e.preventDefault();
+									await authClient.signOut();
+								}}
+							/>
 							Log out
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
