@@ -1,5 +1,5 @@
-import * as v from "valibot";
 import { ulid as genUlid } from "ulid";
+import * as v from "valibot";
 
 export function createId<const P extends string>(prefix: P) {
 	const schema = v.pipe(v.string(), v.brand(`${prefix}_id`));

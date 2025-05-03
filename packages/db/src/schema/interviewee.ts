@@ -1,8 +1,8 @@
 import * as t from "drizzle-orm/sqlite-core";
 import { foreignKey, primaryKey } from "drizzle-orm/sqlite-core";
+import { ids } from "../ids";
 import { typedId } from "../lib/id";
 import { interviewRoundTable } from "./interview_round";
-import { ids } from "../ids";
 
 export const intervieweeTable = t.sqliteTable(
 	"interviewees",

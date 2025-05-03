@@ -4,11 +4,11 @@ export * as interviewer from "./interviewer";
 export * as interview_slot from "./interview_slot";
 export * as authSchema from "./auth-schema";
 
-import { organizer, account, session, verification } from "./auth-schema";
+import { account, organizer, session, verification } from "./auth-schema";
 import { interviewRoundTable } from "./interview_round";
+import { interviewSlotTable } from "./interview_slot";
 import { intervieweeTable } from "./interviewee";
 import { interviewerTable } from "./interviewer";
-import { interviewSlotTable } from "./interview_slot";
 
 export const schema = {
 	organizer: organizer,
