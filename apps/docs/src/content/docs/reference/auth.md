@@ -83,6 +83,51 @@ function MyComponent() {
 }
 ```
 
+## Magic Link Authentication
+
+Magic link authentication lets users sign in via a link sent to their email.
+
+**Frontend usage:**
+
+```ts
+import { authClient } from "@tau/auth-client";
+
+await authClient.signIn.magicLink({
+  email: "user@example.com",
+  callbackURL: "/dashboard",
+});
+```
+
+**Example helper (from `invite-user.ts`):**
+
+```ts
+// Example: apps/app/app/lib/api/invite-user.ts
+import { authClient } from "@tau/auth-client";
+
+export async function inviteUser(email: string, interviewId: string) {
+  await authClient.signIn.magicLink({
+    email,
+    callbackURL: `/interview/${interviewId}`,
+  });
+}
+```
+
+> This is just an example to illustrate usage; adapt as needed.
+
+**Handling the magic link:**  
+After clicking the link, the user is redirected to your app and authenticated automatically.
+
+**Backend customization:**  
+You can customize magic link delivery by providing a `sendMagicLink` function in your backend auth config.
+
+```ts
+magicLink({
+  sendMagicLink: async ({ email, url }) => {
+    // Send email with the magic link
+  },
+});
+```
+
 ## Best practices
 
 1. Server-Side Security
