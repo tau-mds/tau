@@ -62,9 +62,9 @@ export function LoginForm() {
 						className="w-full gap-2"
 						variant="outline"
 						onClick={() => {
-							// signIn.social({
-							//   provider: "discord",
-							// });
+							authClient.signIn.social({
+								provider: "discord",
+							});
 						}}
 					>
 						<svg
@@ -85,10 +85,10 @@ export function LoginForm() {
 						className="gap-2 w-full"
 						variant="outline"
 						onClick={() => {
-							// signIn.social({
-							//   provider: "github",
-							//   callbackURL: "/",
-							// });
+							authClient.signIn.social({
+								provider: "github",
+								callbackURL: "/",
+							});
 						}}
 					>
 						<svg

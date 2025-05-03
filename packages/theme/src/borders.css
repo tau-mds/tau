@@ -1,5 +1,4 @@
 [data-theme] {
-  --focus-ring:
-    0 0 0 1px var(--surface-1), 0 0 0 2px var(--accent-8),
-    0 0 0 4px oklch(from var(--accent-10) l c h / 0.4);
+	--focus-ring: 0 0 0 1px var(--surface-1), 0 0 0 2px var(--accent-8), 0 0 0 4px
+		oklch(from var(--accent-10) l c h / 0.4);
 }

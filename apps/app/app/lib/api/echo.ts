@@ -2,11 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { getWebRequest } from "@tanstack/react-start/server";
-import { authClient } from "@tau/auth-client";
-import { auth } from "@tau/auth-server";
-import { db } from "@tau/db";
-import { authMiddleware } from "../middlewares/authMiddleware";
+import { authMiddleware } from "../middlewares/auth-middleware";
 
 export * as echo from "./echo";
 
@@ -24,7 +20,7 @@ const handler = createServerFn({ method: "GET" })
 		}),
 	)
 	.handler(async ({ context }) => {
-		const user:any = context.session?.user;
+		const user: any = context.session?.user;
 
 		return `Hello, ${JSON.stringify(user)}, tho`;
 	});

@@ -1,7 +1,7 @@
 {
-  "extends": ["@tau/tsconfig/base.json"],
-  "compilerOptions": {
-    "exactOptionalPropertyTypes": false
-  },
-  "include": ["src"]
+	"extends": ["@tau/tsconfig/base.json"],
+	"compilerOptions": {
+		"exactOptionalPropertyTypes": false
+	},
+	"include": ["src"]
 }

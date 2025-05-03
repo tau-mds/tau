@@ -1,7 +1,7 @@
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import starlight from "@astrojs/starlight";
 // @ts-check
 import { defineConfig } from "astro/config";
-import starlight from "@astrojs/starlight";
-import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 import react from "@astrojs/react";

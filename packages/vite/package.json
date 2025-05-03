@@ -1,28 +1,28 @@
 {
-  "name": "@tau/vite",
-  "private": true,
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -w -p tsconfig.build.json",
-    "lint": "biome check . --write",
-    "typecheck": "tsc"
-  },
-  "dependencies": {
-    "rollup-plugin-preserve-directives": "^0.4.0",
-    "vite": "catalog:",
-    "vite-plugin-dts": "^4.5.3",
-    "vite-plugin-externalize-deps": "^0.9.0",
-    "vite-tsconfig-paths": "^5.1.4"
-  },
-  "devDependencies": {
-    "@tau/tsconfig": "workspace:*"
-  }
+	"name": "@tau/vite",
+	"private": true,
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"dev": "tsc -w -p tsconfig.build.json",
+		"lint": "biome check . --write",
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"rollup-plugin-preserve-directives": "^0.4.0",
+		"vite": "catalog:",
+		"vite-plugin-dts": "^4.5.3",
+		"vite-plugin-externalize-deps": "^0.9.0",
+		"vite-tsconfig-paths": "^5.1.4"
+	},
+	"devDependencies": {
+		"@tau/tsconfig": "workspace:*"
+	}
 }
