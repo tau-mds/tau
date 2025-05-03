@@ -31,17 +31,13 @@ export const auth = betterAuth({
 	},
 	socialProviders: {
 		discord: {
-			clientId: (process.env["DISCORD_CLIENT_ID"] as string) || "1367818396065861652",
-			clientSecret:
-				(process.env["DISCORD_CLIENT_SECRET"] as string) ||
-				"dN8hXnj0KFUG_TiUc-CI2l3N-wYu7Lh_",
+			clientId: (process.env["DISCORD_CLIENT_ID"] as string) || "",
+			clientSecret: (process.env["DISCORD_CLIENT_SECRET"] as string) || "",
 			overrideUserInfoOnSignIn: true,
 		},
 		github: {
-			clientId: (process.env["GITHUB_CLIENT_ID"] as string) || "Ov23licSlCyUv3cqDYKS",
-			clientSecret:
-				(process.env["GITHUB_CLIENT_SECRET"] as string) ||
-				"7e965f219399e8641147c9e989035d97ef7a6d0e",
+			clientId: (process.env["GITHUB_CLIENT_ID"] as string) || "",
+			clientSecret: (process.env["GITHUB_CLIENT_SECRET"] as string) || "",
 			overrideUserInfoOnSignIn: true,
 		},
 	},
