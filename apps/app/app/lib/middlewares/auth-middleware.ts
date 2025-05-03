@@ -11,7 +11,7 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
 	if (!request) {
 		return next({
 			context: {
-				session: session as Session | null,
+				session: null as Session | null,
 			},
 		});
 	}

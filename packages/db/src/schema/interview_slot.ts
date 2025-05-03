@@ -18,24 +18,20 @@ export const interviewSlotTable = t.sqliteTable(
 		created_at: t.integer({ mode: "timestamp" }).notNull().default(sql`(unixepoch())`),
 		assigned_at: t.integer({ mode: "timestamp" }),
 	},
-	(table) => {
-		return [
-			foreignKey({
-				columns: [table.interview_round_id],
-				foreignColumns: [interviewRoundTable.id],
-			}),
-
-			foreignKey({
-				columns: [table.interviewer_email, table.interview_round_id],
-				foreignColumns: [interviewerTable.email, interviewerTable.interview_round_id],
-			}),
-
-			foreignKey({
-				columns: [table.interviewee_email],
-				foreignColumns: [intervieweeTable.email],
-			}),
-		];
-	},
+	(table) => [
+		foreignKey({
+			columns: [table.interview_round_id],
+			foreignColumns: [interviewRoundTable.id],
+		}),
+		foreignKey({
+			columns: [table.interviewer_email, table.interview_round_id],
+			foreignColumns: [interviewerTable.email, interviewerTable.interview_round_id],
+		}),
+		foreignKey({
+			columns: [table.interviewee_email, table.interview_round_id],
+			foreignColumns: [intervieweeTable.email, intervieweeTable.interview_round_id],
+		}),
+	],
 );
 
 export type InterviewerSlot = typeof interviewSlotTable.$inferSelect;

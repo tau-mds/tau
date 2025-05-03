@@ -1,13 +1,11 @@
 @font-face {
-  font-family: "Jetbrains Mono Variable";
-  src:
-    url("./jetbrains-mono-latin-wght-normal.woff2")
-      format("woff2 supports variations"),
-    url("./jetbrains-mono-latin-wght-normal.woff2") format("woff2-variations");
-  font-weight: 300 900;
-  font-display: optional;
+	font-family: "Jetbrains Mono Variable";
+	src: url("./jetbrains-mono-latin-wght-normal.woff2") format("woff2 supports variations"),
+		url("./jetbrains-mono-latin-wght-normal.woff2") format("woff2-variations");
+	font-weight: 300 900;
+	font-display: optional;
 }
 
 :root {
-  --font-jetbrains-mono: "Jetbrains Mono Variable";
+	--font-jetbrains-mono: "Jetbrains Mono Variable";
 }

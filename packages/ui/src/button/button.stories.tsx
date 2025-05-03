@@ -3,10 +3,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./button";
 
 const meta = {
-  title: "Components / Button",
-  component: Button,
-  args: { children: "Button" },
-  parameters: { layout: "centered" },
+	title: "Components / Button",
+	component: Button,
+	args: { children: "Button" },
+	parameters: { layout: "centered" },
 } satisfies Meta<typeof Button>;
 export default meta;
 

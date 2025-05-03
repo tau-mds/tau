@@ -1,24 +1,24 @@
 {
-  "name": "@tau/auth-client",
-  "private": true,
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -w -p tsconfig.build.json",
-    "lint": "biome check . --write",
-    "typecheck": "tsc"
-  },
-  "devDependencies": {
-    "@tau/tsconfig": "workspace:*"
-  },
-  "dependencies": {
-    "better-auth": "^1.2.7"
-  }
+	"name": "@tau/auth-client",
+	"private": true,
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"dev": "tsc -w -p tsconfig.build.json",
+		"lint": "biome check . --write",
+		"typecheck": "tsc"
+	},
+	"devDependencies": {
+		"@tau/tsconfig": "workspace:*"
+	},
+	"dependencies": {
+		"better-auth": "^1.2.7"
+	}
 }

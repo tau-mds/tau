@@ -4,123 +4,123 @@
 @custom-variant dark (&:is([data-theme="dark"] *));
 
 @theme inline {
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+	--font-sans: var(--font-sans);
+	--font-mono: var(--font-mono);
 
-  --color-surface-1: var(--surface-1);
-  --color-surface-2: var(--surface-2);
-  --color-surface-3: var(--surface-3);
-  --color-surface-4: var(--surface-4);
-  --color-surface-5: var(--surface-5);
-  --color-surface-6: var(--surface-6);
-  --color-surface-7: var(--surface-7);
-  --color-surface-8: var(--surface-8);
-  --color-surface-9: var(--surface-9);
-  --color-surface-10: var(--surface-10);
-  --color-surface-11: var(--surface-11);
-  --color-surface-12: var(--surface-12);
-  --color-surface-contrast: var(--surface-contrast);
-  --color-surface-surface: var(--surface-surface);
-  --color-surface-indicator: var(--surface-indicator);
-  --color-surface-track: var(--surface-track);
+	--color-surface-1: var(--surface-1);
+	--color-surface-2: var(--surface-2);
+	--color-surface-3: var(--surface-3);
+	--color-surface-4: var(--surface-4);
+	--color-surface-5: var(--surface-5);
+	--color-surface-6: var(--surface-6);
+	--color-surface-7: var(--surface-7);
+	--color-surface-8: var(--surface-8);
+	--color-surface-9: var(--surface-9);
+	--color-surface-10: var(--surface-10);
+	--color-surface-11: var(--surface-11);
+	--color-surface-12: var(--surface-12);
+	--color-surface-contrast: var(--surface-contrast);
+	--color-surface-surface: var(--surface-surface);
+	--color-surface-indicator: var(--surface-indicator);
+	--color-surface-track: var(--surface-track);
 
-  --color-accent-1: var(--accent-1);
-  --color-accent-2: var(--accent-2);
-  --color-accent-3: var(--accent-3);
-  --color-accent-4: var(--accent-4);
-  --color-accent-5: var(--accent-5);
-  --color-accent-6: var(--accent-6);
-  --color-accent-7: var(--accent-7);
-  --color-accent-8: var(--accent-8);
-  --color-accent-9: var(--accent-9);
-  --color-accent-10: var(--accent-10);
-  --color-accent-11: var(--accent-11);
-  --color-accent-12: var(--accent-12);
-  --color-accent-contrast: var(--accent-contrast);
-  --color-accent-surface: var(--accent-surface);
-  --color-accent-indicator: var(--accent-indicator);
-  --color-accent-track: var(--accent-track);
+	--color-accent-1: var(--accent-1);
+	--color-accent-2: var(--accent-2);
+	--color-accent-3: var(--accent-3);
+	--color-accent-4: var(--accent-4);
+	--color-accent-5: var(--accent-5);
+	--color-accent-6: var(--accent-6);
+	--color-accent-7: var(--accent-7);
+	--color-accent-8: var(--accent-8);
+	--color-accent-9: var(--accent-9);
+	--color-accent-10: var(--accent-10);
+	--color-accent-11: var(--accent-11);
+	--color-accent-12: var(--accent-12);
+	--color-accent-contrast: var(--accent-contrast);
+	--color-accent-surface: var(--accent-surface);
+	--color-accent-indicator: var(--accent-indicator);
+	--color-accent-track: var(--accent-track);
 
-  --color-destructive-1: var(--destructive-1);
-  --color-destructive-2: var(--destructive-2);
-  --color-destructive-3: var(--destructive-3);
-  --color-destructive-4: var(--destructive-4);
-  --color-destructive-5: var(--destructive-5);
-  --color-destructive-6: var(--destructive-6);
-  --color-destructive-7: var(--destructive-7);
-  --color-destructive-8: var(--destructive-8);
-  --color-destructive-9: var(--destructive-9);
-  --color-destructive-10: var(--destructive-10);
-  --color-destructive-11: var(--destructive-11);
-  --color-destructive-12: var(--destructive-12);
-  --color-destructive-contrast: var(--destructive-contrast);
-  --color-destructive-surface: var(--destructive-surface);
-  --color-destructive-indicator: var(--destructive-indicator);
-  --color-destructive-track: var(--destructive-track);
+	--color-destructive-1: var(--destructive-1);
+	--color-destructive-2: var(--destructive-2);
+	--color-destructive-3: var(--destructive-3);
+	--color-destructive-4: var(--destructive-4);
+	--color-destructive-5: var(--destructive-5);
+	--color-destructive-6: var(--destructive-6);
+	--color-destructive-7: var(--destructive-7);
+	--color-destructive-8: var(--destructive-8);
+	--color-destructive-9: var(--destructive-9);
+	--color-destructive-10: var(--destructive-10);
+	--color-destructive-11: var(--destructive-11);
+	--color-destructive-12: var(--destructive-12);
+	--color-destructive-contrast: var(--destructive-contrast);
+	--color-destructive-surface: var(--destructive-surface);
+	--color-destructive-indicator: var(--destructive-indicator);
+	--color-destructive-track: var(--destructive-track);
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
 
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
 
-  --animate-smooth-down: smooth-down 0.2s ease-out forwards;
-  --animate-smooth-up: smooth-up 0.2s ease-in forwards;
+	--animate-smooth-down: smooth-down 0.2s ease-out forwards;
+	--animate-smooth-up: smooth-up 0.2s ease-in forwards;
 
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
+	@keyframes accordion-down {
+		from {
+			height: 0;
+		}
+		to {
+			height: var(--radix-accordion-content-height);
+		}
+	}
 
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
+	@keyframes accordion-up {
+		from {
+			height: var(--radix-accordion-content-height);
+		}
+		to {
+			height: 0;
+		}
+	}
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50 font-sans;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+	* {
+		@apply border-border outline-ring/50 font-sans;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
 }

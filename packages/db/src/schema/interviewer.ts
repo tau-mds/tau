@@ -11,15 +11,13 @@ export const interviewerTable = t.sqliteTable(
 		interview_round_id: typedId(ids.interviewRound).notNull(),
 		interviews_count: t.integer().notNull().default(1),
 	},
-	(table) => {
-		return [
-			primaryKey({ columns: [table.email, table.interview_round_id] }),
-			foreignKey({
-				columns: [table.interview_round_id],
-				foreignColumns: [interviewRoundTable.id],
-			}),
-		];
-	},
+	(table) => [
+		primaryKey({ columns: [table.email, table.interview_round_id] }),
+		foreignKey({
+			columns: [table.interview_round_id],
+			foreignColumns: [interviewRoundTable.id],
+		}),
+	],
 );
 
 export type Interviewer = typeof interviewerTable.$inferSelect;

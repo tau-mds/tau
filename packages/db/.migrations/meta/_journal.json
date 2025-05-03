@@ -22,6 +22,20 @@
 			"when": 1746017626976,
 			"tag": "0002_auth_added",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "6",
+			"when": 1746212288849,
+			"tag": "0003_fixed_db",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "6",
+			"when": 1746275770370,
+			"tag": "0004_green_quentin_quire",
+			"breakpoints": true
 		}
 	]
 }

@@ -20,9 +20,9 @@ const handler = createServerFn({ method: "GET" })
 		}),
 	)
 	.handler(async ({ context }) => {
-		context.session?.user;
+		const user: any = context.session?.user;
 
-		return "Hello, this is hardcoded, tho";
+		return `Hello, ${JSON.stringify(user)}, tho`;
 	});
 
 export const queries = {
