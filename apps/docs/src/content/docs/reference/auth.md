@@ -29,6 +29,44 @@ const handler = createServerFn({ method: "GET" })
   });
 ```
 
+## Using `fetchUser` in Loaders
+
+You can use `fetchUser` to get the authenticated user inside a loader function. For example:
+
+```ts
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { fetchUser } from "~/lib/api/fetch-user";
+import { echo } from "~/lib/api/echo";
+
+export const Route = createFileRoute("/_landing/")({
+  component: Component,
+  loader: async (opts) => {
+    const user = await fetchUser();
+  },
+});
+```
+
+## Guarding Authenticated Routes
+
+You can guard an authenticated route by fetching the user and redirecting if not authenticated in a loader. For example:
+
+```ts
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { fetchUser } from "~/lib/api/fetch-user";
+
+export const Route = createFileRoute("/_protected/")({
+  component: Component,
+  loader: async () => {
+    const user = await fetchUser();
+    console.log(user);
+    if (!user) {
+      throw redirect({ to: "/app" });
+    }
+    // ...other loader logic...
+  },
+});
+```
+
 ## Frontend Implementation
 
 ### Accessing User Sessions
