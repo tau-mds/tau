@@ -1,0 +1,4 @@
+auth
++ one time token'sau anonymous
+tau.com/:roundid/
+google calendar sync
