@@ -7,6 +7,7 @@ import ClockIcon from "~icons/radix-icons/clock";
 import PlusCircledIcon from "~icons/radix-icons/plus-circled";
 import Pencil1Icon from "~icons/radix-icons/pencil-1";
 import TrashIcon from "~icons/radix-icons/trash";
+import { CardDescriptionInterviewRound } from "~/components/app/interview-rounds/CardDescriptionInterviewRount";
 
 // Mock organizers
 export const mockOrganizers = [
@@ -165,9 +166,9 @@ function RouteComponent() {
                     </div>
                   </div>
                   <Card.Title>{round.title}</Card.Title>
-                  <Card.Description>
-                    {round.description || "No description provided"}
-                  </Card.Description>
+                  <CardDescriptionInterviewRound
+                    description={round.description}
+                  />
                 </Card.Header>
                 <Separator />
                 <Card.Content className="pt-4">
