@@ -42,25 +42,25 @@ interface InterviewRoundViewData {
 
 const InterviewRoundCreateValidator = v.object({
   roundId: v.string("Round ID must be a string"),
-  interview_round: {
+  interview_round: v.object({
     title: v.string("Title must be a string"),
     description: v.optional(v.string("Description must be a string")),
     interview_duration: v.optional(v.number("Duration must be a number")),
     start_date: v.string("Start date must be a string"),
     end_date: v.optional(v.string("End date must be a string")),
-  },
+  }),
 });
 
 const InteriviewRoundUpdateValidator = v.object({
   roundId: v.string("Round ID must be a string"),
-  interview_round: {
+  interview_round: v.object({
     id: v.string("Round ID must be a string"),
     title: v.optional(v.string("Title must be a string")),
     description: v.optional(v.string("Description must be a string")),
     interview_duration: v.optional(v.number("Duration must be a number")),
     start_date: v.optional(v.string("Start date must be a string")),
     end_date: v.optional(v.string("End date must be a string")),
-  },
+  }),
 });
 
 const RoundIdValidator = v.object({
@@ -71,6 +71,17 @@ const EmailListValidator = v.object({
   roundId: v.string("Round ID must be a string"),
   emails: v.array(v.pipe(v.string(), v.email("Invalid email format"))),
 });
+
+const InterviewerListValidator = v.object({
+  roundId: v.string("Round ID must be a string"),
+  interviewers: v.array(
+    v.object({
+      email: v.pipe(v.string(), v.email("Invalid email format")),
+      count: v.number("The interview number must be a number"),
+    })
+  ),
+});
+
 const getInterviewRoundOrganizerPreviewHandler = createServerFn({
   method: "GET",
 })
@@ -429,7 +440,7 @@ const setIntervieweeListInInterviewRound = createServerFn({ method: "POST" })
 
 const setInterviewerListInInterviewRound = createServerFn({ method: "POST" })
   .middleware([organizerMiddleware])
-  .validator(EmailListValidator)
+  .validator(InterviewerListValidator)
   .handler(async ({ data, context }) => {
     const userId = context.session?.user?.id;
 
@@ -447,14 +458,18 @@ const setInterviewerListInInterviewRound = createServerFn({ method: "POST" })
       .from(schema.interviewee)
       .where(eq(schema.interviewee.interview_round_id, roundId));
 
-    existingEmails.forEach(async (interiver) => {
-      if (!data.emails.includes(interiver.email)) {
+    existingEmails.forEach(async (inter) => {
+      if (
+        !data.interviewers.some(
+          (interviewer) => interviewer.email == inter.email
+        )
+      ) {
         try {
           await db
             .delete(schema.interviewer)
             .where(
               and(
-                eq(schema.interviewer.email, interiver.email),
+                eq(schema.interviewer.email, inter.email),
                 eq(schema.interviewer.interview_round_id, roundId)
               )
             );
@@ -464,27 +479,30 @@ const setInterviewerListInInterviewRound = createServerFn({ method: "POST" })
       }
     });
 
-    data.emails.forEach(async (email: string) => {
-      try {
-        const isSaved = await db
-          .select()
-          .from(schema.interviewer)
-          .where(
-            and(
-              eq(schema.interviewer.email, email),
-              eq(schema.interviewer.interview_round_id, roundId)
-            )
-          );
-        if (isSaved.length <= 0) {
-          await db.insert(schema.interviewer).values({
-            email: email,
-            interview_round_id: roundId,
-          });
+    data.interviewers.forEach(
+      async (interviewer: { email: string; count: number }) => {
+        try {
+          const isSaved = await db
+            .select()
+            .from(schema.interviewer)
+            .where(
+              and(
+                eq(schema.interviewer.email, interviewer.email),
+                eq(schema.interviewer.interview_round_id, roundId)
+              )
+            );
+          if (isSaved.length <= 0) {
+            await db.insert(schema.interviewer).values({
+              email: interviewer.email,
+              interview_round_id: roundId,
+              interviews_count: interviewer.count,
+            });
+          }
+        } catch (error) {
+          throw new Error("Error inserting in database!");
         }
-      } catch (error) {
-        throw new Error("Error inserting in database!");
       }
-    });
+    );
   });
 
 const scheduleInterviewRound = createServerFn({ method: "POST" })

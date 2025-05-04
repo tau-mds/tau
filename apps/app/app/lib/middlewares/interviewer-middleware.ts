@@ -4,56 +4,56 @@ import { type Session, auth } from "@tau/auth-server";
 import { db, schema } from "@tau/db";
 import { and, eq } from "drizzle-orm";
 
-export const organizerMiddleware = createMiddleware().server(
-	async ({ next, data }: any) => {
-		const request = getWebRequest();
+export const interviewerMiddleware = createMiddleware().server(
+  async ({ next, data }: any) => {
+    const request = getWebRequest();
 
-		if (!request) {
-			throw new Error("Unauthorized: No request found");
-		}
+    if (!request) {
+      throw new Error("Unauthorized: No request found");
+    }
 
-		const session: Session | null = await auth.api.getSession({
-			headers: request.headers,
-		});
+    const session: Session | null = await auth.api.getSession({
+      headers: request.headers,
+    });
 
-		if (!session?.user?.id) {
-			throw new Error("Unauthorized: No user session");
-		}
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized: No user session");
+    }
 
-		const roundId = data?.roundId;
+    const roundId = data?.roundId;
 
-		if (!roundId) {
-			throw new Error("Bad Request: Missing roundId");
-		}
+    if (!roundId) {
+      throw new Error("Bad Request: Missing roundId");
+    }
 
-		const round = await db.query.interview_round.findFirst({
-			where: eq(schema.interview_round.id, roundId),
-		});
+    const round = await db.query.interview_round.findFirst({
+      where: eq(schema.interview_round.id, roundId),
+    });
 
-		if (!round) {
-			throw new Error("Not Found: Interview round does not exist");
-		}
+    if (!round) {
+      throw new Error("Not Found: Interview round does not exist");
+    }
 
-		if (round.status !== "schedule") {
-			throw new Error("Forbidden: You do not own this interview round");
-		}
+    if (round.status !== "schedule") {
+      throw new Error("Forbidden: You do not own this interview round");
+    }
 
-		const interviewer = await db.query.interviewer.findFirst({
-			where: and(
-				eq(schema.interviewer.interview_round_id, roundId),
-				eq(schema.interviewer.email, session.user.email),
-			),
-		});
+    const interviewer = await db.query.interviewer.findFirst({
+      where: and(
+        eq(schema.interviewer.interview_round_id, roundId),
+        eq(schema.interviewer.email, session.user.email)
+      ),
+    });
 
-		if (interviewer) {
-			throw new Error("Forbidden: You are not invited to this interview round");
-		}
+    if (interviewer) {
+      throw new Error("Forbidden: You are not invited to this interview round");
+    }
 
-		// Authorized, continue with context
-		return next({
-			context: {
-				session,
-			},
-		});
-	},
+    // Authorized, continue with context
+    return next({
+      context: {
+        session,
+      },
+    });
+  }
 );
