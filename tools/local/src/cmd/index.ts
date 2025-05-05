@@ -1,6 +1,6 @@
-import { command } from "@drizzle-team/brocli";
 import { exec } from "node:child_process";
 import path from "node:path";
+import { command } from "@drizzle-team/brocli";
 
 export const dbCmd = command({
 	name: "db",

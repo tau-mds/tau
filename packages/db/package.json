@@ -1,35 +1,37 @@
 {
-  "name": "@tau/db",
-  "private": true,
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./ids": {
-      "types": "./dist/ids.d.ts",
-      "default": "./dist/ids.js"
-    }
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "DATABASE_CONN_TYPE=local drizzle-kit studio",
-    "lint": "biome check . --write",
-    "typecheck": "tsc",
-    "drizzle": "DATABASE_CONN_TYPE=local drizzle-kit",
-    "drizzle:prod": "drizzle-kit"
-  },
-  "devDependencies": {
-    "@tau/tsconfig": "workspace:*",
-    "drizzle-kit": "^0.31.0"
-  },
-  "dependencies": {
-    "@libsql/client": "^0.15.4",
-    "@tau/utils": "workspace:*",
-    "drizzle-orm": "^0.42.0",
-    "ulid": "^3.0.0",
-    "valibot": "catalog:"
-  }
+	"name": "@tau/db",
+	"private": true,
+	"type": "module",
+	"sideEffects": false,
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		},
+		"./ids": {
+			"types": "./dist/ids.d.ts",
+			"default": "./dist/ids.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"dev": "DATABASE_CONN_TYPE=local drizzle-kit studio",
+		"lint": "biome check . --write",
+		"typecheck": "tsc",
+		"drizzle": "DATABASE_CONN_TYPE=local drizzle-kit",
+		"drizzle:prod": "drizzle-kit"
+	},
+	"devDependencies": {
+		"@tau/tsconfig": "workspace:*",
+		"drizzle-kit": "^0.31.0"
+	},
+	"dependencies": {
+		"@libsql/client": "^0.15.4",
+		"@tau/utils": "workspace:*",
+		"drizzle-orm": "^0.42.0",
+		"ulid": "^3.0.0",
+		"valibot": "catalog:"
+	}
 }

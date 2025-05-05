@@ -1,8 +1,9 @@
 {
-  "extends": ["@tau/tsconfig/react.json"],
-  "include": ["src", ".storybook", "vite.config.ts"],
-  "exclude": ["node_modules", "dist", "storybook-static"],
-  "compilerOptions": {
-    "types": ["unplugin-icons/types/react"]
-  }
+	"extends": ["@tau/tsconfig/react.json"],
+	"include": ["src", ".storybook", "vite.config.ts"],
+	"exclude": ["node_modules", "dist", "storybook-static"],
+	"compilerOptions": {
+		"types": ["unplugin-icons/types/react"],
+		"exactOptionalPropertyTypes": false
+	}
 }

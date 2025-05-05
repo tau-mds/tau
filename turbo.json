@@ -1,58 +1,58 @@
 {
-  "$schema": "https://turborepo.org/schema.json",
+	"$schema": "https://turborepo.org/schema.json",
 
-  "tasks": {
-    "install": {
-      "outputs": ["node_modules/**", "pnpm-lock.yaml"]
-    },
-    "build": {
-      "dependsOn": ["format", "^build"],
-      "outputs": ["dist/**", ".output/**"]
-    },
-    "lint": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"]
-    },
-    "format": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
-      "cache": false
-    },
-    "dev": {
-      "dependsOn": ["^build"],
-      "cache": false,
-      "persistent": true,
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env.development.local",
-        ".env.local",
-        ".env.development",
-        ".env"
-      ]
-    },
-    "test": {
-      "cache": false
-    },
-    "typecheck": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
-      "outputs": ["*.tsbuildinfo"]
-    },
-    "clean": { "cache": false },
-    "start": {
-      "dependsOn": ["^build"],
-      "cache": false,
-      "persistent": true
-    },
-    "preview": {
-      "dependsOn": ["^build", "build"],
-      "cache": false,
-      "persistent": true
-    },
-    "drizzle": {
-      "cache": false
-    }
-  },
-  "ui": "tui",
-  "concurrency": "15"
+	"tasks": {
+		"install": {
+			"outputs": ["node_modules/**", "pnpm-lock.yaml"]
+		},
+		"build": {
+			"dependsOn": ["format", "^build"],
+			"outputs": ["dist/**", ".output/**"]
+		},
+		"lint": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"]
+		},
+		"format": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
+			"cache": false
+		},
+		"dev": {
+			"dependsOn": ["^build"],
+			"cache": false,
+			"persistent": true,
+			"inputs": [
+				"$TURBO_DEFAULT$",
+				".env.development.local",
+				".env.local",
+				".env.development",
+				".env"
+			]
+		},
+		"test": {
+			"cache": false
+		},
+		"typecheck": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", "!CHANGELOG.md"],
+			"outputs": ["*.tsbuildinfo"]
+		},
+		"clean": { "cache": false },
+		"start": {
+			"dependsOn": ["^build"],
+			"cache": false,
+			"persistent": true
+		},
+		"preview": {
+			"dependsOn": ["^build", "build"],
+			"cache": false,
+			"persistent": true
+		},
+		"drizzle": {
+			"cache": false
+		}
+	},
+	"ui": "tui",
+	"concurrency": "15"
 }

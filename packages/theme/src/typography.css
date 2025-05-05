@@ -1,68 +1,66 @@
 :root {
-  --font-mono:
-    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-sans:
-    var(--font-overused-grotesk), ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+		Consolas, "Liberation Mono", "Courier New", monospace;
+	--font-sans: var(--font-overused-grotesk), ui-sans-serif, system-ui, sans-serif,
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .txt-xsmall {
-  font-weight: 400;
-  font-size: 0.75rem;
-  line-height: 1.125rem;
+	font-weight: 400;
+	font-size: 0.75rem;
+	line-height: 1.125rem;
 }
 
 .txt-compact-xsmall {
-  font-weight: 400;
-  font-size: 0.75rem;
-  line-height: 1.25rem;
+	font-weight: 400;
+	font-size: 0.75rem;
+	line-height: 1.25rem;
 }
 
 .txt-small {
-  font-weight: 400;
-  font-size: 0.8125rem;
-  line-height: 1.21875rem;
+	font-weight: 400;
+	font-size: 0.8125rem;
+	line-height: 1.21875rem;
 }
 
 .txt-compact-small {
-  font-weight: 400;
-  font-size: 0.8125rem;
-  line-height: 1.25rem;
+	font-weight: 400;
+	font-size: 0.8125rem;
+	line-height: 1.25rem;
 }
 
 .txt-medium {
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.3125rem;
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.3125rem;
 }
 
 .txt-compact-medium {
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
 }
 
 .txt-large {
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.5rem;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 1.5rem;
 }
 
 .txt-compact-large {
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.25rem;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 1.25rem;
 }
 
 .txt-xlarge {
-  font-weight: 400;
-  font-size: 1.125rem;
-  line-height: 1.6875rem;
+	font-weight: 400;
+	font-size: 1.125rem;
+	line-height: 1.6875rem;
 }
 
 .txt-compact-xlarge {
-  font-weight: 400;
-  font-size: 1.125rem;
-  line-height: 1.25rem;
+	font-weight: 400;
+	font-size: 1.125rem;
+	line-height: 1.25rem;
 }

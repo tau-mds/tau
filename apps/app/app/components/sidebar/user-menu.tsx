@@ -2,7 +2,7 @@ import { Avatar, DropdownMenu } from "@tau/ui";
 import { useIsMobile } from "~/lib/use-media-query";
 import { Sidebar } from "./index";
 
-import { Link, type LinkProps, redirect, useRouter } from "@tanstack/react-router";
+import { Link, type LinkProps, useRouter } from "@tanstack/react-router";
 import CaretSort from "~icons/radix-icons/caret-sort";
 
 import { authClient } from "@tau/auth-client";
@@ -35,9 +35,9 @@ export function SidebarUserMenu() {
 	const { navigate } = useRouter();
 
 	if (data?.user) {
-		user.name = data.user.name;
-		user.email = data.user.email;
-		// user.avatar = data.user.image;
+		user.name = data.user.name ?? "";
+		user.email = data.user.email ?? "";
+		user.avatar = data.user.image ?? "";
 	}
 
 	return (
@@ -99,7 +99,7 @@ export function SidebarUserMenu() {
 								await authClient.signOut({
 									fetchOptions: {
 										onSuccess: () => {
-											navigate({ to: "/" });
+											navigate({ to: "/", reloadDocument: true });
 										},
 									},
 								});

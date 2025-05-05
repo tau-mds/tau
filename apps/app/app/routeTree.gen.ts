@@ -14,6 +14,8 @@ import { Route as rootRoute } from "./routes/__root";
 import { Route as AuthLayoutImport } from "./routes/auth/layout";
 import { Route as AppLayoutImport } from "./routes/app/layout";
 import { Route as LandingLayoutImport } from "./routes/_landing/layout";
+import { Route as PlaygroundIndexImport } from "./routes/playground/index";
+import { Route as AuthIndexImport } from "./routes/auth/index";
 import { Route as AppIndexImport } from "./routes/app/index";
 import { Route as LandingIndexImport } from "./routes/_landing/index";
 import { Route as AuthSignupImport } from "./routes/auth/signup";
@@ -41,6 +43,18 @@ const AppLayoutRoute = AppLayoutImport.update({
 const LandingLayoutRoute = LandingLayoutImport.update({
   id: "/_landing",
   getParentRoute: () => rootRoute,
+} as any);
+
+const PlaygroundIndexRoute = PlaygroundIndexImport.update({
+  id: "/playground/",
+  path: "/playground/",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const AuthIndexRoute = AuthIndexImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AuthLayoutRoute,
 } as any);
 
 const AppIndexRoute = AppIndexImport.update({
@@ -159,6 +173,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppIndexImport;
       parentRoute: typeof AppLayoutImport;
     };
+    "/auth/": {
+      id: "/auth/";
+      path: "/";
+      fullPath: "/auth/";
+      preLoaderRoute: typeof AuthIndexImport;
+      parentRoute: typeof AuthLayoutImport;
+    };
+    "/playground/": {
+      id: "/playground/";
+      path: "/playground";
+      fullPath: "/playground";
+      preLoaderRoute: typeof PlaygroundIndexImport;
+      parentRoute: typeof rootRoute;
+    };
     "/app/settings/account": {
       id: "/app/settings/account";
       path: "/account";
@@ -250,11 +278,13 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 interface AuthLayoutRouteChildren {
   AuthSigninRoute: typeof AuthSigninRoute;
   AuthSignupRoute: typeof AuthSignupRoute;
+  AuthIndexRoute: typeof AuthIndexRoute;
 }
 
 const AuthLayoutRouteChildren: AuthLayoutRouteChildren = {
   AuthSigninRoute: AuthSigninRoute,
   AuthSignupRoute: AuthSignupRoute,
+  AuthIndexRoute: AuthIndexRoute,
 };
 
 const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
@@ -270,6 +300,8 @@ export interface FileRoutesByFullPath {
   "/auth/signup": typeof AuthSignupRoute;
   "/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
+  "/auth/": typeof AuthIndexRoute;
+  "/playground": typeof PlaygroundIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
@@ -277,12 +309,13 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  "/auth": typeof AuthLayoutRouteWithChildren;
   "/app/settings": typeof AppSettingsLayoutRouteWithChildren;
   "/auth/signin": typeof AuthSigninRoute;
   "/auth/signup": typeof AuthSignupRoute;
   "/": typeof LandingIndexRoute;
   "/app": typeof AppIndexRoute;
+  "/auth": typeof AuthIndexRoute;
+  "/playground": typeof PlaygroundIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
@@ -299,6 +332,8 @@ export interface FileRoutesById {
   "/auth/signup": typeof AuthSignupRoute;
   "/_landing/": typeof LandingIndexRoute;
   "/app/": typeof AppIndexRoute;
+  "/auth/": typeof AuthIndexRoute;
+  "/playground/": typeof PlaygroundIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
@@ -316,22 +351,25 @@ export interface FileRouteTypes {
     | "/auth/signup"
     | "/"
     | "/app/"
+    | "/auth/"
+    | "/playground"
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile";
+    | "/app/settings/account/profile"
   fileRoutesByTo: FileRoutesByTo;
   to:
-    | "/auth"
     | "/app/settings"
     | "/auth/signin"
     | "/auth/signup"
     | "/"
     | "/app"
+    | "/auth"
+    | "/playground"
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile";
+    | "/app/settings/account/profile"
   id:
     | "__root__"
     | "/_landing"
@@ -342,10 +380,12 @@ export interface FileRouteTypes {
     | "/auth/signup"
     | "/_landing/"
     | "/app/"
+    | "/auth/"
+    | "/playground/"
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile";
+    | "/app/settings/account/profile"
   fileRoutesById: FileRoutesById;
 }
 
@@ -353,12 +393,14 @@ export interface RootRouteChildren {
   LandingLayoutRoute: typeof LandingLayoutRouteWithChildren;
   AppLayoutRoute: typeof AppLayoutRouteWithChildren;
   AuthLayoutRoute: typeof AuthLayoutRouteWithChildren;
+  PlaygroundIndexRoute: typeof PlaygroundIndexRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LandingLayoutRoute: LandingLayoutRouteWithChildren,
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRouteWithChildren,
+  PlaygroundIndexRoute: PlaygroundIndexRoute,
 };
 
 export const routeTree = rootRoute
@@ -373,7 +415,8 @@ export const routeTree = rootRoute
       "children": [
         "/_landing",
         "/app",
-        "/auth"
+        "/auth",
+        "/playground/"
       ]
     },
     "/_landing": {
@@ -386,14 +429,15 @@ export const routeTree = rootRoute
       "filePath": "app/layout.tsx",
       "children": [
         "/app/settings",
-        "/app/"
+        "/app/",
       ]
     },
     "/auth": {
       "filePath": "auth/layout.tsx",
       "children": [
         "/auth/signin",
-        "/auth/signup"
+        "/auth/signup",
+        "/auth/"
       ]
     },
     "/app/settings": {
@@ -418,6 +462,13 @@ export const routeTree = rootRoute
     "/app/": {
       "filePath": "app/index.tsx",
       "parent": "/app"
+    },
+    "/auth/": {
+      "filePath": "auth/index.tsx",
+      "parent": "/auth"
+    },
+    "/playground/": {
+      "filePath": "playground/index.tsx"
     },
     "/app/settings/account": {
       "filePath": "app/settings/account/layout.tsx",

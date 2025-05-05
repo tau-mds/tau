@@ -41,7 +41,11 @@ function RouteComponent() {
 			<section className="grid gap-x-8 gap-y-6 items-center sm:grid-cols-2">
 				<div className="flex gap-4 items-center">
 					<Avatar.Root className="border size-20">
-						<Avatar.Image src="https://avatars.githubusercontent.com/u/73390323?v=4" />
+						<Avatar.Image
+							src={
+								data?.user.image ?? "https://avatars.githubusercontent.com/u/73390323?v=4"
+							}
+						/>
 					</Avatar.Root>
 
 					<div className="flex flex-col gap-2">

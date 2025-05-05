@@ -1,13 +1,12 @@
-import { Link, Outlet, createFileRoute, useRouter } from "@tanstack/react-router";
-import { authClient } from "@tau/auth-client";
-import { Button, NavigationMenu } from "@tau/ui";
-import { useEffect } from "react";
-import { toast } from "sonner";
-import { Header } from "~/components/header";
-import { AppSidebar } from "~/components/sidebar/app";
+import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
+import { NavigationMenu } from "@tau/ui";
+import { api } from "~/lib/api";
 import { sidebar } from "~/lib/sidebar";
 
 export const Route = createFileRoute("/auth")({
+	beforeLoad: async () => {
+		await api.users.assertAnonymous();
+	},
 	loader: async (ctx) => {
 		await ctx.context.queryClient.ensureQueryData(sidebar.queries.get());
 	},
@@ -16,20 +15,6 @@ export const Route = createFileRoute("/auth")({
 });
 
 function Component() {
-	const { data } = authClient.useSession();
-	const { navigate } = useRouter();
-	console.log();
-
-	useEffect(() => {
-		if (!data?.user) {
-			if (!location.pathname.includes("auth/")) {
-				navigate({ to: "/auth/signin" });
-			}
-		} else {
-			navigate({ to: "/" });
-		}
-	}, [data, navigate]);
-
 	return (
 		<>
 			<nav className="grid grid-cols-3 items-center w-full p-4">
@@ -185,51 +170,24 @@ function Component() {
 					<p>TANSTACK START.</p>
 				</div>
 				<div className="flex items-center justify-center gap-4">
-					{data?.user ? (
-						<p>Hello {data.user.name}</p>
-					) : (
-						<NavigationMenu.Root>
-							<NavigationMenu.List>
-								<NavigationMenu.Item>
-									<NavigationMenu.Link asChild>
-										<Link to="/auth/signin" activeProps={{ className: "bg-accent/50" }}>
-											Sign In
-										</Link>
-									</NavigationMenu.Link>
-								</NavigationMenu.Item>
-								<NavigationMenu.Item>
-									<NavigationMenu.Link asChild>
-										<Link to="/auth/signup" activeProps={{ className: "bg-accent/50" }}>
-											Sign Up
-										</Link>
-									</NavigationMenu.Link>
-								</NavigationMenu.Item>
-							</NavigationMenu.List>
-						</NavigationMenu.Root>
-					)}
-				</div>
-				<div className="flex items-center gap-4 justify-center">
-					{data?.user && (
-						<Button
-							onClick={() =>
-								authClient.signOut(
-									{},
-									{
-										onError: (error) => {
-											console.warn(error);
-											toast.error(error.error.message);
-										},
-										onSuccess: () => {
-											toast.success("You have been signed out!");
-										},
-									},
-								)
-							}
-							variant="destructive"
-						>
-							Sign Out
-						</Button>
-					)}
+					<NavigationMenu.Root>
+						<NavigationMenu.List>
+							<NavigationMenu.Item>
+								<NavigationMenu.Link asChild>
+									<Link to="/auth/signin" activeProps={{ className: "bg-accent/50" }}>
+										Sign In
+									</Link>
+								</NavigationMenu.Link>
+							</NavigationMenu.Item>
+							<NavigationMenu.Item>
+								<NavigationMenu.Link asChild>
+									<Link to="/auth/signup" activeProps={{ className: "bg-accent/50" }}>
+										Sign Up
+									</Link>
+								</NavigationMenu.Link>
+							</NavigationMenu.Item>
+						</NavigationMenu.List>
+					</NavigationMenu.Root>
 				</div>
 			</nav>
 

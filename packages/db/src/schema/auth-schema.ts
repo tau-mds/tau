@@ -1,57 +1,62 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable } from "drizzle-orm/sqlite-core";
+import { ids } from "../ids";
+import { id } from "../lib/id";
 
-export const organizer = sqliteTable("organizer", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: integer("email_verified", { mode: "boolean" }).notNull(),
-  image: text("image"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
-});
+export const organizer = sqliteTable("organizer", (t) => ({
+	id: id(ids.organizer).primaryKey(),
+	name: t.text().notNull(),
+	email: t.text().notNull().unique(),
+	emailVerified: t.integer({ mode: "boolean" }).notNull(),
+	image: t.text(),
+	createdAt: t.integer({ mode: "timestamp" }).notNull(),
+	updatedAt: t.integer({ mode: "timestamp" }).notNull(),
+}));
 
-export type Organizer = typeof organizer.$inferSelect;
+export type organizer = typeof organizer.$inferSelect;
 
-export const session = sqliteTable("session", {
-  id: text("id").primaryKey(),
-  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-  token: text("token").notNull().unique(),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  userId: text("user_id")
-    .notNull()
-    .references(() => organizer.id, { onDelete: "cascade" }),
-});
+export const session = sqliteTable("session", (t) => ({
+	id: id(ids.session).primaryKey(),
+	expiresAt: t.integer({ mode: "timestamp" }).notNull(),
+	token: t.text().notNull().unique(),
+	createdAt: t.integer({ mode: "timestamp" }).notNull(),
+	updatedAt: t.integer({ mode: "timestamp" }).notNull(),
+	ipAddress: t.text(),
+	userAgent: t.text(),
 
-export const account = sqliteTable("account", {
-  id: text("id").primaryKey(),
-  accountId: text("account_id").notNull(),
-  providerId: text("provider_id").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => organizer.id, { onDelete: "cascade" }),
-  accessToken: text("access_token"),
-  refreshToken: text("refresh_token"),
-  idToken: text("id_token"),
-  accessTokenExpiresAt: integer("access_token_expires_at", {
-    mode: "timestamp",
-  }),
-  refreshTokenExpiresAt: integer("refresh_token_expires_at", {
-    mode: "timestamp",
-  }),
-  scope: text("scope"),
-  password: text("password"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
-});
+	userId: id(ids.organizer, { generate: false })
+		.notNull()
+		.references(() => organizer.id, { onDelete: "cascade" }),
+}));
 
-export const verification = sqliteTable("verification", {
-  id: text("id").primaryKey(),
-  identifier: text("identifier").notNull(),
-  value: text("value").notNull(),
-  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }),
-  updatedAt: integer("updated_at", { mode: "timestamp" }),
-});
+export type session = typeof session.$inferSelect;
+
+export const account = sqliteTable("account", (t) => ({
+	id: id(ids.account).primaryKey(),
+	accountId: t.text().notNull(),
+	providerId: t.text().notNull(),
+	userId: id(ids.organizer, { generate: false })
+		.notNull()
+		.references(() => organizer.id, { onDelete: "cascade" }),
+	accessToken: t.text(),
+	refreshToken: t.text(),
+	idToken: t.text(),
+	accessTokenExpiresAt: t.integer({ mode: "timestamp" }),
+	refreshTokenExpiresAt: t.integer({ mode: "timestamp" }),
+	scope: t.text(),
+	password: t.text(),
+	createdAt: t.integer({ mode: "timestamp" }).notNull(),
+	updatedAt: t.integer({ mode: "timestamp" }).notNull(),
+}));
+
+export type account = typeof account.$inferSelect;
+
+export const verification = sqliteTable("verification", (t) => ({
+	id: id(ids.verification).primaryKey(),
+	identifier: t.text().notNull(),
+	value: t.text().notNull(),
+	expiresAt: t.integer({ mode: "timestamp" }).notNull(),
+	createdAt: t.integer({ mode: "timestamp" }),
+	updatedAt: t.integer({ mode: "timestamp" }),
+}));
+
+export type verification = typeof verification.$inferSelect;

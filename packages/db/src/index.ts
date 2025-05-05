@@ -1,2 +1,3 @@
 export { db, connection } from "./connection";
-export * from "./schema";
+export * as schema from "./schema";
+export * from "drizzle-orm";

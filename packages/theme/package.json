@@ -1,13 +1,13 @@
 {
-  "name": "@tau/theme",
-  "private": true,
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    ".": "./src/index.css",
-    "./tailwind.css": "./src/tailwind.css"
-  },
-  "dependencies": {
-    "tw-animate-css": "^1.2.8"
-  }
+	"name": "@tau/theme",
+	"private": true,
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": "./src/index.css",
+		"./tailwind.css": "./src/tailwind.css"
+	},
+	"dependencies": {
+		"tw-animate-css": "^1.2.8"
+	}
 }
