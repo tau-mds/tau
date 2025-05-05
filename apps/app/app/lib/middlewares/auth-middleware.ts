@@ -2,6 +2,7 @@ import { createMiddleware } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { type Session, auth } from "@tau/auth-server";
 
+/** @deprecated please use `middleware.auth` */
 export const authMiddleware = createMiddleware().server(async ({ next }) => {
 	// Getting the user session in backend
 	const request = getWebRequest();
