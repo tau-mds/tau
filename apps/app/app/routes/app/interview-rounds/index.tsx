@@ -1,13 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { db } from "@tau/db";
-import { Avatar, Badge, Button, Card, Dialog, Separator, Tabs } from "@tau/ui";
+import {
+  createFileRoute,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
+import { Tabs } from "@tau/ui";
+import * as v from "valibot";
 
-import CalendarIcon from "~icons/radix-icons/calendar";
-import ClockIcon from "~icons/radix-icons/clock";
-import PlusCircledIcon from "~icons/radix-icons/plus-circled";
-import Pencil1Icon from "~icons/radix-icons/pencil-1";
-import TrashIcon from "~icons/radix-icons/trash";
-import { CardDescriptionInterviewRound } from "~/components/app/interview-rounds/CardDescriptionInterviewRount";
+import { HeaderInterviewRounds } from "~/components/app/interview-rounds/HeaderInterviewRounds";
+import { InterviewRoundsList } from "~/components/app/interview-rounds/InterviewRoundsList";
 
 // Mock organizers
 export const mockOrganizers = [
@@ -79,67 +79,52 @@ export const mockInterviewRounds = [
 
 export const Route = createFileRoute("/app/interview-rounds/")({
   component: RouteComponent,
-  loader: () => {
+  loaderDeps: ({ search: { status, search } }) => ({ status, search }),
+  loader: ({ deps }) => {
+    console.log(deps);
+    let interviewRounds = mockInterviewRounds;
+    if (deps.search) {
+      const search = deps.search;
+      interviewRounds = interviewRounds.filter((round) =>
+        round.title.includes(search)
+      );
+    }
+
+    if (!deps.status || deps.status === "all") {
+      return {
+        interviewRounds,
+      };
+    }
     // In a real implementation, you would fetch from API/DB
     return {
-      interviewRounds: mockInterviewRounds,
+      interviewRounds: interviewRounds.filter(
+        (round) => round.status === deps.status
+      ),
     };
   },
+  validateSearch: v.object({
+    status: v.optional(v.string()),
+    search: v.optional(v.string()),
+  }),
 });
 
 function RouteComponent() {
   const { interviewRounds } = Route.useLoaderData();
+  const navigate = useNavigate({ from: Route.fullPath });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "active":
-        return "green";
-      case "scheduled":
-        return "blue";
-      case "draft":
-        return "yellow";
-      default:
-        return "gray";
-    }
-  };
+  const handleTabChange = (value: string) => {
+    // Handle tab change logic here
+    console.log("Selected tab:", value);
 
-  const formatDate = (date: Date | null) => {
-    if (!date) return "Not set";
-    return new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }).format(date);
+    // navigate({ params: (prev) => ({ ...prev, status: value }) });
+    navigate({ search: (prev) => ({ ...prev, status: value }) });
   };
 
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Interview Rounds</h1>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <Button>
-              <PlusCircledIcon />
-              Create New Round
-            </Button>
-          </Dialog.Trigger>
-          <Dialog.Content>
-            <Dialog.Header>
-              <Dialog.Title>Create New Interview Round</Dialog.Title>
-              <Dialog.Description>
-                Set up a new interview round for your candidates.
-              </Dialog.Description>
-            </Dialog.Header>
-            {/* Form would go here */}
-            <Dialog.Footer>
-              <Button variant="outline">Cancel</Button>
-              <Button>Create Round</Button>
-            </Dialog.Footer>
-          </Dialog.Content>
-        </Dialog.Root>
-      </div>
+      <HeaderInterviewRounds />
 
-      <Tabs.Root defaultValue="all">
+      <Tabs.Root defaultValue="all" onValueChange={handleTabChange}>
         <Tabs.List>
           <Tabs.Trigger value="all">All Rounds</Tabs.Trigger>
           <Tabs.Trigger value="active">Active</Tabs.Trigger>
@@ -147,79 +132,16 @@ function RouteComponent() {
           <Tabs.Trigger value="draft">Drafts</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="all" className="pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {interviewRounds.map((round) => (
-              <Card.Root key={round.id} className="overflow-hidden">
-                <Card.Header>
-                  <div className="flex justify-between">
-                    <Badge variant={getStatusColor(round.status)}>
-                      {round.status.charAt(0).toUpperCase() +
-                        round.status.slice(1)}
-                    </Badge>
-                    <div className="flex space-x-1">
-                      <Button variant="ghost" size="icon">
-                        <Pencil1Icon className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon">
-                        <TrashIcon className="h-4 w-4 text-destructive" />
-                      </Button>
-                    </div>
-                  </div>
-                  <Card.Title>{round.title}</Card.Title>
-                  <CardDescriptionInterviewRound
-                    description={round.description}
-                  />
-                </Card.Header>
-                <Separator />
-                <Card.Content className="pt-4">
-                  <div className="flex items-center gap-2 text-sm mb-2">
-                    <ClockIcon className="h-4 w-4 text-muted-foreground" />
-                    <span>
-                      {round.interview_duration} minutes per interview
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                    <span>
-                      {formatDate(round.start_date)} -{" "}
-                      {formatDate(round.end_date)}
-                    </span>
-                  </div>
-                </Card.Content>
-                <Separator />
-                <Card.Footer className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Avatar.Root className="h-8 w-8">
-                      <Avatar.Image
-                        src={round.organizer.image}
-                        alt={round.organizer.name}
-                      />
-                      <Avatar.Fallback>
-                        {round.organizer.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </Avatar.Fallback>
-                    </Avatar.Root>
-                    <div className="text-sm">
-                      <p className="font-medium">{round.organizer.name}</p>
-                      <p className="text-muted-foreground">Organizer</p>
-                    </div>
-                  </div>
-                  <Button variant="outline">View Details</Button>
-                </Card.Footer>
-              </Card.Root>
-            ))}
-          </div>
+          <InterviewRoundsList interviewRounds={interviewRounds} />
         </Tabs.Content>
         <Tabs.Content value="active">
-          {/* Filtered content for active rounds */}
+          <InterviewRoundsList interviewRounds={interviewRounds} />
         </Tabs.Content>
         <Tabs.Content value="scheduled">
-          {/* Filtered content for scheduled rounds */}
+          <InterviewRoundsList interviewRounds={interviewRounds} />
         </Tabs.Content>
         <Tabs.Content value="draft">
-          {/* Filtered content for draft rounds */}
+          <InterviewRoundsList interviewRounds={interviewRounds} />
         </Tabs.Content>
       </Tabs.Root>
     </div>
