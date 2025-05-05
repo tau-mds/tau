@@ -81,7 +81,6 @@ export const Route = createFileRoute("/app/interview-rounds/")({
   component: RouteComponent,
   loaderDeps: ({ search: { status, search } }) => ({ status, search }),
   loader: ({ deps }) => {
-    console.log(deps);
     let interviewRounds = mockInterviewRounds;
     if (deps.search) {
       const search = deps.search;
