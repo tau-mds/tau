@@ -1,17 +1,21 @@
 import { createMiddleware } from "@tanstack/react-start";
-import { middleware } from "~/lib/middlewares";
-import { assert } from "@tau/utils";
 import * as v from "valibot";
+import { getWebRequest } from "vinxi/http";
+
+import { auth } from "@tau/auth-server";
 import { ids } from "@tau/db/ids";
+import { assert } from "@tau/utils";
 
-export const organizer = createMiddleware()
-	.middleware([middleware.auth])
-	.server(async ({ context, next }) => {
-		assert(!!context.session?.user.id, "Unauthorized: No user session");
+export const organizer = createMiddleware().server(async ({ next }) => {
+	const request = getWebRequest();
+	assert(!!request, "Cannot get request");
 
-		const organizerId = v.parse(ids.organizer, context.session.user.id);
+	const session = await auth.api.getSession({ headers: request.headers });
 
-		return next({
-			context: { organizerId },
-		});
+	assert(!!session?.user.id, "Unauthorized: No user session");
+	const organizerId = v.parse(ids.organizer, session.user.id);
+
+	return next({
+		context: { session, organizerId },
 	});
+});
