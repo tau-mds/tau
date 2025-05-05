@@ -1,15 +1,14 @@
 import { sql } from "drizzle-orm";
-import * as t from "drizzle-orm/sqlite-core";
+import { foreignKey, sqliteTable } from "drizzle-orm/sqlite-core";
 import { ids } from "../ids";
-import { typedId } from "../lib/id";
 import { organizer } from "./auth-schema";
+import { id } from "../lib/id";
 
-export const interviewRoundTable = t.sqliteTable(
+export const interview_round = sqliteTable(
 	"interview_rounds",
-	{
-		id: typedId(ids.interviewRound).primaryKey(),
-		// organizer_id: t.text("organizer_id").notNull(),
-		organizer_id: typedId(ids.organizer).notNull(),
+	(t) => ({
+		id: id(ids.interview_round).primaryKey(),
+		organizer_id: id(ids.organizer, { generate: false }).notNull(),
 		title: t.text().notNull(),
 		description: t.text(),
 		interview_duration: t.integer(),
@@ -22,16 +21,14 @@ export const interviewRoundTable = t.sqliteTable(
 			.notNull()
 			.default(sql`(unixepoch())`)
 			.$onUpdateFn(() => new Date()),
-	},
-	(table) => {
-		return [
-			t.foreignKey({
-				columns: [table.organizer_id],
-				foreignColumns: [organizer.id],
-			}),
-		];
-	},
+	}),
+	(table) => [
+		foreignKey({
+			columns: [table.organizer_id],
+			foreignColumns: [organizer.id],
+		}),
+	],
 );
 
-export type InterviewRound = typeof interviewRoundTable.$inferSelect;
-export type NewInterviewRound = typeof interviewRoundTable.$inferInsert;
+export type interview_round = typeof interview_round.$inferSelect;
+export type interview_round_insert = typeof interview_round.$inferInsert;

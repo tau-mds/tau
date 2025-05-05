@@ -1,11 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { authMiddleware } from "../middlewares/auth-middleware";
+import { middleware } from "~/lib/middlewares";
 
-export * as echo from "./echo";
-
+/** @deprecated please use `api.users.current` */
 export const fetchUser = createServerFn({ method: "GET" })
-	.middleware([authMiddleware])
+	.middleware([middleware.auth])
 	.handler(async ({ context }) => {
 		return context.session?.user;
 	});

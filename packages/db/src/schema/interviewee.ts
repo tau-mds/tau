@@ -1,23 +1,22 @@
-import * as t from "drizzle-orm/sqlite-core";
-import { foreignKey, primaryKey } from "drizzle-orm/sqlite-core";
+import { foreignKey, primaryKey, sqliteTable } from "drizzle-orm/sqlite-core";
 import { ids } from "../ids";
-import { typedId } from "../lib/id";
-import { interviewRoundTable } from "./interview_round";
+import { interview_round } from "./interview_round";
+import { id } from "../lib/id";
 
-export const intervieweeTable = t.sqliteTable(
+export const interviewee = sqliteTable(
 	"interviewees",
-	{
+	(t) => ({
 		email: t.text().notNull(),
-		interview_round_id: typedId(ids.interviewRound).notNull(),
-	},
+		interview_round_id: id(ids.interview_round, { generate: false }).notNull(),
+	}),
 	(table) => [
 		primaryKey({ columns: [table.email, table.interview_round_id] }),
 		foreignKey({
 			columns: [table.interview_round_id],
-			foreignColumns: [interviewRoundTable.id],
+			foreignColumns: [interview_round.id],
 		}),
 	],
 );
 
-export type Interviewee = typeof intervieweeTable.$inferSelect;
-export type NewInterviewee = typeof intervieweeTable.$inferInsert;
+export type interviewee = typeof interviewee.$inferSelect;
+export type interviewee_insert = typeof interviewee.$inferInsert;

@@ -1,8 +1,5 @@
-import { Button, Input } from "@tau/ui";
-import React from "react";
-import { toast } from "sonner";
-// import { authClient } from "@tau/auth-client";
-import { authClient } from "../../../../../packages/auth-client/src/index";
+import { Button, Input, toast } from "@tau/ui";
+import { authClient } from "@tau/auth-client";
 
 export function InviteForm() {
 	return (
@@ -30,6 +27,7 @@ export function InviteForm() {
 				/>
 				<Button type="submit">Invite</Button>
 			</form>
+
 			<Button
 				type="button"
 				onClick={() => {

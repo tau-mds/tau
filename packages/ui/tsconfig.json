@@ -3,6 +3,7 @@
 	"include": ["src", ".storybook", "vite.config.ts"],
 	"exclude": ["node_modules", "dist", "storybook-static"],
 	"compilerOptions": {
-		"types": ["unplugin-icons/types/react"]
+		"types": ["unplugin-icons/types/react"],
+		"exactOptionalPropertyTypes": false
 	}
 }
