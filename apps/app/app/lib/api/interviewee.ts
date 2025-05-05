@@ -2,17 +2,14 @@ import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { db, schema } from "@tau/db";
 import { ids } from "@tau/db/ids";
-import { and, eq, isNull, not } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import * as v from "valibot";
-import { authMiddleware } from "../middlewares/auth-middleware";
-import { organizerMiddleware } from "../middlewares/organizer-middleware";
-import { interviewerMiddleware } from "../middlewares/interviewer-middleware";
 import { intervieweeMiddleware } from "../middlewares/interviewee-middleware";
 
 export * from "./interviewee";
 
 const ReserveInterviewValidator = v.object({
-  roundId: v.string(),
+  roundId: ids.interview_round,
   scheduled_time: v.string(),
   interviewer_email: v.pipe(v.string(), v.email()),
 });
@@ -22,22 +19,22 @@ const reserveInterview = createServerFn({ method: "POST" })
   .validator(ReserveInterviewValidator)
   .handler(async ({ context, data }) => {
     const userId = context.session?.user?.id;
+    const userEmail = context.session?.user?.email;
 
-    if (!userId) {
+    if (!userId || !userEmail) {
       console.error(
-        "Middleware failed to attach user or user ID in POST handler."
+        "Middleware failed to attach user or user ID/email in POST handler."
       );
       throw new Error("Unauthorized: Authentication context missing.");
     }
-    const roundId: string & v.Brand<"ivro_id"> = data.roundId as string &
-      v.Brand<"ivro_id">;
 
-    const userEmail = context.session?.user?.email;
+    const { roundId, scheduled_time, interviewer_email } = data;
 
+    // Check if interviewer exists for the round
     const interviewer = await db.query.interviewer.findFirst({
       where: and(
         eq(schema.interviewer.interview_round_id, roundId),
-        eq(schema.interviewer.email, data.interviewer_email)
+        eq(schema.interviewer.email, interviewer_email)
       ),
     });
 
@@ -45,7 +42,8 @@ const reserveInterview = createServerFn({ method: "POST" })
       throw new Error("Inexistent interviewer!");
     }
 
-    const alreadyResearved = await db
+    // Check if user already booked an interview in this round
+    const alreadyReserved = await db
       .select()
       .from(schema.interview_slot)
       .where(
@@ -55,11 +53,12 @@ const reserveInterview = createServerFn({ method: "POST" })
         )
       );
 
-    if (alreadyResearved.length > 0) {
-      throw new Error("Unathorized: Already booked an interview!");
+    if (alreadyReserved.length > 0) {
+      throw new Error("Unauthorized: Already booked an interview!");
     }
 
-    await db
+    // Assign interview slot to the user
+    const updated = await db
       .update(schema.interview_slot)
       .set({
         interviewee_email: userEmail,
@@ -67,25 +66,51 @@ const reserveInterview = createServerFn({ method: "POST" })
       })
       .where(
         and(
-          eq(schema.interview_slot.interviewer_email, data.interviewer_email),
+          eq(schema.interview_slot.interviewer_email, interviewer_email),
           eq(schema.interview_slot.interview_round_id, roundId),
-          eq(schema.interview_slot.start_at, new Date(data.scheduled_time)),
+          eq(schema.interview_slot.start_at, new Date(scheduled_time)),
           isNull(schema.interview_slot.interviewee_email)
         )
       );
 
+    // Check remaining slots for interviewer
     const condition = and(
-      eq(schema.interview_slot.interviewer_email, data.interviewer_email),
+      eq(schema.interview_slot.interviewer_email, interviewer_email),
       eq(schema.interview_slot.interview_round_id, roundId),
       isNull(schema.interview_slot.interviewee_email)
     );
 
-    const interviewerReservation = await db
+    const remainingSlots = await db
       .select()
       .from(schema.interview_slot)
       .where(condition);
 
-    if (interviewer?.interviews_count <= interviewerReservation.length) {
+    // If interviewer has no remaining slots, delete those slots
+    if (interviewer.interviews_count <= remainingSlots.length) {
       await db.delete(schema.interview_slot).where(condition);
     }
+
+    return { success: true, updatedRows: updated.rowsAffected };
   });
+
+export const queries = {
+  reserveInterview: (input: {
+    roundId: ids.interview_round;
+    scheduled_time: string;
+    interviewer_email: string;
+  }) =>
+    queryOptions({
+      queryKey: [
+        "interviewSlots",
+        input.roundId,
+        "reserve",
+        input.interviewer_email,
+        input.scheduled_time,
+      ],
+      queryFn: (opts) =>
+        reserveInterview({
+          data: input,
+          signal: opts.signal,
+        }),
+    }),
+};
