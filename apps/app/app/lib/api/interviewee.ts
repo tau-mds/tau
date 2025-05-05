@@ -54,7 +54,7 @@ const reserveInterview = createServerFn({ method: "POST" })
       );
 
     if (alreadyReserved.length > 0) {
-      throw new Error("Unauthorized: Already booked an interview!");
+      throw new Error("Conflict: Interview already booked!");
     }
 
     // Assign interview slot to the user

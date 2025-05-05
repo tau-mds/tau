@@ -356,7 +356,7 @@ export interface FileRouteTypes {
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile"
+    | "/app/settings/account/profile";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/app/settings"
@@ -369,7 +369,7 @@ export interface FileRouteTypes {
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile"
+    | "/app/settings/account/profile";
   id:
     | "__root__"
     | "/_landing"
@@ -385,7 +385,7 @@ export interface FileRouteTypes {
     | "/app/settings/account"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
-    | "/app/settings/account/profile"
+    | "/app/settings/account/profile";
   fileRoutesById: FileRoutesById;
 }
 
@@ -429,7 +429,7 @@ export const routeTree = rootRoute
       "filePath": "app/layout.tsx",
       "children": [
         "/app/settings",
-        "/app/",
+        "/app/"
       ]
     },
     "/auth": {
