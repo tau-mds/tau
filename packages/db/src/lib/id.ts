@@ -1,19 +1,21 @@
-import { customType } from "drizzle-orm/sqlite-core";
-import { ulid as genUlid } from "ulid";
-import * as v from "valibot";
+import { type SQLiteTextBuilderInitial, text } from "drizzle-orm/sqlite-core";
+import { ids } from "../ids";
+import type { $Type, HasDefault, HasRuntimeDefault } from "drizzle-orm";
 
-export function createId<const P extends string>(prefix: P) {
-	const schema = v.pipe(v.string(), v.brand(`${prefix}_id`));
-	return {
-		schema,
-		new: () => `${prefix}_${genUlid()}` as v.InferOutput<typeof schema>,
-	};
-}
+export function id<T extends ids.type>(
+	id: T,
+	config: { generate: false },
+): $Type<SQLiteTextBuilderInitial<"", [string, ...string[]], undefined>, ids.Infer<T>>;
+export function id<T extends ids.type>(
+	id: T,
+	config?: { generate: true },
+): HasRuntimeDefault<
+	HasDefault<
+		$Type<SQLiteTextBuilderInitial<"", [string, ...string[]], undefined>, ids.Infer<T>>
+	>
+>;
 
-export type InferId<Id extends ReturnType<typeof createId>> = v.InferOutput<Id["schema"]>;
-
-export function typedId<TId extends ReturnType<typeof createId>>(_: TId) {
-	return customType<{ data: v.InferOutput<TId["schema"]> }>({
-		dataType: () => "text",
-	})({});
+export function id<T extends ids.type>(id: T, config?: { generate: boolean }) {
+	const col = text().$type<ids.Infer<T>>();
+	return (config?.generate ?? true) ? col.$defaultFn(() => ids.generate(id)) : col;
 }

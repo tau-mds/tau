@@ -1,14 +1,11 @@
-import { Link, Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
 import { NavigationMenu } from "@tau/ui";
-import { fetchUser } from "~/lib/api/fetch-user";
+import { api } from "~/lib/api";
 import { sidebar } from "~/lib/sidebar";
 
 export const Route = createFileRoute("/auth")({
 	beforeLoad: async () => {
-		const user = await fetchUser();
-		if (user) {
-			throw redirect({ to: "/" });
-		}
+		await api.users.assertAnonymous();
 	},
 	loader: async (ctx) => {
 		await ctx.context.queryClient.ensureQueryData(sidebar.queries.get());
