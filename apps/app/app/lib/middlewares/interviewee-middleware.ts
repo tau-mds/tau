@@ -1,8 +1,7 @@
 import { createMiddleware } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { type Session, auth } from "@tau/auth-server";
-import { db, schema } from "@tau/db";
-import { and, eq } from "drizzle-orm";
+import { db, schema, and, eq } from "@tau/db";
 
 export const intervieweeMiddleware = createMiddleware().server(
   async ({ next, data }: any) => {

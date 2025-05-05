@@ -1,9 +1,9 @@
 import { createMiddleware } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { type Session, auth } from "@tau/auth-server";
-import { db, schema } from "@tau/db";
-import { eq } from "drizzle-orm";
+import { db, schema, eq } from "@tau/db";
 
+/** @deprecated please use `middleware.organizer` */
 export const organizerMiddleware = createMiddleware().server(
 	async ({ next, data }: any) => {
 		const request = getWebRequest();

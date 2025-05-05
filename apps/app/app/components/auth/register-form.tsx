@@ -1,16 +1,15 @@
-"use client";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { authClient } from "@tau/auth-client";
-import { Button, Card, Input, Label } from "@tau/ui";
+import { Button, Card, Input, Label, toast } from "@tau/ui";
 import type React from "react";
-import { toast } from "sonner";
 
 export function RegisterForm() {
+	const router = useRouter();
+
 	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		const form = e.target as HTMLFormElement;
 		const data = new FormData(form);
-		console.log(data);
 		authClient.signUp.email(
 			{
 				name: data.get("name") as string,
@@ -24,6 +23,7 @@ export function RegisterForm() {
 				},
 				onSuccess: () => {
 					toast.success("Account has been created!");
+					router.navigate({ to: "/app" });
 				},
 			},
 		);

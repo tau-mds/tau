@@ -48,7 +48,7 @@ export function Layout(props: { children: React.ReactNode }) {
 		<ClientOnly>
 			<Sheet.Root>
 				<Splitter.Root
-					className="w-full lg:max-h-svh *:transition-[flex-grow] ease-linear duration-0"
+					className="size-full md:!h-svh md:overflow-hidden *:transition-[flex-grow] ease-linear duration-0"
 					panels={[
 						{
 							id: "sidebar",
@@ -104,10 +104,8 @@ export function Root({ className, ...props }: React.ComponentProps<"aside">) {
 
 	return (
 		<Splitter.Panel id="sidebar" data-slot="sidebar-root" asChild>
-			<div className="group peer relative hidden text-sidebar-foreground md:block [view-transition-name:sidebar]">
-				<div className="relative bg-transparent transition-[width] duration-200 ease-linear" />
-
-				<div className="z-10 hidden fixe h-svh transition-[left,right,width] duration-200 ease-linear md:flex border-r">
+			<div className="group peer hidden shrink-0 text-sidebar-foreground md:block top-0 [view-transition-name:sidebar]">
+				<div className="z-10 hidden md:h-svh transition-[left,right,width] duration-200 ease-linear md:flex border-r">
 					<aside
 						data-sidebar="sidebar"
 						className={cx("flex h-full w-full flex-col bg-sidebar", className)}
@@ -149,17 +147,24 @@ export function Content({ className, ...props }: React.ComponentProps<"div">) {
 	);
 }
 
-export function Main({ className, ...props }: React.ComponentProps<"main">) {
+export function Main({ className, children, ...props }: React.ComponentProps<"main">) {
 	const isMobile = useIsMobile();
 	if (isMobile) {
 		return (
-			<main className={cx("px-4 py-2 bg-background w-full", className)} {...props} />
+			<main className={cx("px-4 py-2 bg-background w-full", className)} {...props}>
+				{children}
+			</main>
 		);
 	}
 
 	return (
 		<Splitter.Panel id="main" asChild>
-			<main className={cx("px-4 py-2 !overflow-auto", className)} {...props} />
+			<main
+				className={cx("px-4 py-2 flex-1 md:h-svh md:!overflow-y-auto", className)}
+				{...props}
+			>
+				<div>{children}</div>
+			</main>
 		</Splitter.Panel>
 	);
 }
