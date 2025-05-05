@@ -63,9 +63,6 @@ importers:
       '@epic-web/client-hints':
         specifier: ^1.3.5
         version: 1.3.5
-      '@fontsource-variable/jetbrains-mono':
-        specifier: ^5.2.0
-        version: 5.2.5
       '@tanstack/react-query':
         specifier: ^5.74.4
         version: 5.75.1(react@19.1.0)
@@ -111,27 +108,15 @@ importers:
       '@xstate/store':
         specifier: ^3.5.1
         version: 3.5.1(react@19.1.0)(solid-js@1.9.6)
-      drizzle-orm:
-        specifier: ^0.42.0
-        version: 0.42.0(@libsql/client@0.15.4)(kysely@0.27.6)
-      lucide-react:
-        specifier: ^0.503.0
-        version: 0.503.0(react@19.1.0)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       react:
         specifier: catalog:react
         version: 19.1.0
       react-dom:
         specifier: catalog:react
         version: 19.1.0(react@19.1.0)
-      sonner:
-        specifier: ^2.0.3
-        version: 2.0.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      ulid:
-        specifier: ^3.0.0
-        version: 3.0.0
-      unenv:
-        specifier: ^1.10.0
-        version: 1.10.0
       valibot:
         specifier: 'catalog:'
         version: 1.0.0(typescript@5.8.3)
@@ -340,7 +325,7 @@ importers:
         version: 19.1.0
       react-day-picker:
         specifier: ^8.10.1
-        version: 8.10.1(date-fns@3.6.0)(react@19.1.0)
+        version: 8.10.1(date-fns@4.1.0)(react@19.1.0)
       react-dom:
         specifier: catalog:react
         version: 19.1.0(react@19.1.0)
@@ -2063,6 +2048,9 @@ packages:
   '@poppinss/exception@1.2.1':
     resolution: {integrity: sha512-aQypoot0HPSJa6gDPEPTntc1GT6QINrSbgRlRhadGW2WaYqUK3tK4Bw9SBMZXhmxd3GeAlZjVcODHgiu+THY7A==}
     engines: {node: '>=18'}
+
+  '@preact/signals-core@1.8.0':
+    resolution: {integrity: sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA==}
 
   '@radix-ui/number@1.1.1':
     resolution: {integrity: sha512-MkKCwxlXTgz6CFoJx3pCwn07GKp36+aZyu/u2Ln2VrA5DcdyCZkASEDBTd8x5whTQQL5CiYf4prXKLcgQdv29g==}
@@ -4652,8 +4640,8 @@ packages:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
 
-  date-fns@3.6.0:
-    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   dax-sh@0.39.2:
     resolution: {integrity: sha512-gpuGEkBQM+5y6p4cWaw9+ePy5TNon+fdwFVtTI8leU3UhwhsBfPewRxMXGuQNC+M2b/MDGMlfgpqynkcd0C3FQ==}
@@ -5874,7 +5862,6 @@ packages:
 
   libsql@0.5.8:
     resolution: {integrity: sha512-+OopMI1wM/NvAJTHf3O3+beHd1YfKLnSVsOGBl3/7UBDZ4ydVadkbBk5Hjjs9d3ALC5rBaftMY59AvwyC8MzPw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lightningcss-darwin-arm64@1.29.2:
@@ -6077,11 +6064,6 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
-
-  lucide-react@0.503.0:
-    resolution: {integrity: sha512-HGGkdlPWQ0vTF8jJ5TdIqhQXZi6uh3LnNgfZ8MHiuxFfX3RZeA79r2MW2tHAZKlAVfoNE8esm3p+O6VkIvpj6w==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   luxon@3.6.1:
     resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
@@ -9729,6 +9711,8 @@ snapshots:
       supports-color: 10.0.0
 
   '@poppinss/exception@1.2.1': {}
+
+  '@preact/signals-core@1.8.0': {}
 
   '@radix-ui/number@1.1.1': {}
 
@@ -13396,7 +13380,7 @@ snapshots:
 
   data-uri-to-buffer@4.0.1: {}
 
-  date-fns@3.6.0: {}
+  date-fns@4.1.0: {}
 
   dax-sh@0.39.2:
     dependencies:
@@ -14884,10 +14868,6 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@0.503.0(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-
   luxon@3.6.1: {}
 
   lz-string@1.5.0: {}
@@ -16049,9 +16029,9 @@ snapshots:
       defu: 6.1.4
       destr: 2.0.5
 
-  react-day-picker@8.10.1(date-fns@3.6.0)(react@19.1.0):
+  react-day-picker@8.10.1(date-fns@4.1.0)(react@19.1.0):
     dependencies:
-      date-fns: 3.6.0
+      date-fns: 4.1.0
       react: 19.1.0
 
   react-docgen-typescript@2.2.2(typescript@5.8.3):
