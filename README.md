@@ -14,7 +14,7 @@
 
 ## About Tau
 
-< insert description >
+Interview scheduling application that matches automatically interviewers and candidates based on overlapping availability intervals. Allows both interviewers and candidates to sign in via Magic Link, making it very simple to express their availability. Only the administrator does not have the convenience to sign in without an email, username or password.
 
 ## Features
 
