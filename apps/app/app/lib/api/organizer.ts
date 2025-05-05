@@ -70,6 +70,17 @@ const EmailListValidator = v.object({
 	roundId: v.string("Round ID must be a string"),
 	emails: v.array(v.pipe(v.string(), v.email("Invalid email format"))),
 });
+
+const InterviewerListValidator = v.object({
+  roundId: v.string("Round ID must be a string"),
+  interviewers: v.array(
+    v.object({
+      email: v.pipe(v.string(), v.email("Invalid email format")),
+      count: v.number("The interview number must be a number"),
+    })
+  ),
+});
+
 const getInterviewRoundOrganizerPreviewHandler = createServerFn({
 	method: "GET",
 })
