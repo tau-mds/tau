@@ -1,7 +1,6 @@
 <p align="center">
 	<h1 align="center"><b>Tau</b></h1>
 <p align="center">
-    -insert small text-
     <br />
     <br />
     <a href="#">Website</a>
