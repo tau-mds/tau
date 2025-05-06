@@ -12,6 +12,5 @@ export const status = v.picklist([draft, schedule, open, closed]);
 export type status = v.InferOutput<typeof status>;
 
 export function editable(interviewRound: schema.interview_round) {
-	return interviewRound.status === draft;
+  return interviewRound.status === draft;
 }
-

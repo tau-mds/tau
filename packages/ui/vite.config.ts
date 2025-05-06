@@ -7,13 +7,13 @@ import { defineConfig, mergeConfig } from "vite";
 import pkg from "./package.json";
 
 export default mergeConfig(
-	defineConfig({
-		plugins: [react(), tailwindcss(), icons({ compiler: "jsx", jsx: "react" })],
-	}),
-	buildConfig({
-		entry: ["./src/index.ts"],
-		srcDir: "./src",
-		exclude: ["**/*.stories.tsx"],
-		externalDeps: Object.keys(pkg.dependencies),
-	}),
+  defineConfig({
+    plugins: [react(), tailwindcss(), icons({ compiler: "jsx", jsx: "react" })],
+  }),
+  buildConfig({
+    entry: ["./src/index.ts"],
+    srcDir: "./src",
+    exclude: ["**/*.stories.tsx"],
+    externalDeps: Object.keys(pkg.dependencies),
+  }),
 );

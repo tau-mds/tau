@@ -7,24 +7,24 @@ import { CommandPalette } from "~/lib/cmdk";
 import { sidebar } from "~/lib/sidebar";
 
 export const Route = createFileRoute("/app")({
-	beforeLoad: async () => {
-		await api.users.assertAuthenticated();
-	},
-	loader: async (ctx) => {
-		await ctx.context.queryClient.ensureQueryData(sidebar.queries.get());
-	},
+  beforeLoad: async () => {
+    await api.users.assertAuthenticated();
+  },
+  loader: async (ctx) => {
+    await ctx.context.queryClient.ensureQueryData(sidebar.queries.get());
+  },
 
-	component: Component,
+  component: Component,
 });
 
 function Component() {
-	return (
-		<AppSidebar>
-			<CommandPalette />
+  return (
+    <AppSidebar>
+      <CommandPalette />
 
-			<Header />
+      <Header />
 
-			<Outlet />
-		</AppSidebar>
-	);
+      <Outlet />
+    </AppSidebar>
+  );
 }

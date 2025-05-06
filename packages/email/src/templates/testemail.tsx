@@ -12,8 +12,8 @@ export const TestEmail = () => {
       </Button>
 
       <p>Click the button above to join the event!</p>
-    </Html> 
+    </Html>
   );
-}
+};
 
 export default TestEmail;

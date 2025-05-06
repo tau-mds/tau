@@ -15,10 +15,7 @@ export function CardDescriptionInterviewRound({
       : description || "No description provided";
 
   return (
-    <Card.Description
-      className="h-11 overflow-hidden"
-      style={{ height: "2.75rem" }}
-    >
+    <Card.Description className="h-11 overflow-hidden" style={{ height: "2.75rem" }}>
       {displayText}
     </Card.Description>
   );

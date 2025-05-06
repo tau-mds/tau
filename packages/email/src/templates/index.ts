@@ -1,3 +1,1 @@
-export {
-    TestEmail
-} from "./testemail";
+export { TestEmail } from "./testemail";

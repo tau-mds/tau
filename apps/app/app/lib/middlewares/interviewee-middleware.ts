@@ -40,7 +40,7 @@ export const intervieweeMiddleware = createMiddleware().server(
     const interviewee = await db.query.interviewee.findFirst({
       where: and(
         eq(schema.interviewee.interview_round_id, roundId),
-        eq(schema.interviewee.email, session.user.email)
+        eq(schema.interviewee.email, session.user.email),
       ),
     });
 
@@ -54,5 +54,5 @@ export const intervieweeMiddleware = createMiddleware().server(
         session,
       },
     });
-  }
+  },
 );

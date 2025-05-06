@@ -3,15 +3,15 @@ import { Label } from "../label";
 import { Switch } from "./switch";
 
 const meta = {
-	title: "Components / Switch",
-	component: Switch,
+  title: "Components / Switch",
+  component: Switch,
 
-	render: () => (
-		<div className="flex items-center space-x-2">
-			<Switch id="airplane-mode" />
-			<Label htmlFor="airplane-mode">Airplane Mode</Label>
-		</div>
-	),
+  render: () => (
+    <div className="flex items-center space-x-2">
+      <Switch id="airplane-mode" />
+      <Label htmlFor="airplane-mode">Airplane Mode</Label>
+    </div>
+  ),
 } satisfies Meta<typeof Switch>;
 export default meta;
 

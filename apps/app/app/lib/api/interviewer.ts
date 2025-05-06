@@ -20,9 +20,7 @@ const scheduleInterview = createServerFn({ method: "POST" })
     const userEmail = context.session?.user?.email;
 
     if (!userId || !userEmail) {
-      console.error(
-        "Middleware failed to attach user or user ID/email in POST handler."
-      );
+      console.error("Middleware failed to attach user or user ID/email in POST handler.");
       throw new Error("Unauthorized: Authentication context missing.");
     }
 

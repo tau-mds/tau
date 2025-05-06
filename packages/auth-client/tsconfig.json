@@ -1,7 +1,7 @@
 {
-	"extends": ["@tau/tsconfig/base.json"],
-	"compilerOptions": {
-		"declaration": false,
-		"declarationMap": false
-	}
+  "extends": ["@tau/tsconfig/base.json"],
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false
+  }
 }

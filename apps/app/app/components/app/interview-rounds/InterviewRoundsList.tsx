@@ -10,9 +10,7 @@ interface InterviewRoundsListProps {
   interviewRounds: typeof mockInterviewRounds;
 }
 
-export function InterviewRoundsList({
-  interviewRounds,
-}: InterviewRoundsListProps) {
+export function InterviewRoundsList({ interviewRounds }: InterviewRoundsListProps) {
   const statusToVariant = (status: string) => {
     switch (status) {
       case "active":
@@ -54,12 +52,9 @@ export function InterviewRoundsList({
             strokeLinecap="round"
           />
         </svg>
-        <h2 className="text-xl font-semibold mb-2">
-          No interview rounds found
-        </h2>
+        <h2 className="text-xl font-semibold mb-2">No interview rounds found</h2>
         <p className="mb-4">
-          Try adjusting your search or create a new interview round to get
-          started.
+          Try adjusting your search or create a new interview round to get started.
         </p>
       </div>
     );
@@ -103,10 +98,7 @@ export function InterviewRoundsList({
           <Card.Footer className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Avatar.Root className="h-8 w-8">
-                <Avatar.Image
-                  src={round.organizer?.image}
-                  alt={round.organizer?.name}
-                />
+                <Avatar.Image src={round.organizer?.image} alt={round.organizer?.name} />
                 <Avatar.Fallback>
                   {round.organizer?.name
                     .split(" ")

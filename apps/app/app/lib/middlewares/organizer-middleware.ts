@@ -5,45 +5,45 @@ import { db, schema, eq } from "@tau/db";
 
 /** @deprecated please use `middleware.organizer` */
 export const organizerMiddleware = createMiddleware().server(
-	async ({ next, data }: any) => {
-		const request = getWebRequest();
+  async ({ next, data }: any) => {
+    const request = getWebRequest();
 
-		if (!request) {
-			throw new Error("Unauthorized: No request found");
-		}
+    if (!request) {
+      throw new Error("Unauthorized: No request found");
+    }
 
-		const session: Session | null = await auth.api.getSession({
-			headers: request.headers,
-		});
+    const session: Session | null = await auth.api.getSession({
+      headers: request.headers,
+    });
 
-		if (!session?.user?.id) {
-			throw new Error("Unauthorized: No user session");
-		}
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized: No user session");
+    }
 
-		const userId = session.user.id;
-		const roundId = data?.roundId;
+    const userId = session.user.id;
+    const roundId = data?.roundId;
 
-		if (!roundId) {
-			throw new Error("Bad Request: Missing roundId");
-		}
+    if (!roundId) {
+      throw new Error("Bad Request: Missing roundId");
+    }
 
-		const round = await db.query.interview_round.findFirst({
-			where: eq(schema.interview_round.id, roundId),
-		});
+    const round = await db.query.interview_round.findFirst({
+      where: eq(schema.interview_round.id, roundId),
+    });
 
-		if (!round) {
-			throw new Error("Not Found: Interview round does not exist");
-		}
+    if (!round) {
+      throw new Error("Not Found: Interview round does not exist");
+    }
 
-		if (round.organizer_id !== userId) {
-			throw new Error("Forbidden: You do not own this interview round");
-		}
+    if (round.organizer_id !== userId) {
+      throw new Error("Forbidden: You do not own this interview round");
+    }
 
-		// Authorized, continue with context
-		return next({
-			context: {
-				session,
-			},
-		});
-	},
+    // Authorized, continue with context
+    return next({
+      context: {
+        session,
+      },
+    });
+  },
 );

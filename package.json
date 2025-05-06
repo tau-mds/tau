@@ -1,26 +1,26 @@
 {
-	"name": "tau",
-	"private": true,
-	"type": "module",
-	"scripts": {
-		"lint": "biome check . --write",
-		"format": "biome format . --write",
-		"typecheck": "tsc",
-		"turbo": "turbo",
-		"test": "turbo run test --concurrency=1",
-		"local": "pnpm --dir=tools/local local",
-		"migrate:prod": "pnpm --dir=packages/db drizzle:prod migrate",
-		"db": "pnpm --dir=packages/db drizzle",
-		"gen:package": "turbo gen workspace --copy @tau/template --type package"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@tau/tsconfig": "workspace:*",
-		"@types/node": "^20.11.17",
-		"@vitest/ui": "^3.0.8",
-		"turbo": "^2.5.2",
-		"typescript": "^5.8.3",
-		"vitest": "^3.0.8"
-	},
-	"packageManager": "pnpm@10.9.0"
+  "name": "tau",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "biome check . --write",
+    "format": "biome format . --write",
+    "typecheck": "tsc",
+    "turbo": "turbo",
+    "test": "turbo run test --concurrency=1",
+    "local": "pnpm --dir=tools/local local",
+    "migrate:prod": "pnpm --dir=packages/db drizzle:prod migrate",
+    "db": "pnpm --dir=packages/db drizzle",
+    "gen:package": "turbo gen workspace --copy @tau/template --type package"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@tau/tsconfig": "workspace:*",
+    "@types/node": "^20.11.17",
+    "@vitest/ui": "^3.0.8",
+    "turbo": "^2.5.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.0.8"
+  },
+  "packageManager": "pnpm@10.9.0"
 }

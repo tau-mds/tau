@@ -14,7 +14,7 @@ export const isoDate = v.pipe(v.string(), v.isoDate(), v.brand("isoDate"));
 export type isoDate = v.InferOutput<typeof isoDate>;
 
 export function newIsoDate(value: Date | number | string) {
-	return v.parse(isoDate, formatISO(value, { representation: "date" }));
+  return v.parse(isoDate, formatISO(value, { representation: "date" }));
 }
 
 /**
@@ -25,10 +25,10 @@ export function newIsoDate(value: Date | number | string) {
  * - Additionally, the `start` date must be before the `end` date.
  */
 export const period = v.pipe(
-	v.object({
-		start: isoDate,
-		end: isoDate,
-	}),
-	v.check(({ start, end }) => isBefore(start, end), "Start date must be before end date"),
+  v.object({
+    start: isoDate,
+    end: isoDate,
+  }),
+  v.check(({ start, end }) => isBefore(start, end), "Start date must be before end date"),
 );
 export type period = v.InferOutput<typeof period>;

@@ -1,5 +1,5 @@
 export {
-	Collapsible as Root,
-	CollapsibleTrigger as Trigger,
-	CollapsibleContent as Content,
+  Collapsible as Root,
+  CollapsibleTrigger as Trigger,
+  CollapsibleContent as Content,
 } from "./collapsible";

@@ -3,21 +3,21 @@ import { Button } from "../button";
 import { Tooltip } from "./index";
 
 const meta = {
-	title: "Components / Tooltip",
-	component: Tooltip.Root,
+  title: "Components / Tooltip",
+  component: Tooltip.Root,
 
-	render: () => (
-		<Tooltip.Provider>
-			<Tooltip.Root>
-				<Tooltip.Trigger asChild>
-					<Button variant="outline">Hover</Button>
-				</Tooltip.Trigger>
-				<Tooltip.Content>
-					<p>Add to library</p>
-				</Tooltip.Content>
-			</Tooltip.Root>
-		</Tooltip.Provider>
-	),
+  render: () => (
+    <Tooltip.Provider>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <Button variant="outline">Hover</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          <p>Add to library</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  ),
 } satisfies Meta<typeof Tooltip.Root>;
 export default meta;
 
