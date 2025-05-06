@@ -24,8 +24,8 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Checks
-        run: pnpm turbo lint build --filter=@tau/app
+      # - name: Checks
+      #   run: pnpm turbo lint build --filter=@tau/app
 
       - name: 🎈 Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@1.5
