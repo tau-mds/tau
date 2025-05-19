@@ -18,14 +18,11 @@
             pnpm
           ];
 
-          packages = with pkgs; [
-            nil
-            nixd
-          ];
-
           shellHook = ''
-            echo "Installing @antfu/ni globally..."
-            npm add --global turbo @antfu/ni
+            if ! npm list -g @antfu/ni >/dev/null 2>&1; then
+              echo "Package `@antfu/ni` not found. Installing globally..."
+              npm i -g @antfu/ni
+            fi
           '';
         };
       }

@@ -1,0 +1,1 @@
+ALTER TABLE `interviewers` ADD `color` text NOT NULL;

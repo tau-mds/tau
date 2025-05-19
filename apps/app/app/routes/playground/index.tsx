@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Button, Card, Text } from "@tau/ui";
-import { api } from "~/lib/api";
-import * as v from "valibot";
-import { ids } from "@tau/db/ids";
-import { isoDate } from "~/lib/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { ids } from "@tau/db/ids";
+import { Button, Card, Text } from "@tau/ui";
 import { format } from "date-fns";
+import * as v from "valibot";
+import { api } from "~/lib/api";
+import { isoDate } from "~/lib/types";
 
 export const Route = createFileRoute("/playground/")({
   component: RouteComponent,

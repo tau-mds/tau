@@ -32,3 +32,7 @@ export const period = v.pipe(
   v.check(({ start, end }) => isBefore(start, end), "Start date must be before end date"),
 );
 export type period = v.InferOutput<typeof period>;
+
+export function newPeriod(from: { start: Date; end: Date }) {
+  return v.parse(period, { start: newIsoDate(from.start), end: newIsoDate(from.end) });
+}

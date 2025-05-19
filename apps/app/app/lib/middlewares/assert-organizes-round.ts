@@ -1,8 +1,8 @@
 import { createMiddleware } from "@tanstack/react-start";
 import * as v from "valibot";
 
-import { ids } from "@tau/db/ids";
 import { db } from "@tau/db";
+import { ids } from "@tau/db/ids";
 import { assert } from "@tau/utils";
 
 import { organizer } from "./organizer";

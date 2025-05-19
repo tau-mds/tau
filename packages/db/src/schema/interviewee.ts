@@ -1,7 +1,7 @@
 import { foreignKey, primaryKey, sqliteTable } from "drizzle-orm/sqlite-core";
 import { ids } from "../ids";
-import { interview_round } from "./interview_round";
 import { id } from "../lib/id";
+import { interview_round } from "./interview_round";
 
 export const interviewee = sqliteTable(
   "interviewees",

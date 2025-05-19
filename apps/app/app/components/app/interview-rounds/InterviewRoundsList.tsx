@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Avatar, Badge, Button, Card, Separator } from "@tau/ui";
 import type { mockInterviewRounds } from "~/routes/app/interview-rounds";
 import CalendarIcon from "~icons/radix-icons/calendar";
@@ -111,7 +112,11 @@ export function InterviewRoundsList({ interviewRounds }: InterviewRoundsListProp
                 <p className="text-muted-foreground">Organizer</p>
               </div>
             </div>
-            <Button variant="outline">View Details</Button>
+            <Button variant="outline" asChild>
+              <Link to="/app/interview-rounds/$roundId" params={{ roundId: round.id }}>
+                View Details
+              </Link>
+            </Button>
           </Card.Footer>
         </Card.Root>
       ))}
