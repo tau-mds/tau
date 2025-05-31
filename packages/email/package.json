@@ -17,15 +17,16 @@
   },
   "devDependencies": {
     "@tau/tsconfig": "workspace:*",
-    "react-email": "^4.0.11",
     "@types/react": "catalog:react",
-    "@types/react-dom": "catalog:react"
+    "@types/react-dom": "catalog:react",
+    "react-email": "^4.0.11"
   },
   "dependencies": {
     "@react-email/components": "^0.0.38",
+    "date-fns": "^4.1.0",
     "react": "catalog:react",
     "react-dom": "catalog:react",
-    "valibot": "catalog:",
-    "resend": "^4.5.0"
+    "resend": "^4.5.0",
+    "valibot": "catalog:"
   }
 }
