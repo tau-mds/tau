@@ -1,4 +1,8 @@
-import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
 import { Tabs } from "@tau/ui";
 import * as v from "valibot";
 
@@ -46,7 +50,8 @@ export const mockInterviewRounds = [
     id: "ivro_02KY8743M2ZNBWA4HJRT9BDV7Q",
     organizer_id: mockOrganizers[0]?.id ?? null, // Sarah Johnson
     title: "Backend Engineer - Platform Team",
-    description: "Interviews for backend engineers with Node.js and database experience",
+    description:
+      "Interviews for backend engineers with Node.js and database experience",
     interview_duration: 60, // minutes
     status: "active",
     start_date: new Date("2025-05-15T08:00:00Z"),
@@ -80,7 +85,7 @@ export const Route = createFileRoute("/app/interview-rounds/")({
     if (deps.search) {
       const search = deps.search;
       interviewRounds = interviewRounds.filter((round) =>
-        round.title.toLowerCase().includes(search.toLowerCase()),
+        round.title.toLowerCase().includes(search.toLowerCase())
       );
     }
 
@@ -91,7 +96,9 @@ export const Route = createFileRoute("/app/interview-rounds/")({
     }
     // In a real implementation, you would fetch from API/DB
     return {
-      interviewRounds: interviewRounds.filter((round) => round.status === deps.status),
+      interviewRounds: interviewRounds.filter(
+        (round) => round.status === deps.status
+      ),
     };
   },
   validateSearch: v.object({

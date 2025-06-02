@@ -151,7 +151,7 @@ const create = createServerFn({ method: "POST" })
         `Attempting to create an interview round for organizer ID: ${context.organizerId}`,
       );
       const result = await db.insert(schema.interview_round).values({
-        id: ids.interviewRound.new(),
+        id: ids.generate(ids.interview_round),
         title: data.title,
         description: data.description,
         organizer_id: context.organizerId as string & v.Brand<"orgz_id">,
