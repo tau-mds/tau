@@ -8,6 +8,7 @@ import * as v from "valibot";
 
 import { HeaderInterviewRounds } from "~/components/app/interview-rounds/HeaderInterviewRounds";
 import { InterviewRoundsList } from "~/components/app/interview-rounds/InterviewRoundsList";
+import { api } from "~/lib/api";
 
 // Mock organizers
 export const mockOrganizers = [
@@ -80,8 +81,17 @@ export const mockInterviewRounds = [
 export const Route = createFileRoute("/app/interview-rounds/")({
   component: RouteComponent,
   loaderDeps: ({ search: { status, search } }) => ({ status, search }),
-  loader: ({ deps }) => {
-    let interviewRounds = mockInterviewRounds;
+  loader: async ({ deps, context }) => {
+    let interviewRounds = await context.queryClient.fetchQuery(
+      api.interviewRounds.queries.all()
+    );
+    console.log("Interview Rounds Loader Data:", interviewRounds);
+
+    if (!interviewRounds) {
+      // In a real implementation, you would fetch from API/DB
+      return { interviewRounds: [] };
+    }
+
     if (deps.search) {
       const search = deps.search;
       interviewRounds = interviewRounds.filter((round) =>
