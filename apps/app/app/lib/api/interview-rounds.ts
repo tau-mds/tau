@@ -7,27 +7,27 @@ import { ids } from "@tau/db/ids";
 import { toast } from "@tau/ui";
 import { assert } from "@tau/utils";
 
-import { interviewRounds } from "~/lib/core/interview-rounds";
 import { middleware } from "~/lib/middlewares";
 import { period } from "~/lib/types";
+import { interviewRound } from "../core";
 
 export * as interviewRounds from "./interview-rounds";
 
 export const queries = {
-  interview_round: (id: ids.interview_round) =>
-    queryOptions({
-      queryKey: ["interviewRounds", id, "combined"],
-      queryFn: (opts) =>
-        interviewRound({
-          data: { id: id },
-          signal: opts.signal,
-        }) as Promise<
-          schema.interview_round & {
-            interviewees: Array<schema.interviewee>;
-            interviewers: Array<schema.interviewer>;
-          }
-        >,
-    }),
+  // interview_round: (id: ids.interview_round) =>
+  //   queryOptions({
+  //     queryKey: ["interviewRounds", id, "combined"],
+  //     queryFn: (opts) =>
+  //       interviewRound({
+  //         data: { id: id },
+  //         signal: opts.signal,
+  //       }) as Promise<
+  //         schema.interview_round & {
+  //           interviewees: Array<schema.interviewee>;
+  //           interviewers: Array<schema.interviewer>;
+  //         }
+  //       >,
+  //   }),
 
   all: () =>
     queryOptions({
@@ -66,25 +66,25 @@ export const queries = {
     }),
 };
 
-const interviewRound = createServerFn({ method: "GET" })
-  .middleware([middleware.assertOrganizesRound])
-  .validator(v.object({ id: ids.interview_round }))
-  .handler(async ({ data, context }) => {
-    const { round_id } = data;
+// const interviewRound = createServerFn({ method: "GET" })
+//   .middleware([middleware.assertOrganizesRound])
+//   .validator(v.object({ id: ids.interview_round }))
+//   .handler(async ({ data, context }) => {
+//     const { round_id } = data;
 
-    console.info(
-      `Workspaceing interview round ${round_id} for organizer ID: ${context.organizerId}`,
-    );
+//     console.info(
+//       `Workspaceing interview round ${round_id} for organizer ID: ${context.organizerId}`,
+//     );
 
-    const intervieweeData = await interviewees({ data: { id: round_id } });
-    const interviewerData = await interviewers({ data: { id: round_id } });
+//     const intervieweeData = await interviewees({ data: { id: round_id } });
+//     const interviewerData = await interviewers({ data: { id: round_id } });
 
-    return {
-      ...context.round,
-      interviewees: intervieweeData,
-      interviewers: interviewerData,
-    };
-  });
+//     return {
+//       ...context.round,
+//       interviewees: intervieweeData,
+//       interviewers: interviewerData,
+//     };
+//   });
 
 const indexAll = createServerFn({ method: "GET" })
   .middleware([middleware.organizer])
@@ -158,7 +158,7 @@ const create = createServerFn({ method: "POST" })
         interview_duration: data.duration,
         start_date: new Date(data.period.start),
         end_date: new Date(data.period.end),
-        status: interviewRounds.draft,
+        status: interviewRound.draft,
       });
 
       console.info(
@@ -267,7 +267,7 @@ const update = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     console.debug({ data });
     assert(
-      context.round.status === interviewRounds.draft,
+      context.round.status === interviewRound.draft,
       "Round cannot be updated anymore",
     );
 
@@ -345,7 +345,7 @@ const updateInterviewees = createServerFn({ method: "POST" })
   .validator(updateIntervieweesPayload)
   .handler(async ({ data, context }) => {
     assert(
-      context.round.status === interviewRounds.draft,
+      context.round.status === interviewRound.draft,
       "Interviewees cannot be added or removed further",
     );
 
@@ -393,7 +393,7 @@ const updateInterviewers = createServerFn({ method: "POST" })
   .middleware([middleware.assertOrganizesRound])
   .validator(updateInterviewersPayload)
   .handler(async ({ data, context }) => {
-    assert(context.round.status === interviewRounds.draft, "Cannot invite interviewers");
+    assert(context.round.status === interviewRound.draft, "Cannot invite interviewers");
 
     await db.batch([
       db
@@ -431,18 +431,18 @@ const schedule = createServerFn({ method: "POST" })
   .middleware([middleware.assertOrganizesRound])
   .handler(async ({ data, context }) => {
     assert(
-      context.round.status === interviewRounds.draft,
+      context.round.status === interviewRound.draft,
       "Round must be draft before scheduling",
     );
 
     await db
       .update(schema.interview_round)
-      .set({ status: interviewRounds.schedule })
+      .set({ status: interviewRound.schedule })
       .where(
         and(
           eq(schema.interview_round.organizer_id, context.organizerId),
           eq(schema.interview_round.id, data.id),
-          eq(schema.interview_round.status, interviewRounds.draft),
+          eq(schema.interview_round.status, interviewRound.draft),
         ),
       );
   });
@@ -456,7 +456,7 @@ export function useSchedule() {
 
       const snapshot = queryClient.getQueryData(queries.id(data.id).queryKey);
       queryClient.setQueryData(queries.id(data.id).queryKey, (oldData) =>
-        !oldData ? oldData : { ...oldData, status: interviewRounds.schedule },
+        !oldData ? oldData : { ...oldData, status: interviewRound.schedule },
       );
 
       return { snapshot };
@@ -470,18 +470,18 @@ const open = createServerFn({ method: "POST" })
   .middleware([middleware.assertOrganizesRound])
   .handler(async ({ data, context }) => {
     assert(
-      context.round.status === interviewRounds.schedule,
+      context.round.status === interviewRound.schedule,
       "Round must be schedule before open",
     );
 
     await db
       .update(schema.interview_round)
-      .set({ status: interviewRounds.open })
+      .set({ status: interviewRound.open })
       .where(
         and(
           eq(schema.interview_round.organizer_id, context.organizerId),
           eq(schema.interview_round.id, data.id),
-          eq(schema.interview_round.status, interviewRounds.schedule),
+          eq(schema.interview_round.status, interviewRound.schedule),
         ),
       );
   });
@@ -496,7 +496,7 @@ export function useOpen() {
       const snapshot = queryClient.getQueryData(queries.id(data.id).queryKey);
 
       queryClient.setQueryData(queries.id(data.id).queryKey, (oldData) =>
-        !oldData ? oldData : { ...oldData, status: interviewRounds.open },
+        !oldData ? oldData : { ...oldData, status: interviewRound.open },
       );
 
       return { snapshot };
@@ -510,18 +510,18 @@ const close = createServerFn({ method: "POST" })
   .middleware([middleware.assertOrganizesRound])
   .handler(async ({ data, context }) => {
     assert(
-      context.round.status === interviewRounds.open,
+      context.round.status === interviewRound.open,
       "Round must be open before close",
     );
 
     await db
       .update(schema.interview_round)
-      .set({ status: interviewRounds.closed })
+      .set({ status: interviewRound.closed })
       .where(
         and(
           eq(schema.interview_round.organizer_id, context.organizerId),
           eq(schema.interview_round.id, data.id),
-          eq(schema.interview_round.status, interviewRounds.open),
+          eq(schema.interview_round.status, interviewRound.open),
         ),
       );
   });
@@ -535,7 +535,7 @@ export function useClose() {
 
       const snapshot = queryClient.getQueryData(queries.id(data.id).queryKey);
       queryClient.setQueryData(queries.id(data.id).queryKey, (oldData) =>
-        !oldData ? oldData : { ...oldData, status: interviewRounds.closed },
+        !oldData ? oldData : { ...oldData, status: interviewRound.closed },
       );
 
       return { snapshot };

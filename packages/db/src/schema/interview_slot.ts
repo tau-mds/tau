@@ -1,10 +1,10 @@
-import { sql } from "drizzle-orm";
-import { sqliteTable, foreignKey } from "drizzle-orm/sqlite-core";
+import { relations, sql } from "drizzle-orm";
+import { foreignKey, sqliteTable } from "drizzle-orm/sqlite-core";
 import { ids } from "../ids";
+import { id } from "../lib/id";
 import { interview_round } from "./interview_round";
 import { interviewee } from "./interviewee";
 import { interviewer } from "./interviewer";
-import { id } from "../lib/id";
 
 export const interview_slot = sqliteTable(
   "interview_slots",
@@ -35,3 +35,10 @@ export const interview_slot = sqliteTable(
 
 export type interview_slot = typeof interview_slot.$inferSelect;
 export type interview_slot_insert = typeof interview_slot.$inferInsert;
+
+export const interview_slot_relations = relations(interview_slot, (r) => ({
+  interviewer: r.one(interviewer, {
+    fields: [interview_slot.interviewer_email],
+    references: [interviewer.email],
+  }),
+}));
