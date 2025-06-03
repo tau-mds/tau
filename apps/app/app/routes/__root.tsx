@@ -45,7 +45,7 @@ function Component() {
   return (
     <Document>
       <Outlet />
-      <Toaster richColors position="bottom-center" />
+      <Toaster richColors position="bottom-right" />
     </Document>
   );
 }
@@ -64,7 +64,6 @@ function Document(props: Readonly<{ children: React.ReactNode }>) {
         {props.children}
 
         <TanStackRouterDevtools position="bottom-right" />
-        {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
         <ReactQueryDevtools buttonPosition="top-right" />
         <Scripts />
       </body>

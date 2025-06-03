@@ -5,9 +5,9 @@ import Pencil1Icon from "~icons/radix-icons/pencil-1";
 import TrashIcon from "~icons/radix-icons/trash";
 import { CardDescriptionInterviewRound } from "./CardDescriptionInterviewRount";
 import type { schema } from "@tau/db";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { api } from "~/lib/api";
-import { Brand } from "valibot";
+import type { Brand } from "valibot";
 
 interface InterviewRoundsListProps {
   interviewRounds: schema.interview_round[];
@@ -206,7 +206,14 @@ export function InterviewRoundsList({
                 <p className="text-muted-foreground">Organizer</p>
               </div>
             </div>
-            <Button variant="outline">View Details</Button>
+            <Button variant="outline" asChild>
+              <Link
+                to="/app/interview-rounds/$roundId"
+                params={{ roundId: round.id }}
+              >
+                View Details
+              </Link>
+            </Button>
           </Card.Footer>
         </Card.Root>
       ))}

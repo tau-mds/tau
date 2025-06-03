@@ -36,6 +36,13 @@
       "when": 1746275770370,
       "tag": "0004_green_quentin_quire",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1747491082179,
+      "tag": "0005_curly_chamber",
+      "breakpoints": true
     }
   ]
 }
