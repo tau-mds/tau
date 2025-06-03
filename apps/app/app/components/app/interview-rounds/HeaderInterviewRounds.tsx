@@ -1,10 +1,13 @@
 import { Button, Dialog } from "@tau/ui";
 import PlusCircledIcon from "~icons/radix-icons/plus-circled";
 import MagnifyingGlassIcon from "~icons/radix-icons/magnifying-glass";
-import { type ChangeEvent, useState, type KeyboardEvent, useEffect } from "react";
+import {
+  type ChangeEvent,
+  useState,
+  type KeyboardEvent,
+  useEffect,
+} from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-
-interface HeaderInterviewRoundsProps {}
 
 // This component is responsible for rendering the header of the interview rounds page
 export function HeaderInterviewRounds() {
@@ -61,7 +64,15 @@ export function HeaderInterviewRounds() {
           {/* Form would go here */}
           <Dialog.Footer>
             <Button variant="outline">Cancel</Button>
-            <Button>Create Round</Button>
+            <Button
+              onClick={() =>
+                navigate({
+                  to: "/app/interview-rounds/create-interview-round",
+                })
+              }
+            >
+              Create Round
+            </Button>
           </Dialog.Footer>
         </Dialog.Content>
       </Dialog.Root>

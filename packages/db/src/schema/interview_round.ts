@@ -1,8 +1,8 @@
 import { sql } from "drizzle-orm";
 import { foreignKey, sqliteTable } from "drizzle-orm/sqlite-core";
 import { ids } from "../ids";
-import { organizer } from "./auth-schema";
 import { id } from "../lib/id";
+import { organizer } from "./auth-schema";
 
 export const interview_round = sqliteTable(
   "interview_rounds",

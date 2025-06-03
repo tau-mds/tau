@@ -1,10 +1,10 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { routerWithQueryClient } from "@tanstack/react-router-with-query";
+import { toast } from "@tau/ui";
 import type React from "react";
 import { ErrorBoundary } from "~/components/error-boundary";
 import { routeTree } from "./routeTree.gen";
-import { toast } from "@tau/ui";
 
 export function createRouter() {
   const queryClient = new QueryClient({

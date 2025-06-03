@@ -1,5 +1,5 @@
-import { Button, Input, toast } from "@tau/ui";
 import { authClient } from "@tau/auth-client";
+import { Button, Input, toast } from "@tau/ui";
 
 export function InviteForm() {
   return (
