@@ -1,9 +1,14 @@
-import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
 import { Tabs } from "@tau/ui";
 import * as v from "valibot";
 
 import { HeaderInterviewRounds } from "~/components/app/interview-rounds/HeaderInterviewRounds";
 import { InterviewRoundsList } from "~/components/app/interview-rounds/InterviewRoundsList";
+import { api } from "~/lib/api";
 
 // Mock organizers
 export const mockOrganizers = [
@@ -46,7 +51,8 @@ export const mockInterviewRounds = [
     id: "ivro_02KY8743M2ZNBWA4HJRT9BDV7Q",
     organizer_id: mockOrganizers[0]?.id ?? null, // Sarah Johnson
     title: "Backend Engineer - Platform Team",
-    description: "Interviews for backend engineers with Node.js and database experience",
+    description:
+      "Interviews for backend engineers with Node.js and database experience",
     interview_duration: 60, // minutes
     status: "active",
     start_date: new Date("2025-05-15T08:00:00Z"),
@@ -75,23 +81,38 @@ export const mockInterviewRounds = [
 export const Route = createFileRoute("/app/interview-rounds/")({
   component: RouteComponent,
   loaderDeps: ({ search: { status, search } }) => ({ status, search }),
-  loader: ({ deps }) => {
-    let interviewRounds = mockInterviewRounds;
+  loader: async ({ deps, context }) => {
+    const user = await api.users.assertAuthenticated();
+
+    let interviewRounds = await context.queryClient.fetchQuery(
+      api.interviewRounds.queries.all()
+    );
+    console.log("Interview Rounds Loader Data:", interviewRounds);
+
+    if (!interviewRounds) {
+      // In a real implementation, you would fetch from API/DB
+      return { interviewRounds: [], organizer: user };
+    }
+
     if (deps.search) {
       const search = deps.search;
       interviewRounds = interviewRounds.filter((round) =>
-        round.title.toLowerCase().includes(search.toLowerCase()),
+        round.title.toLowerCase().includes(search.toLowerCase())
       );
     }
 
     if (!deps.status || deps.status === "all") {
       return {
         interviewRounds,
+        organizer: user,
       };
     }
     // In a real implementation, you would fetch from API/DB
     return {
-      interviewRounds: interviewRounds.filter((round) => round.status === deps.status),
+      interviewRounds: interviewRounds.filter(
+        (round) => round.status === deps.status
+      ),
+      organizer: user,
     };
   },
   validateSearch: v.object({
@@ -101,7 +122,7 @@ export const Route = createFileRoute("/app/interview-rounds/")({
 });
 
 function RouteComponent() {
-  const { interviewRounds } = Route.useLoaderData();
+  const { interviewRounds, organizer } = Route.useLoaderData();
   const navigate = useNavigate({ from: Route.fullPath });
 
   const handleTabChange = (value: string) => {
@@ -119,21 +140,40 @@ function RouteComponent() {
       <Tabs.Root defaultValue="all" onValueChange={handleTabChange}>
         <Tabs.List>
           <Tabs.Trigger value="all">All Rounds</Tabs.Trigger>
-          <Tabs.Trigger value="active">Active</Tabs.Trigger>
-          <Tabs.Trigger value="scheduled">Scheduled</Tabs.Trigger>
           <Tabs.Trigger value="draft">Drafts</Tabs.Trigger>
+          <Tabs.Trigger value="open">Open</Tabs.Trigger>
+          <Tabs.Trigger value="closed">Closed</Tabs.Trigger>
+          <Tabs.Trigger value="schedule">Schedule</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="all" className="pt-4">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
-        </Tabs.Content>
-        <Tabs.Content value="active">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
-        </Tabs.Content>
-        <Tabs.Content value="scheduled">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
         <Tabs.Content value="draft">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
+        </Tabs.Content>
+        <Tabs.Content value="open">
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
+        </Tabs.Content>
+        <Tabs.Content value="closed">
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
+        </Tabs.Content>
+        <Tabs.Content value="schedule">
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
       </Tabs.Root>
     </div>

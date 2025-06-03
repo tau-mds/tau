@@ -151,7 +151,7 @@ const create = createServerFn({ method: "POST" })
         `Attempting to create an interview round for organizer ID: ${context.organizerId}`,
       );
       const result = await db.insert(schema.interview_round).values({
-        id: ids.interviewRound.new(),
+        id: ids.generate(ids.interview_round),
         title: data.title,
         description: data.description,
         organizer_id: context.organizerId as string & v.Brand<"orgz_id">,
@@ -181,6 +181,71 @@ export function useCreate() {
   return useMutation({
     mutationFn: (data: createPayload) => create({ data }),
     onSettled: () => queryClient.invalidateQueries(queries.all()),
+  });
+}
+
+const deletePayload = v.object({
+  id: ids.interview_round,
+});
+type deletePayload = v.InferOutput<typeof deletePayload>;
+
+const deleteFn = createServerFn({ method: "POST" }) // "DELETE" method can also be used, POST is common for server fns
+  .middleware([middleware.assertOrganizesRound]) // Ensures the user owns the round
+  .validator(deletePayload)
+  .handler(async ({ data, context }) => {
+    try {
+      console.info(
+        `Attempting to delete interview round ID: ${data.id} for organizer ID: ${context.organizerId}`,
+      );
+
+      // You might want to add checks here, e.g., only allow deletion if round is in 'draft' status
+      // assert(context.round.status === interviewRounds.draft, "Only draft rounds can be deleted.");
+
+      const result = await db.delete(schema.interview_round).where(
+        and(
+          eq(schema.interview_round.id, data.id),
+          eq(schema.interview_round.organizer_id, context.organizerId), // Redundant due to middleware, but good for safety
+        ),
+      );
+
+      if (result.rowsAffected === 0) {
+        console.warn(
+          `No interview round found with ID: ${data.id} for organizer ID: ${context.organizerId}, or it was already deleted.`,
+        );
+        // Consider throwing an error or returning a specific status if no rows were affected
+        // throw new Error("Interview round not found or not authorized to delete.");
+      } else {
+        console.info(
+          `Successfully deleted interview round ID: ${data.id} for organizer ID: ${context.organizerId}. Affected rows: ${result.rowsAffected}`,
+        );
+      }
+
+      return { success: true, affectedRows: result.rowsAffected };
+    } catch (error) {
+      console.error(
+        `Database error deleting interview round ID ${data.id} for organizer ${context.organizerId}:`,
+        error,
+      );
+      throw new Error(
+        `Failed to delete interview round: ${error.message || "Database error"}`,
+      );
+    }
+  });
+
+export function useDelete() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: deletePayload) => deleteFn({ data }),
+    onSuccess: (data, variables) => {
+      // Invalidate queries to refetch data after deletion
+      queryClient.invalidateQueries(queries.all());
+      queryClient.invalidateQueries(queries.id(variables.id)); // Invalidate specific round query
+      toast.success("Interview round deleted successfully!");
+    },
+    onError: (error) => {
+      console.error("Error deleting interview round:", error);
+      toast.error(error.message || "Failed to delete interview round.");
+    },
   });
 }
 

@@ -22,10 +22,12 @@ import { Route as AuthSignupImport } from "./routes/auth/signup";
 import { Route as AuthSigninImport } from "./routes/auth/signin";
 import { Route as AppSettingsLayoutImport } from "./routes/app/settings/layout";
 import { Route as AppInterviewRoundsIndexImport } from "./routes/app/interview-rounds/index";
+import { Route as AppInterviewRoundsCreateInterviewRoundImport } from "./routes/app/interview-rounds/create-interview-round";
 import { Route as AppSettingsAccountLayoutImport } from "./routes/app/settings/account/layout";
 import { Route as AppSettingsAccountProfileImport } from "./routes/app/settings/account/profile";
 import { Route as AppSettingsAccountNotificationsImport } from "./routes/app/settings/account/notifications";
 import { Route as AppSettingsAccountBerbecaruImport } from "./routes/app/settings/account/berbecaru";
+import { Route as AppInterviewRoundsEditRoundIdImport } from "./routes/app/interview-rounds/edit.$roundId";
 
 // Create/Update Routes
 
@@ -94,6 +96,13 @@ const AppInterviewRoundsIndexRoute = AppInterviewRoundsIndexImport.update({
   getParentRoute: () => AppLayoutRoute,
 } as any);
 
+const AppInterviewRoundsCreateInterviewRoundRoute =
+  AppInterviewRoundsCreateInterviewRoundImport.update({
+    id: "/interview-rounds/create-interview-round",
+    path: "/interview-rounds/create-interview-round",
+    getParentRoute: () => AppLayoutRoute,
+  } as any);
+
 const AppSettingsAccountLayoutRoute = AppSettingsAccountLayoutImport.update({
   id: "/account",
   path: "/account",
@@ -118,6 +127,13 @@ const AppSettingsAccountBerbecaruRoute =
     id: "/berbecaru",
     path: "/berbecaru",
     getParentRoute: () => AppSettingsAccountLayoutRoute,
+  } as any);
+
+const AppInterviewRoundsEditRoundIdRoute =
+  AppInterviewRoundsEditRoundIdImport.update({
+    id: "/interview-rounds/edit/$roundId",
+    path: "/interview-rounds/edit/$roundId",
+    getParentRoute: () => AppLayoutRoute,
   } as any);
 
 // Populate the FileRoutesByPath interface
@@ -201,11 +217,25 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppSettingsAccountLayoutImport;
       parentRoute: typeof AppSettingsLayoutImport;
     };
+    "/app/interview-rounds/create-interview-round": {
+      id: "/app/interview-rounds/create-interview-round";
+      path: "/interview-rounds/create-interview-round";
+      fullPath: "/app/interview-rounds/create-interview-round";
+      preLoaderRoute: typeof AppInterviewRoundsCreateInterviewRoundImport;
+      parentRoute: typeof AppLayoutImport;
+    };
     "/app/interview-rounds/": {
       id: "/app/interview-rounds/";
       path: "/interview-rounds";
       fullPath: "/app/interview-rounds";
       preLoaderRoute: typeof AppInterviewRoundsIndexImport;
+      parentRoute: typeof AppLayoutImport;
+    };
+    "/app/interview-rounds/edit/$roundId": {
+      id: "/app/interview-rounds/edit/$roundId";
+      path: "/interview-rounds/edit/$roundId";
+      fullPath: "/app/interview-rounds/edit/$roundId";
+      preLoaderRoute: typeof AppInterviewRoundsEditRoundIdImport;
       parentRoute: typeof AppLayoutImport;
     };
     "/app/settings/account/berbecaru": {
@@ -278,13 +308,18 @@ const AppSettingsLayoutRouteWithChildren =
 interface AppLayoutRouteChildren {
   AppSettingsLayoutRoute: typeof AppSettingsLayoutRouteWithChildren;
   AppIndexRoute: typeof AppIndexRoute;
+  AppInterviewRoundsCreateInterviewRoundRoute: typeof AppInterviewRoundsCreateInterviewRoundRoute;
   AppInterviewRoundsIndexRoute: typeof AppInterviewRoundsIndexRoute;
+  AppInterviewRoundsEditRoundIdRoute: typeof AppInterviewRoundsEditRoundIdRoute;
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppSettingsLayoutRoute: AppSettingsLayoutRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
+  AppInterviewRoundsCreateInterviewRoundRoute:
+    AppInterviewRoundsCreateInterviewRoundRoute,
   AppInterviewRoundsIndexRoute: AppInterviewRoundsIndexRoute,
+  AppInterviewRoundsEditRoundIdRoute: AppInterviewRoundsEditRoundIdRoute,
 };
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
@@ -319,7 +354,9 @@ export interface FileRoutesByFullPath {
   "/auth/": typeof AuthIndexRoute;
   "/playground": typeof PlaygroundIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
+  "/app/interview-rounds/create-interview-round": typeof AppInterviewRoundsCreateInterviewRoundRoute;
   "/app/interview-rounds": typeof AppInterviewRoundsIndexRoute;
+  "/app/interview-rounds/edit/$roundId": typeof AppInterviewRoundsEditRoundIdRoute;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
   "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
@@ -334,7 +371,9 @@ export interface FileRoutesByTo {
   "/auth": typeof AuthIndexRoute;
   "/playground": typeof PlaygroundIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
+  "/app/interview-rounds/create-interview-round": typeof AppInterviewRoundsCreateInterviewRoundRoute;
   "/app/interview-rounds": typeof AppInterviewRoundsIndexRoute;
+  "/app/interview-rounds/edit/$roundId": typeof AppInterviewRoundsEditRoundIdRoute;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
   "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
@@ -353,7 +392,9 @@ export interface FileRoutesById {
   "/auth/": typeof AuthIndexRoute;
   "/playground/": typeof PlaygroundIndexRoute;
   "/app/settings/account": typeof AppSettingsAccountLayoutRouteWithChildren;
+  "/app/interview-rounds/create-interview-round": typeof AppInterviewRoundsCreateInterviewRoundRoute;
   "/app/interview-rounds/": typeof AppInterviewRoundsIndexRoute;
+  "/app/interview-rounds/edit/$roundId": typeof AppInterviewRoundsEditRoundIdRoute;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
   "/app/settings/account/notifications": typeof AppSettingsAccountNotificationsRoute;
   "/app/settings/account/profile": typeof AppSettingsAccountProfileRoute;
@@ -373,7 +414,9 @@ export interface FileRouteTypes {
     | "/auth/"
     | "/playground"
     | "/app/settings/account"
+    | "/app/interview-rounds/create-interview-round"
     | "/app/interview-rounds"
+    | "/app/interview-rounds/edit/$roundId"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
     | "/app/settings/account/profile";
@@ -387,7 +430,9 @@ export interface FileRouteTypes {
     | "/auth"
     | "/playground"
     | "/app/settings/account"
+    | "/app/interview-rounds/create-interview-round"
     | "/app/interview-rounds"
+    | "/app/interview-rounds/edit/$roundId"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
     | "/app/settings/account/profile";
@@ -404,7 +449,9 @@ export interface FileRouteTypes {
     | "/auth/"
     | "/playground/"
     | "/app/settings/account"
+    | "/app/interview-rounds/create-interview-round"
     | "/app/interview-rounds/"
+    | "/app/interview-rounds/edit/$roundId"
     | "/app/settings/account/berbecaru"
     | "/app/settings/account/notifications"
     | "/app/settings/account/profile";
@@ -452,7 +499,9 @@ export const routeTree = rootRoute
       "children": [
         "/app/settings",
         "/app/",
-        "/app/interview-rounds/"
+        "/app/interview-rounds/create-interview-round",
+        "/app/interview-rounds/",
+        "/app/interview-rounds/edit/$roundId"
       ]
     },
     "/auth": {
@@ -502,8 +551,16 @@ export const routeTree = rootRoute
         "/app/settings/account/profile"
       ]
     },
+    "/app/interview-rounds/create-interview-round": {
+      "filePath": "app/interview-rounds/create-interview-round.tsx",
+      "parent": "/app"
+    },
     "/app/interview-rounds/": {
       "filePath": "app/interview-rounds/index.tsx",
+      "parent": "/app"
+    },
+    "/app/interview-rounds/edit/$roundId": {
+      "filePath": "app/interview-rounds/edit.$roundId.tsx",
       "parent": "/app"
     },
     "/app/settings/account/berbecaru": {
