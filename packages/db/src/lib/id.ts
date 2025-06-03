@@ -1,6 +1,6 @@
+import type { $Type, HasDefault, HasRuntimeDefault } from "drizzle-orm";
 import { type SQLiteTextBuilderInitial, text } from "drizzle-orm/sqlite-core";
 import { ids } from "../ids";
-import type { $Type, HasDefault, HasRuntimeDefault } from "drizzle-orm";
 
 export function id<T extends ids.type>(
   id: T,
