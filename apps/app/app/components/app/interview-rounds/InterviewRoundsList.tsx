@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Avatar, Badge, Button, Card, Separator } from "@tau/ui";
+import { Avatar, Badge, Button, Card, Dialog, Separator } from "@tau/ui";
 import type { mockInterviewRounds } from "~/routes/app/interview-rounds";
 import CalendarIcon from "~icons/radix-icons/calendar";
 import ClockIcon from "~icons/radix-icons/clock";
