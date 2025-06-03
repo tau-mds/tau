@@ -16,7 +16,7 @@ export namespace IntervieweesTable {
 
 export function IntervieweesTable(props: IntervieweesTable.Props) {
   const interviewersQuery = useSuspenseQuery(
-    api.interviewRounds.queries.interviewees(props.roundId),
+    api.interviewRounds.queries.interviewees(props.roundId)
   );
 
   const [added, setAdded] = React.useState<Set<string>>(new Set());
@@ -24,6 +24,21 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
   const [adding, setAdding] = React.useState<boolean>(false);
 
   const addingRef = React.useRef<HTMLInputElement>(null);
+
+  const inviteInterviewees = () => {
+    const addedArray = Array.from(added);
+    const revokedArray = Array.from(revoked);
+    console.log("Inviting interviewees:", addedArray);
+    console.log("Revoking interviewees:", revokedArray);
+    // Here you would typically call an API to invite the interviewees
+    // and revoke the ones in the revoked set.
+    // For example:
+    // api.interviewRounds.mutations.inviteInterviewees({
+    //   roundId: props.roundId,
+    //   added: addedArray,
+    //   revoked: revokedArray,
+    // });
+  };
 
   return (
     <>
@@ -37,7 +52,7 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
 
           <CommandBar.Command
             label="Save"
-            action={() => console.log({ added, revoked })}
+            action={inviteInterviewees}
             shortcut="S"
           />
         </CommandBar.Bar>
@@ -61,7 +76,7 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
               key={interviewer.email}
               className={cx(
                 revoked.has(interviewer.email) &&
-                  "bg-destructive-surface hover:bg-destructive-surface/80",
+                  "bg-destructive-surface hover:bg-destructive-surface/80"
               )}
             >
               <Table.Cell>{interviewer.email}</Table.Cell>
@@ -163,7 +178,14 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
                 Add
               </Button>
             </Table.Cell>
-            <Table.Cell />
+            <Table.Cell className="text-right">
+              <Button
+                onClick={inviteInterviewees}
+                disabled={added.size + revoked.size === 0}
+              >
+                Send Invites
+              </Button>
+            </Table.Cell>
           </Table.Row>
         </Table.Footer>
       </Table.Root>

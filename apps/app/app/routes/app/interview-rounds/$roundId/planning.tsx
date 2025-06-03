@@ -1,13 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Switch } from "@tau/ui";
-import { addDays, addMinutes, isBefore, setHours, setMinutes, subDays } from "date-fns";
+import {
+  addDays,
+  addMinutes,
+  isBefore,
+  setHours,
+  setMinutes,
+  subDays,
+} from "date-fns";
 import React from "react";
 import { EventCalendar } from "~/components/event-calendar";
 import type { CalendarEvent } from "~/components/event-calendar";
 
-export const Route = createFileRoute("/app/interview-rounds/$roundId/planning")({
-  component: Component,
-});
+export const Route = createFileRoute("/app/interview-rounds/$roundId/planning")(
+  {
+    component: Component,
+  }
+);
 
 function Component() {
   const [events, setEvents] = React.useState<CalendarEvent[]>(sampleEvents);
@@ -33,7 +42,9 @@ function Component() {
     }
 
     setEvents(
-      events.map((event) => (event.id === updatedEvent.id ? updatedEvent : event)),
+      events.map((event) =>
+        event.id === updatedEvent.id ? updatedEvent : event
+      )
     );
   };
 
@@ -53,6 +64,7 @@ function Component() {
               duration: 90,
               location: "test",
               title: "test",
+              description: "test",
             },
           ])
         }

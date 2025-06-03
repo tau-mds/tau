@@ -1,4 +1,9 @@
-import { Link, Outlet, createFileRoute, useLocation } from "@tanstack/react-router";
+import {
+  Link,
+  Outlet,
+  createFileRoute,
+  useLocation,
+} from "@tanstack/react-router";
 import { ids } from "@tau/db/ids";
 import { Button, Card, Tabs, Text } from "@tau/ui";
 import * as v from "valibot";
@@ -14,7 +19,9 @@ import { TitleField } from "./-components/title-field";
 
 function Breadcrumb() {
   const params = Route.useParams();
-  const roundQuery = useSuspenseQuery(api.interviewRounds.queries.id(params.roundId));
+  const roundQuery = useSuspenseQuery(
+    api.interviewRounds.queries.id(params.roundId)
+  );
   return <>{roundQuery.data.title}</>;
 }
 
@@ -24,7 +31,7 @@ export const Route = createFileRoute("/app/interview-rounds/$roundId")({
   },
   loader: async ({ params, context }) => {
     await context.queryClient.ensureQueryData(
-      api.interviewRounds.queries.id(params.roundId),
+      api.interviewRounds.queries.id(params.roundId)
     );
   },
   staticData: {
@@ -35,7 +42,9 @@ export const Route = createFileRoute("/app/interview-rounds/$roundId")({
 
 function Component() {
   const params = Route.useParams();
-  const roundQuery = useSuspenseQuery(api.interviewRounds.queries.id(params.roundId));
+  const roundQuery = useSuspenseQuery(
+    api.interviewRounds.queries.id(params.roundId)
+  );
 
   const currentRoute = useLocation({
     select: (c) => c.pathname.split("/").at(-1) ?? "overview",
@@ -46,7 +55,9 @@ function Component() {
       <Card.Root className="size-full overflow-y-scroll">
         <Card.Content className="max-w-[80rem]">
           <div className="border-b">
-            <Text className="!text-3xl !font-medium">{roundQuery.data.title}</Text>
+            <Text className="!text-3xl !font-medium">
+              {roundQuery.data.title}
+            </Text>
 
             <Tabs.Root value={currentRoute}>
               <Tabs.List className="h-auto rounded-none bg-transparent p-0">
@@ -55,7 +66,7 @@ function Component() {
                   className="data-[state=active]:after:bg-primary border-none !bg-transparent relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                   asChild
                 >
-                  <Link to="/app/rounds/$roundId" params={params}>
+                  <Link to="/app/interview-rounds/$roundId" params={params}>
                     Overview
                   </Link>
                 </Tabs.Trigger>
@@ -65,7 +76,10 @@ function Component() {
                   className="data-[state=active]:after:bg-primary border-none !bg-transparent relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                   asChild
                 >
-                  <Link to="/app/interview-rounds/$roundId/planning" params={params}>
+                  <Link
+                    to="/app/interview-rounds/$roundId/planning"
+                    params={params}
+                  >
                     Planning
                   </Link>
                 </Tabs.Trigger>
