@@ -6,6 +6,8 @@ import TrashIcon from "~icons/radix-icons/trash";
 import { CardDescriptionInterviewRound } from "./CardDescriptionInterviewRount";
 import type { schema } from "@tau/db";
 import { useNavigate } from "@tanstack/react-router";
+import { api } from "~/lib/api";
+import { Brand } from "valibot";
 
 interface InterviewRoundsListProps {
   interviewRounds: schema.interview_round[];
@@ -25,6 +27,7 @@ export function InterviewRoundsList({
   organizer,
 }: InterviewRoundsListProps) {
   const navigate = useNavigate({ from: "/app/interview-rounds" });
+  const deleteRound = api.interviewRounds.useDelete();
 
   const statusToVariant = (status: string) => {
     switch (status.toLowerCase()) {
@@ -48,6 +51,18 @@ export function InterviewRoundsList({
       day: "numeric",
       year: "numeric",
     }).format(date);
+  };
+  const handleDelete = async (roundId: string) => {
+    try {
+      // Logic to delete the interview round
+      deleteRound.mutate({ id: roundId as string & Brand<"ivro_id"> });
+      // Optionally, you can show a success message or refresh the list
+      navigate({ to: "/app/interview-rounds" });
+    } catch (error) {
+      console.error("Error deleting interview round:", error);
+      // Optionally, you can show an error message to the user
+      alert("Failed to delete the interview round. Please try again.");
+    }
   };
 
   if (interviewRounds.length === 0) {
@@ -143,7 +158,11 @@ export function InterviewRoundsList({
                       </Dialog.Description>
                     </Dialog.Header>
                     <Dialog.Footer>
-                      <Button variant="destructive" size="default">
+                      <Button
+                        variant="destructive"
+                        size="default"
+                        onClick={() => handleDelete(round.id)}
+                      >
                         Delete
                       </Button>
                     </Dialog.Footer>
