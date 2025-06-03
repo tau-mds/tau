@@ -3,6 +3,8 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { magicLink } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
+import { resend, Email } from "@tau/email";
+import { render } from "@react-email/components";
 // import { string as valibotString, minLength } from "valibot"; // add valibot import
 
 // This is the server-side auth instance. It is used to interact with the auth server.
@@ -56,6 +58,19 @@ export const auth = betterAuth({
         console.log("Sending magic link to email:", email);
         // console.log("Token:", token);
         console.log("URL:", url);
+
+        const mail = Email.AppointmentLinkEmail({
+          recipientName: "None",
+          magicLink: url,
+          role: "interviewer",
+        });
+        const html = await render(mail);
+        await resend.emails.send({
+          from: "Răzvan <onboarding@resend.dev>",
+          to: [email],
+          subject: "Interview Scheduling Invitation",
+          html: html,
+        });
         // console.log("Request:", request);
       },
       generateToken(email) {
