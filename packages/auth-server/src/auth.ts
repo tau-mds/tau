@@ -53,24 +53,36 @@ export const auth = betterAuth({
     reactStartCookies(),
 
     magicLink({
-      sendMagicLink: async ({ email, url }) => {
+      sendMagicLink: async ({ email, url }, request) => {
         // send email to user
+        console.log(request);
+        if (request == null || request.body == null) return;
         console.log("Sending magic link to email:", email);
+        const body = await request.text();
+        const parsedBody = JSON.parse(body);
+        // console.log((request?.body as any)["role"])
+        console.log(parsedBody);
         // console.log("Token:", token);
         console.log("URL:", url);
-
+        let actualURL;
+        if (process.env["DATABASE_CONN_TYPE"] == "local") {
+          actualURL = "https://localhost:3000/api/auth" + url;
+        } else {
+          actualURL = url;
+        }
         const mail = Email.AppointmentLinkEmail({
-          recipientName: "None",
-          magicLink: url,
-          role: "interviewer",
+          recipientName: "Domnul Rizescu",
+          magicLink: actualURL,
+          role: parsedBody.role,
         });
         const html = await render(mail);
         await resend.emails.send({
-          from: "Răzvan <onboarding@resend.dev>",
+          from: "Tau <onboarding@resend.dev>",
           to: [email],
           subject: "Interview Scheduling Invitation",
           html: html,
         });
+
         // console.log("Request:", request);
       },
       generateToken(email) {
