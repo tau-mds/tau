@@ -82,6 +82,8 @@ export const Route = createFileRoute("/app/interview-rounds/")({
   component: RouteComponent,
   loaderDeps: ({ search: { status, search } }) => ({ status, search }),
   loader: async ({ deps, context }) => {
+    const user = await api.users.assertAuthenticated();
+
     let interviewRounds = await context.queryClient.fetchQuery(
       api.interviewRounds.queries.all()
     );
@@ -89,7 +91,7 @@ export const Route = createFileRoute("/app/interview-rounds/")({
 
     if (!interviewRounds) {
       // In a real implementation, you would fetch from API/DB
-      return { interviewRounds: [] };
+      return { interviewRounds: [], organizer: user };
     }
 
     if (deps.search) {
@@ -102,6 +104,7 @@ export const Route = createFileRoute("/app/interview-rounds/")({
     if (!deps.status || deps.status === "all") {
       return {
         interviewRounds,
+        organizer: user,
       };
     }
     // In a real implementation, you would fetch from API/DB
@@ -109,6 +112,7 @@ export const Route = createFileRoute("/app/interview-rounds/")({
       interviewRounds: interviewRounds.filter(
         (round) => round.status === deps.status
       ),
+      organizer: user,
     };
   },
   validateSearch: v.object({
@@ -118,7 +122,7 @@ export const Route = createFileRoute("/app/interview-rounds/")({
 });
 
 function RouteComponent() {
-  const { interviewRounds } = Route.useLoaderData();
+  const { interviewRounds, organizer } = Route.useLoaderData();
   const navigate = useNavigate({ from: Route.fullPath });
 
   const handleTabChange = (value: string) => {
@@ -142,19 +146,34 @@ function RouteComponent() {
           <Tabs.Trigger value="schedule">Schedule</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="all" className="pt-4">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
         <Tabs.Content value="draft">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
         <Tabs.Content value="open">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
         <Tabs.Content value="closed">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
         <Tabs.Content value="schedule">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
+          <InterviewRoundsList
+            interviewRounds={interviewRounds}
+            organizer={organizer}
+          />
         </Tabs.Content>
       </Tabs.Root>
     </div>

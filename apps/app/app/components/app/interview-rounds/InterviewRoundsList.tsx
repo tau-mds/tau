@@ -5,14 +5,27 @@ import Pencil1Icon from "~icons/radix-icons/pencil-1";
 import TrashIcon from "~icons/radix-icons/trash";
 import { CardDescriptionInterviewRound } from "./CardDescriptionInterviewRount";
 import type { schema } from "@tau/db";
+import { useNavigate } from "@tanstack/react-router";
 
 interface InterviewRoundsListProps {
   interviewRounds: schema.interview_round[];
+  organizer: {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    image?: string | null | undefined | undefined | undefined;
+  };
 }
 
 export function InterviewRoundsList({
   interviewRounds,
+  organizer,
 }: InterviewRoundsListProps) {
+  const navigate = useNavigate({ from: "/app/interview-rounds" });
+
   const statusToVariant = (status: string) => {
     switch (status.toLowerCase()) {
       case "open": // Handles "open" status
@@ -95,7 +108,17 @@ export function InterviewRoundsList({
                       </Dialog.Description>
                     </Dialog.Header>
                     <Dialog.Footer>
-                      <Button variant="default" size="default">
+                      <Button
+                        variant="default"
+                        size="default"
+                        onClick={() => {
+                          // Logic to redirect to edit page
+                          navigate({
+                            to: "/app/interview-rounds/edit/$roundId",
+                            params: { roundId: round.id },
+                          });
+                        }}
+                      >
                         Edit Round
                       </Button>
                     </Dialog.Footer>
@@ -149,18 +172,18 @@ export function InterviewRoundsList({
             <div className="flex items-center gap-2">
               <Avatar.Root className="h-8 w-8">
                 <Avatar.Image
-                  src={round.organizer?.image}
-                  alt={round.organizer?.name}
+                  src={organizer.image || ""}
+                  alt={organizer.name}
                 />
                 <Avatar.Fallback>
-                  {round.organizer?.name
+                  {organizer.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </Avatar.Fallback>
               </Avatar.Root>
               <div className="text-sm">
-                <p className="font-medium">{round.organizer?.name}</p>
+                <p className="font-medium">{organizer.name}</p>
                 <p className="text-muted-foreground">Organizer</p>
               </div>
             </div>
