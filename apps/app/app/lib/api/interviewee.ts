@@ -4,6 +4,8 @@ import { and, db, eq, isNull, schema } from "@tau/db";
 import { ids } from "@tau/db/ids";
 import * as v from "valibot";
 import { intervieweeMiddleware } from "../middlewares/interviewee-middleware";
+import { resend, Email } from "@tau/email";
+import { render } from "@react-email/components";
 
 export * from "./interviewee";
 
@@ -13,6 +15,34 @@ const ReserveInterviewValidator = v.object({
   interviewer_email: v.pipe(v.string(), v.email()),
 });
 
+const avalibleInterviewSlots = createServerFn({ method: "GET" })
+  .middleware([intervieweeMiddleware])
+  .validator(v.object({ id: ids.interview_round }))
+  .handler(async ({ data }) => {
+    const avalibleInterviewSlots = await db.query.interview_slot.findMany({
+      where: and(
+        eq(schema.interview_slot.interview_round_id, data.id),
+        isNull(schema.interview_slot.assigned_at)
+      ),
+    });
+
+    return avalibleInterviewSlots.map((slot) => slot.start_at);
+  });
+
+export const queires = {
+  avalibleSlots: (id: ids.interview_round) =>
+    queryOptions({
+      queryKey: ["interviewRounds", id],
+      queryFn: (opts) =>
+        avalibleInterviewSlots({
+          data: { id },
+          signal: opts.signal,
+        }) as Promise<Date[]>,
+    }),
+};
+
+// ----MUTATIONS----
+
 const reserveInterview = createServerFn({ method: "POST" })
   .middleware([intervieweeMiddleware])
   .validator(ReserveInterviewValidator)
@@ -21,7 +51,9 @@ const reserveInterview = createServerFn({ method: "POST" })
     const userEmail = context.session?.user?.email;
 
     if (!userId || !userEmail) {
-      console.error("Middleware failed to attach user or user ID/email in POST handler.");
+      console.error(
+        "Middleware failed to attach user or user ID/email in POST handler."
+      );
       throw new Error("Unauthorized: Authentication context missing.");
     }
 
@@ -31,7 +63,7 @@ const reserveInterview = createServerFn({ method: "POST" })
     const interviewer = await db.query.interviewer.findFirst({
       where: and(
         eq(schema.interviewer.interview_round_id, roundId),
-        eq(schema.interviewer.email, interviewer_email),
+        eq(schema.interviewer.email, interviewer_email)
       ),
     });
 
@@ -46,8 +78,8 @@ const reserveInterview = createServerFn({ method: "POST" })
       .where(
         and(
           eq(schema.interview_slot.interviewee_email, userEmail),
-          eq(schema.interview_slot.interview_round_id, roundId),
-        ),
+          eq(schema.interview_slot.interview_round_id, roundId)
+        )
       );
 
     if (alreadyReserved.length > 0) {
@@ -66,23 +98,65 @@ const reserveInterview = createServerFn({ method: "POST" })
           eq(schema.interview_slot.interviewer_email, interviewer_email),
           eq(schema.interview_slot.interview_round_id, roundId),
           eq(schema.interview_slot.start_at, new Date(scheduled_time)),
-          isNull(schema.interview_slot.interviewee_email),
-        ),
+          isNull(schema.interview_slot.interviewee_email)
+        )
       );
 
     // Check remaining slots for interviewer
     const condition = and(
       eq(schema.interview_slot.interviewer_email, interviewer_email),
       eq(schema.interview_slot.interview_round_id, roundId),
-      isNull(schema.interview_slot.interviewee_email),
+      isNull(schema.interview_slot.interviewee_email)
     );
 
-    const remainingSlots = await db.select().from(schema.interview_slot).where(condition);
+    const remainingSlots = await db
+      .select()
+      .from(schema.interview_slot)
+      .where(condition);
 
     // If interviewer has no remaining slots, delete those slots
     if (interviewer.interviews_count <= remainingSlots.length) {
       await db.delete(schema.interview_slot).where(condition);
     }
+
+    // Sending notification emails to the interviewer and interviewee!
+    const interviewerJSX = Email.InterviewConfirmationEmail({
+      recipientName: "None",
+      interviewer: interviewer.email,
+      candidate: userEmail,
+      date: scheduled_time,
+      role: "interviewer",
+      time: scheduled_time,
+      location: "NONE",
+    });
+
+    const interviewerHTML = render(interviewerJSX);
+
+    const intervieweeJSX = Email.InterviewConfirmationEmail({
+      recipientName: "None",
+      interviewer: interviewer.email,
+      candidate: userEmail,
+      date: scheduled_time,
+      role: "candidate",
+      time: scheduled_time,
+      location: "NONE",
+    });
+
+    const intervieweeHTML = render(intervieweeJSX);
+
+    await resend.emails.send({
+      from: "Răzvan <onboarding@resend.dev>",
+      to: [interviewer.email],
+      subject: "Interview Schedule Confirmation",
+      html: interviewerHTML,
+    });
+
+    await resend.emails.send({
+      from: "Răzvan <onboarding@resend.dev>",
+      to: [userEmail],
+      subject: "Interview Scheduling Confirmartion",
+      html: intervieweeHTML,
+    });
 
     return { success: true, updatedRows: updated.rowsAffected };
   });

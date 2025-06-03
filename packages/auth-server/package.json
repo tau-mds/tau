@@ -17,9 +17,12 @@
     "generate": "npx @better-auth/cli generate --output ../db/src/schema/auth-schema.ts -y"
   },
   "devDependencies": {
-    "@tau/tsconfig": "workspace:*"
+    "@tau/tsconfig": "workspace:*",
+    "@tau/email": "workspace:*",
+    "react-email": "^4.0.11"
   },
   "dependencies": {
+    "@react-email/components": "^0.0.38",
     "@tau/db": "workspace:*",
     "better-auth": "^1.2.7"
   }

@@ -34,7 +34,8 @@
     "react": "catalog:react",
     "react-dom": "catalog:react",
     "valibot": "catalog:",
-    "vinxi": "^0.5.6"
+    "vinxi": "^0.5.6",
+    "@react-email/components": "^0.0.38"
   },
   "devDependencies": {
     "@iconify-json/radix-icons": "^1.2.2",
@@ -47,6 +48,7 @@
     "@vitejs/plugin-react": "^4.4.1",
     "tailwindcss": "catalog:",
     "unplugin-icons": "^22.1.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "react-email": "^4.0.11"
   }
 }
