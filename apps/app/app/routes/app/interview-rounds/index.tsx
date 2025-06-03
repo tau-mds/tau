@@ -136,20 +136,24 @@ function RouteComponent() {
       <Tabs.Root defaultValue="all" onValueChange={handleTabChange}>
         <Tabs.List>
           <Tabs.Trigger value="all">All Rounds</Tabs.Trigger>
-          <Tabs.Trigger value="active">Active</Tabs.Trigger>
-          <Tabs.Trigger value="scheduled">Scheduled</Tabs.Trigger>
           <Tabs.Trigger value="draft">Drafts</Tabs.Trigger>
+          <Tabs.Trigger value="open">Open</Tabs.Trigger>
+          <Tabs.Trigger value="closed">Closed</Tabs.Trigger>
+          <Tabs.Trigger value="schedule">Schedule</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="all" className="pt-4">
           <InterviewRoundsList interviewRounds={interviewRounds} />
         </Tabs.Content>
-        <Tabs.Content value="active">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
-        </Tabs.Content>
-        <Tabs.Content value="scheduled">
-          <InterviewRoundsList interviewRounds={interviewRounds} />
-        </Tabs.Content>
         <Tabs.Content value="draft">
+          <InterviewRoundsList interviewRounds={interviewRounds} />
+        </Tabs.Content>
+        <Tabs.Content value="open">
+          <InterviewRoundsList interviewRounds={interviewRounds} />
+        </Tabs.Content>
+        <Tabs.Content value="closed">
+          <InterviewRoundsList interviewRounds={interviewRounds} />
+        </Tabs.Content>
+        <Tabs.Content value="schedule">
           <InterviewRoundsList interviewRounds={interviewRounds} />
         </Tabs.Content>
       </Tabs.Root>

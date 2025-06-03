@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Card, Separator } from "@tau/ui";
+import { Avatar, Badge, Button, Card, Dialog, Separator } from "@tau/ui";
 import CalendarIcon from "~icons/radix-icons/calendar";
 import ClockIcon from "~icons/radix-icons/clock";
 import Pencil1Icon from "~icons/radix-icons/pencil-1";
@@ -14,15 +14,17 @@ export function InterviewRoundsList({
   interviewRounds,
 }: InterviewRoundsListProps) {
   const statusToVariant = (status: string) => {
-    switch (status) {
-      case "active":
+    switch (status.toLowerCase()) {
+      case "open": // Handles "open" status
         return "default";
-      case "scheduled":
+      case "schedule": // Handles "schedule" status
         return "secondary";
       case "draft":
         return "outline";
+      case "closed": // Handles "closed" status
+        return "secondary"; // Using "secondary" for these non-active states
       default:
-        return "default";
+        return "default"; // Fallback for any other status
     }
   };
 
@@ -75,12 +77,55 @@ export function InterviewRoundsList({
                 {round.status.charAt(0).toUpperCase() + round.status.slice(1)}
               </Badge>
               <div className="flex space-x-1">
-                <Button variant="ghost" size="icon">
-                  <Pencil1Icon className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon">
-                  <TrashIcon className="h-4 w-4 text-destructive" />
-                </Button>
+                <Dialog.Root>
+                  <Dialog.Trigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <Pencil1Icon className="h-4 w-4" />
+                    </Button>
+                  </Dialog.Trigger>
+
+                  <Dialog.Content>
+                    <Dialog.Header>
+                      <Dialog.Title>
+                        Are you sure you want to edit this round?
+                      </Dialog.Title>
+                      <Dialog.Description>
+                        This action will redirect you to the edit page where you
+                        can modify the details of this interview round.
+                      </Dialog.Description>
+                    </Dialog.Header>
+                    <Dialog.Footer>
+                      <Button variant="default" size="default">
+                        Edit Round
+                      </Button>
+                    </Dialog.Footer>
+                  </Dialog.Content>
+                </Dialog.Root>
+
+                <Dialog.Root>
+                  <Dialog.Trigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <TrashIcon className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </Dialog.Trigger>
+
+                  <Dialog.Content>
+                    <Dialog.Header>
+                      <Dialog.Title>
+                        Are you sure you want to delete this round?
+                      </Dialog.Title>
+                      <Dialog.Description>
+                        This action cannot be undone. All data related to this
+                        interview round will be permanently deleted.
+                      </Dialog.Description>
+                    </Dialog.Header>
+                    <Dialog.Footer>
+                      <Button variant="destructive" size="default">
+                        Delete
+                      </Button>
+                    </Dialog.Footer>
+                  </Dialog.Content>
+                </Dialog.Root>
               </div>
             </div>
             <Card.Title>{round.title}</Card.Title>
