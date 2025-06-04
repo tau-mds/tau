@@ -29,6 +29,7 @@
     "@tau/theme": "workspace:*",
     "@tau/ui": "workspace:*",
     "@tau/utils": "workspace:*",
+    "@tau/email": "workspace:*",
     "@xstate/store": "^3.5.1",
     "date-fns": "^4.1.0",
     "react": "catalog:react",

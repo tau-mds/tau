@@ -24,6 +24,7 @@ export namespace Timeline {
     slots: ReadonlyArray<schema.interview_slot>;
     cols: number;
     onSlotCreate: (start: Date) => void;
+    onSlotClick?: (slotId: string) => void;
   };
 }
 
@@ -148,6 +149,13 @@ export function Timeline(props: Timeline.Props) {
                         <InterviewSlot
                           slot={slot}
                           interviewRound={props.interviewRound}
+                          onClick={
+                            props.onSlotClick
+                              ? () => {
+                                  props.onSlotClick?.(slot.id);
+                                }
+                              : undefined
+                          }
                         />
                       </div>
                     </div>
@@ -173,8 +181,9 @@ export function Timeline(props: Timeline.Props) {
                             "top-[calc(var(--week-cells-height)/4*3)]"
                         )}
                         onClick={
-                          // interviewRound.editable(props.interviewRound)
-                          true ? props.onSlotCreate : undefined
+                          interviewRound.editable(props.interviewRound)
+                            ? props.onSlotCreate
+                            : undefined
                         }
                       />
                     ))}

@@ -44,7 +44,7 @@ export const intervieweeMiddleware = createMiddleware().server(
       ),
     });
 
-    if (interviewee) {
+    if (!interviewee) {
       throw new Error("Forbidden: You are not invited to this interview round");
     }
 

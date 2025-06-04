@@ -15,6 +15,7 @@ export namespace Scheduler {
     slots: ReadonlyArray<schema.interview_slot>;
     interviewRound: Readonly<interviewRound>;
     onCreateSlot: (start: Date) => void;
+    onSlotClick?: (slotId: string) => void;
   };
 }
 
@@ -40,6 +41,7 @@ export function Scheduler(props: Scheduler.Props) {
             cols={cols}
             slots={props.slots}
             onSlotCreate={props.onCreateSlot}
+            onSlotClick={props.onSlotClick}
           />
         </div>
       </div>
@@ -49,6 +51,10 @@ export function Scheduler(props: Scheduler.Props) {
           <Interview
             slot={src.data.slot}
             interviewRound={props.interviewRound}
+            // onClick={props.onSlotClick}
+            onClick={(e) => {
+              console.log("DragOverlay slot clicked:");
+            }}
             isDragging
           />
         )}
