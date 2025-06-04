@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { queryOptions, useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { db, schema } from "@tau/db";
 import { ids } from "@tau/db/ids";
@@ -27,7 +27,7 @@ const scheduleInterview = createServerFn({ method: "POST" })
     const { roundId, schedule_times } = data;
 
     const scheduledInterviews = schedule_times.map((schedule) => ({
-      id: ids.interviewSlot.new(),
+      id: ids.generate(ids.interview_slot),
       interview_round_id: roundId,
       interviewer_email: userEmail,
       start_at: new Date(schedule),
@@ -53,3 +53,23 @@ export const queries = {
         }),
     }),
 };
+
+export const mutations = {
+  scheduleInterview: () =>
+    useMutation({
+      mutationFn: (input: {
+        roundId: ids.interview_round;
+        schedule_times: string[];
+      }) => scheduleInterview({ data: input }),
+    }),
+};
+
+// Export the hook like in interview-rounds
+export function useScheduleInterview() {
+  return useMutation({
+    mutationFn: (input: {
+      roundId: ids.interview_round;
+      schedule_times: string[];
+    }) => scheduleInterview({ data: input }),
+  });
+}

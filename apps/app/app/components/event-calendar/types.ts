@@ -8,4 +8,11 @@ export type CalendarEvent = {
   location?: string;
 };
 
-export type EventColor = "sky" | "amber" | "violet" | "rose" | "emerald" | "orange";
+export type EventColor =
+  | "sky"
+  | "amber"
+  | "violet"
+  | "rose"
+  | "emerald"
+  | "orange"
+  | string;
