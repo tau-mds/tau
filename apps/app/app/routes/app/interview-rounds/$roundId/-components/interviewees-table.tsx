@@ -19,6 +19,8 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
     api.interviewRounds.queries.interviewees(props.roundId)
   );
 
+  const updateInterviewees = api.interviewRounds.useUpdateInterviewees();
+
   const [added, setAdded] = React.useState<Set<string>>(new Set());
   const [revoked, setRevoked] = React.useState<Set<string>>(new Set());
   const [adding, setAdding] = React.useState<boolean>(false);

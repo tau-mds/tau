@@ -1,4 +1,8 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import type { ids } from "@tau/db/ids";
 import { Button, Editable, Table } from "@tau/ui";
 import React from "react";
@@ -13,6 +17,10 @@ export namespace InterviewersTable {
 }
 
 export function InterviewersTable(props: InterviewersTable.Props) {
+  const queryClient = useQueryClient();
+  const roundQuery = useSuspenseQuery(
+    api.interviewRounds.queries.id(props.roundId)
+  );
   const interviewersQuery = useSuspenseQuery(
     api.interviewRounds.queries.interviewers(props.roundId)
   );
@@ -28,6 +36,38 @@ export function InterviewersTable(props: InterviewersTable.Props) {
   const [adding, setAdding] = React.useState(false);
   const [addEmail, setAddEmail] = React.useState("");
   const [addCount, setAddCount] = React.useState(1);
+
+  const isDraft = roundQuery.data?.status === "draft";
+
+  // Add these hooks/utilities if not already present
+  // Replace with actual implementations as needed
+  const ensureRoundSelected = () => props.roundId;
+  const currentTestRoundId = props.roundId;
+  const updateInterviewers = api.interviewRounds.useUpdateInterviewers();
+
+  // Invite interviewers function
+  const inviteInterviewers = async () => {
+    if (!_added.length) return;
+    const roundId = ensureRoundSelected();
+    if (!roundId) return;
+    await updateInterviewers.mutateAsync({
+      id: roundId,
+      updated: _added.map(({ email, interviews_count }) => ({
+        email,
+        interviewsCount: interviews_count,
+      })),
+      revoked: _revoked,
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: api.interviewRounds.queries.interviewers(roundId).queryKey,
+    });
+
+    _setAdded([]);
+    _setRevoked([]);
+    setUpdated([]);
+    setAdding(false);
+  };
 
   return (
     <Table.Root className="max-w-min">
@@ -66,6 +106,33 @@ export function InterviewersTable(props: InterviewersTable.Props) {
             </Table.Cell>
           </Table.Row>
         ))}
+        {/* Show interviewers to be invited */}
+        {_added.length > 0 && (
+          <React.Fragment>
+            {_added.map((item, idx) => (
+              <Table.Row
+                key={item.email}
+                className="bg-accent-surface text-accent-11 border-accent-11/10 hover:bg-accent-surface/80"
+              >
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell className="text-right flex items-center justify-end gap-2">
+                  {item.interviews_count}
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    className="ml-2"
+                    onClick={() =>
+                      _setAdded((prev) => prev.filter((_, i) => i !== idx))
+                    }
+                  >
+                    ×
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </React.Fragment>
+        )}
       </Table.Body>
 
       <Table.Footer>
@@ -99,6 +166,7 @@ export function InterviewersTable(props: InterviewersTable.Props) {
                   onChange={(e) => setAddEmail(e.target.value)}
                   required
                   autoFocus
+                  disabled={!isDraft}
                 />
                 <input
                   type="number"
@@ -108,8 +176,14 @@ export function InterviewersTable(props: InterviewersTable.Props) {
                   value={addCount}
                   onChange={(e) => setAddCount(Number(e.target.value))}
                   required
+                  disabled={!isDraft}
                 />
-                <Button type="submit" size="sm" variant="primary">
+                <Button
+                  type="submit"
+                  size="sm"
+                  variant="primary"
+                  disabled={!isDraft}
+                >
                   Add
                 </Button>
                 <Button
@@ -121,15 +195,34 @@ export function InterviewersTable(props: InterviewersTable.Props) {
                     setAddEmail("");
                     setAddCount(1);
                   }}
+                  disabled={!isDraft}
                 >
                   Cancel
                 </Button>
               </form>
             ) : (
-              <Button variant="ghost" onClick={() => setAdding(true)}>
+              <Button
+                variant="ghost"
+                onClick={() => setAdding(true)}
+                disabled={!isDraft}
+              >
                 Add
               </Button>
             )}
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell colSpan={2} className="text-right">
+            <Button
+              onClick={inviteInterviewers}
+              disabled={
+                !isDraft || !currentTestRoundId || updateInterviewers.isPending
+              }
+            >
+              {updateInterviewers.isPending
+                ? "Inviting..."
+                : "Invite Interviewers"}
+            </Button>
           </Table.Cell>
         </Table.Row>
       </Table.Footer>

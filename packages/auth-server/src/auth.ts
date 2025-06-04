@@ -77,7 +77,8 @@ export const auth = betterAuth({
         });
         const html = await render(mail);
         await resend.emails.send({
-          from: "Tau <onboarding@resend.dev>",
+          // from: "Tau <onboarding@resend.dev>",
+          from: "Tau <tau@tau.crfttunnel.live>",
           to: [email],
           subject: "Interview Scheduling Invitation",
           html: html,
