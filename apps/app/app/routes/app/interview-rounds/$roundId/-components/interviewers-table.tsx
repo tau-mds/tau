@@ -247,14 +247,12 @@ export function InterviewersTable(props: InterviewersTable.Props) {
                 <Button
                   onClick={inviteInterviewers}
                   disabled={
-                    !isDraft ||
                     !currentTestRoundId ||
-                    updateInterviewers.isPending
+                    updateInterviewers.isPending ||
+                    _added.length === 0
                   }
                 >
-                  {updateInterviewers.isPending
-                    ? "Inviting..."
-                    : "Invite Interviewers"}
+                  {updateInterviewers.isPending ? "Saving..." : "Save Changes"}
                 </Button>
               </Table.Cell>
             </Table.Row>

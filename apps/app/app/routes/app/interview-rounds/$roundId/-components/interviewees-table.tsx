@@ -106,7 +106,7 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
               >
                 <Table.Cell>{interviewer.email}</Table.Cell>
                 <Table.Cell>
-                  <Button
+                  {/* <Button
                     type="button"
                     variant="ghost"
                     size="icon"
@@ -122,7 +122,7 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
                     }
                   >
                     <Cross className="size-4" />
-                  </Button>
+                  </Button> */}
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -229,7 +229,7 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
                   onClick={inviteInterviewees}
                   disabled={added.size + revoked.size === 0}
                 >
-                  Send Invites
+                  Save Changes
                 </Button>
               </Table.Cell>
             </Table.Row>
