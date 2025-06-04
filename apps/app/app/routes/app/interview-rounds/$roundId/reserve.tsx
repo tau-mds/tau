@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { ids } from "@tau/db/ids";
 import { Button, toast } from "@tau/ui";
 import React from "react";
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/app/interview-rounds/$roundId/reserve")({
 
 function RouteComponent() {
   const params = Route.useParams();
+  const navigate = Route.useNavigate();
   const roundQuery = useSuspenseQuery({
     ...api.interviewRounds.queries.id(params.roundId),
     select: (d) => interviewRound.from(d),
@@ -78,6 +79,8 @@ function RouteComponent() {
       // Show success feedback
       toast.success("Interview slot reserved successfully!");
       setSelectedSlot(null);
+
+      navigate({ to: "/app" });
     } catch (error) {
       console.error("Failed to reserve slot:", error);
       toast.error("Failed to reserve slot. Please try again.");
