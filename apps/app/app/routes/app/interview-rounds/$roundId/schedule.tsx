@@ -86,6 +86,18 @@ function RouteComponent() {
     setHasUnsavedChanges(true);
   };
 
+  const handleDeleteSlot = (slotId: string) => {
+    console.log("Deleting slot with ID:", slotId);
+
+    // Remove the slot from local state
+    setSlots((prevSlots) => prevSlots.filter((slot) => slot.id !== slotId));
+
+    // Mark as having unsaved changes if there are any slots left to save
+    setHasUnsavedChanges(true);
+
+    toast.success("Slot deleted successfully!");
+  };
+
   const handleSendSlots = async () => {
     if (!hasUnsavedChanges || isSending) return;
 
@@ -143,6 +155,7 @@ function RouteComponent() {
       <Scheduler
         slots={slots}
         onCreateSlot={handleCreateSlot}
+        onSlotClick={handleDeleteSlot}
         interviewRound={roundQuery.data}
       />
     </div>
