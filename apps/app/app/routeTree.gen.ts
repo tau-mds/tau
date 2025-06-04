@@ -31,6 +31,7 @@ import { Route as AppSettingsAccountNotificationsImport } from "./routes/app/set
 import { Route as AppSettingsAccountBerbecaruImport } from "./routes/app/settings/account/berbecaru";
 import { Route as AppInterviewRoundsEditRoundIdImport } from "./routes/app/interview-rounds/edit.$roundId";
 import { Route as AppInterviewRoundsRoundIdScheduleImport } from "./routes/app/interview-rounds/$roundId/schedule";
+import { Route as AppInterviewRoundsRoundIdReserveImport } from "./routes/app/interview-rounds/$roundId/reserve";
 import { Route as AppInterviewRoundsRoundIdPlanningImport } from "./routes/app/interview-rounds/$roundId/planning";
 
 // Create/Update Routes
@@ -161,6 +162,13 @@ const AppInterviewRoundsRoundIdScheduleRoute =
     getParentRoute: () => AppInterviewRoundsRoundIdLayoutRoute,
   } as any);
 
+const AppInterviewRoundsRoundIdReserveRoute =
+  AppInterviewRoundsRoundIdReserveImport.update({
+    id: "/reserve",
+    path: "/reserve",
+    getParentRoute: () => AppInterviewRoundsRoundIdLayoutRoute,
+  } as any);
+
 const AppInterviewRoundsRoundIdPlanningRoute =
   AppInterviewRoundsRoundIdPlanningImport.update({
     id: "/planning",
@@ -277,6 +285,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppInterviewRoundsRoundIdPlanningImport;
       parentRoute: typeof AppInterviewRoundsRoundIdLayoutImport;
     };
+    "/app/interview-rounds/$roundId/reserve": {
+      id: "/app/interview-rounds/$roundId/reserve";
+      path: "/reserve";
+      fullPath: "/app/interview-rounds/$roundId/reserve";
+      preLoaderRoute: typeof AppInterviewRoundsRoundIdReserveImport;
+      parentRoute: typeof AppInterviewRoundsRoundIdLayoutImport;
+    };
     "/app/interview-rounds/$roundId/schedule": {
       id: "/app/interview-rounds/$roundId/schedule";
       path: "/schedule";
@@ -367,6 +382,7 @@ const AppSettingsLayoutRouteWithChildren =
 
 interface AppInterviewRoundsRoundIdLayoutRouteChildren {
   AppInterviewRoundsRoundIdPlanningRoute: typeof AppInterviewRoundsRoundIdPlanningRoute;
+  AppInterviewRoundsRoundIdReserveRoute: typeof AppInterviewRoundsRoundIdReserveRoute;
   AppInterviewRoundsRoundIdScheduleRoute: typeof AppInterviewRoundsRoundIdScheduleRoute;
   AppInterviewRoundsRoundIdIndexRoute: typeof AppInterviewRoundsRoundIdIndexRoute;
 }
@@ -375,6 +391,8 @@ const AppInterviewRoundsRoundIdLayoutRouteChildren: AppInterviewRoundsRoundIdLay
   {
     AppInterviewRoundsRoundIdPlanningRoute:
       AppInterviewRoundsRoundIdPlanningRoute,
+    AppInterviewRoundsRoundIdReserveRoute:
+      AppInterviewRoundsRoundIdReserveRoute,
     AppInterviewRoundsRoundIdScheduleRoute:
       AppInterviewRoundsRoundIdScheduleRoute,
     AppInterviewRoundsRoundIdIndexRoute: AppInterviewRoundsRoundIdIndexRoute,
@@ -441,6 +459,7 @@ export interface FileRoutesByFullPath {
   "/app/interview-rounds/create-interview-round": typeof AppInterviewRoundsCreateInterviewRoundRoute;
   "/app/interview-rounds": typeof AppInterviewRoundsIndexRoute;
   "/app/interview-rounds/$roundId/planning": typeof AppInterviewRoundsRoundIdPlanningRoute;
+  "/app/interview-rounds/$roundId/reserve": typeof AppInterviewRoundsRoundIdReserveRoute;
   "/app/interview-rounds/$roundId/schedule": typeof AppInterviewRoundsRoundIdScheduleRoute;
   "/app/interview-rounds/edit/$roundId": typeof AppInterviewRoundsEditRoundIdRoute;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
@@ -461,6 +480,7 @@ export interface FileRoutesByTo {
   "/app/interview-rounds/create-interview-round": typeof AppInterviewRoundsCreateInterviewRoundRoute;
   "/app/interview-rounds": typeof AppInterviewRoundsIndexRoute;
   "/app/interview-rounds/$roundId/planning": typeof AppInterviewRoundsRoundIdPlanningRoute;
+  "/app/interview-rounds/$roundId/reserve": typeof AppInterviewRoundsRoundIdReserveRoute;
   "/app/interview-rounds/$roundId/schedule": typeof AppInterviewRoundsRoundIdScheduleRoute;
   "/app/interview-rounds/edit/$roundId": typeof AppInterviewRoundsEditRoundIdRoute;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
@@ -486,6 +506,7 @@ export interface FileRoutesById {
   "/app/interview-rounds/create-interview-round": typeof AppInterviewRoundsCreateInterviewRoundRoute;
   "/app/interview-rounds/": typeof AppInterviewRoundsIndexRoute;
   "/app/interview-rounds/$roundId/planning": typeof AppInterviewRoundsRoundIdPlanningRoute;
+  "/app/interview-rounds/$roundId/reserve": typeof AppInterviewRoundsRoundIdReserveRoute;
   "/app/interview-rounds/$roundId/schedule": typeof AppInterviewRoundsRoundIdScheduleRoute;
   "/app/interview-rounds/edit/$roundId": typeof AppInterviewRoundsEditRoundIdRoute;
   "/app/settings/account/berbecaru": typeof AppSettingsAccountBerbecaruRoute;
@@ -512,6 +533,7 @@ export interface FileRouteTypes {
     | "/app/interview-rounds/create-interview-round"
     | "/app/interview-rounds"
     | "/app/interview-rounds/$roundId/planning"
+    | "/app/interview-rounds/$roundId/reserve"
     | "/app/interview-rounds/$roundId/schedule"
     | "/app/interview-rounds/edit/$roundId"
     | "/app/settings/account/berbecaru"
@@ -531,6 +553,7 @@ export interface FileRouteTypes {
     | "/app/interview-rounds/create-interview-round"
     | "/app/interview-rounds"
     | "/app/interview-rounds/$roundId/planning"
+    | "/app/interview-rounds/$roundId/reserve"
     | "/app/interview-rounds/$roundId/schedule"
     | "/app/interview-rounds/edit/$roundId"
     | "/app/settings/account/berbecaru"
@@ -554,6 +577,7 @@ export interface FileRouteTypes {
     | "/app/interview-rounds/create-interview-round"
     | "/app/interview-rounds/"
     | "/app/interview-rounds/$roundId/planning"
+    | "/app/interview-rounds/$roundId/reserve"
     | "/app/interview-rounds/$roundId/schedule"
     | "/app/interview-rounds/edit/$roundId"
     | "/app/settings/account/berbecaru"
@@ -653,6 +677,7 @@ export const routeTree = rootRoute
       "parent": "/app",
       "children": [
         "/app/interview-rounds/$roundId/planning",
+        "/app/interview-rounds/$roundId/reserve",
         "/app/interview-rounds/$roundId/schedule",
         "/app/interview-rounds/$roundId/"
       ]
@@ -676,6 +701,10 @@ export const routeTree = rootRoute
     },
     "/app/interview-rounds/$roundId/planning": {
       "filePath": "app/interview-rounds/$roundId/planning.tsx",
+      "parent": "/app/interview-rounds/$roundId"
+    },
+    "/app/interview-rounds/$roundId/reserve": {
+      "filePath": "app/interview-rounds/$roundId/reserve.tsx",
       "parent": "/app/interview-rounds/$roundId"
     },
     "/app/interview-rounds/$roundId/schedule": {

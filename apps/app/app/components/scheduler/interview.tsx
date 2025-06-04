@@ -30,7 +30,7 @@ export function Interview({
         "py-1 text-[10px] sm:text-xs focus-visible:border-ring focus-visible:ring-ring/50 flex size-full rounded overflow-hidden px-1 text-left font-medium backdrop-blur-md transition outline-none select-none focus-visible:ring-[3px] data-dragging:cursor-grabbing data-dragging:shadow-lg data-past-event:line-through sm:px-2",
         "bg-sky-200/50 hover:bg-sky-200/40 text-sky-950/80 dark:bg-sky-400/25 dark:hover:bg-sky-400/20 dark:text-sky-200 shadow-sky-700/8",
         interviewRound.duration < 45 ? "items-center" : "flex-col",
-        className,
+        className
       )}
       data-dragging={isDragging}
       onClick={onClick}
@@ -49,7 +49,10 @@ export function Interview({
           <div className="truncate font-normal opacity-70 sm:text-[11px]">
             {interviewRound.duration < 45
               ? format(slot.start_at, "HH:mm")
-              : `${format(slot.start_at, "HH:mm")} - ${format(slots.end(slot.start_at, interviewRound.duration), "HH:mm")}`}
+              : `${format(slot.start_at, "HH:mm")} - ${format(
+                  slots.end(slot.start_at, interviewRound.duration),
+                  "HH:mm"
+                )}`}
           </div>
         </>
       )}

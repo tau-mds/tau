@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { and, db, eq, isNull, schema } from "@tau/db";
 import { ids } from "@tau/db/ids";
@@ -7,7 +7,7 @@ import { intervieweeMiddleware } from "../middlewares/interviewee-middleware";
 import { resend, Email } from "@tau/email";
 import { render } from "@react-email/components";
 
-export * from "./interviewee";
+export * as interviewee from "./interviewee";
 
 const ReserveInterviewValidator = v.object({
   roundId: ids.interview_round,
@@ -22,14 +22,14 @@ const avalibleInterviewSlots = createServerFn({ method: "GET" })
     const avalibleInterviewSlots = await db.query.interview_slot.findMany({
       where: and(
         eq(schema.interview_slot.interview_round_id, data.id),
-        isNull(schema.interview_slot.assigned_at)
+        isNull(schema.interview_slot.assigned_at),
       ),
     });
 
     return avalibleInterviewSlots.map((slot) => slot.start_at);
   });
 
-export const queires = {
+export const queries = {
   avalibleSlots: (id: ids.interview_round) =>
     queryOptions({
       queryKey: ["interviewRounds", id],
@@ -51,9 +51,7 @@ const reserveInterview = createServerFn({ method: "POST" })
     const userEmail = context.session?.user?.email;
 
     if (!userId || !userEmail) {
-      console.error(
-        "Middleware failed to attach user or user ID/email in POST handler."
-      );
+      console.error("Middleware failed to attach user or user ID/email in POST handler.");
       throw new Error("Unauthorized: Authentication context missing.");
     }
 
@@ -63,7 +61,7 @@ const reserveInterview = createServerFn({ method: "POST" })
     const interviewer = await db.query.interviewer.findFirst({
       where: and(
         eq(schema.interviewer.interview_round_id, roundId),
-        eq(schema.interviewer.email, interviewer_email)
+        eq(schema.interviewer.email, interviewer_email),
       ),
     });
 
@@ -78,8 +76,8 @@ const reserveInterview = createServerFn({ method: "POST" })
       .where(
         and(
           eq(schema.interview_slot.interviewee_email, userEmail),
-          eq(schema.interview_slot.interview_round_id, roundId)
-        )
+          eq(schema.interview_slot.interview_round_id, roundId),
+        ),
       );
 
     if (alreadyReserved.length > 0) {
@@ -98,21 +96,18 @@ const reserveInterview = createServerFn({ method: "POST" })
           eq(schema.interview_slot.interviewer_email, interviewer_email),
           eq(schema.interview_slot.interview_round_id, roundId),
           eq(schema.interview_slot.start_at, new Date(scheduled_time)),
-          isNull(schema.interview_slot.interviewee_email)
-        )
+          isNull(schema.interview_slot.interviewee_email),
+        ),
       );
 
     // Check remaining slots for interviewer
     const condition = and(
       eq(schema.interview_slot.interviewer_email, interviewer_email),
       eq(schema.interview_slot.interview_round_id, roundId),
-      isNull(schema.interview_slot.interviewee_email)
+      isNull(schema.interview_slot.interviewee_email),
     );
 
-    const remainingSlots = await db
-      .select()
-      .from(schema.interview_slot)
-      .where(condition);
+    const remainingSlots = await db.select().from(schema.interview_slot).where(condition);
 
     // If interviewer has no remaining slots, delete those slots
     if (interviewer.interviews_count <= remainingSlots.length) {
@@ -130,7 +125,7 @@ const reserveInterview = createServerFn({ method: "POST" })
       location: "NONE",
     });
 
-    const interviewerHTML = render(interviewerJSX);
+    const interviewerHTML = await render(interviewerJSX);
 
     const intervieweeJSX = Email.InterviewConfirmationEmail({
       recipientName: "None",
@@ -142,17 +137,19 @@ const reserveInterview = createServerFn({ method: "POST" })
       location: "NONE",
     });
 
-    const intervieweeHTML = render(intervieweeJSX);
+    const intervieweeHTML = await render(intervieweeJSX);
 
     await resend.emails.send({
-      from: "Răzvan <onboarding@resend.dev>",
+      // from: "Răzvan <onboarding@resend.dev>",
+      from: "Tau <tau@tau.crfttunnel.live>",
       to: [interviewer.email],
       subject: "Interview Schedule Confirmation",
       html: interviewerHTML,
     });
 
     await resend.emails.send({
-      from: "Răzvan <onboarding@resend.dev>",
+      // from: "Răzvan <onboarding@resend.dev>",
+      from: "Tau <tau@tau.crfttunnel.live>",
       to: [userEmail],
       subject: "Interview Scheduling Confirmartion",
       html: intervieweeHTML,
@@ -161,24 +158,47 @@ const reserveInterview = createServerFn({ method: "POST" })
     return { success: true, updatedRows: updated.rowsAffected };
   });
 
-export const queries = {
-  reserveInterview: (input: {
-    roundId: ids.interview_round;
-    scheduled_time: string;
-    interviewer_email: string;
-  }) =>
-    queryOptions({
-      queryKey: [
-        "interviewSlots",
-        input.roundId,
-        "reserve",
-        input.interviewer_email,
-        input.scheduled_time,
-      ],
-      queryFn: (opts) =>
-        reserveInterview({
-          data: input,
-          signal: opts.signal,
-        }),
-    }),
-};
+// export const queries = {
+//   reserveInterview: (input: {
+//     roundId: ids.interview_round;
+//     scheduled_time: string;
+//     interviewer_email: string;
+//   }) =>
+//     queryOptions({
+//       queryKey: [
+//         "interviewSlots",
+//         input.roundId,
+//         "reserve",
+//         input.interviewer_email,
+//         input.scheduled_time,
+//       ],
+//       queryFn: (opts) =>
+//         reserveInterview({
+//           data: input,
+//           signal: opts.signal,
+//         }),
+//     }),
+// };
+
+export function useReserveInterview() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: {
+      roundId: ids.interview_round;
+      scheduled_time: string;
+      interviewer_email: string;
+    }) => reserveInterview({ data }),
+    onSuccess: (data, variables) => {
+      // Invalidate queries to refetch data after successful reservation
+      queryClient.invalidateQueries({
+        queryKey: ["interviewRounds", variables.roundId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["interviewSlots", variables.roundId],
+      });
+    },
+    onError: (error) => {
+      console.error("Error reserving interview:", error);
+    },
+  });
+}

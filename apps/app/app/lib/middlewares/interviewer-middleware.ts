@@ -34,7 +34,7 @@ export const interviewerMiddleware = createMiddleware().server(
     }
 
     if (round.status !== "schedule") {
-      throw new Error("Forbidden: You do not own this interview round");
+      throw new Error("Forbidden: Interview round is not in schedule status");
     }
 
     const interviewer = await db.query.interviewer.findFirst({
@@ -44,7 +44,7 @@ export const interviewerMiddleware = createMiddleware().server(
       ),
     });
 
-    if (interviewer) {
+    if (!interviewer) {
       throw new Error("Forbidden: You are not invited to this interview round");
     }
 

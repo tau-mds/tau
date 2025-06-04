@@ -66,7 +66,7 @@ export const auth = betterAuth({
         console.log("URL:", url);
         let actualURL;
         if (process.env["DATABASE_CONN_TYPE"] == "local") {
-          actualURL = "https://localhost:3000/api/auth" + url;
+          actualURL = "http://localhost:3000/api/auth" + url;
         } else {
           actualURL = url;
         }
@@ -77,7 +77,8 @@ export const auth = betterAuth({
         });
         const html = await render(mail);
         await resend.emails.send({
-          from: "Tau <onboarding@resend.dev>",
+          // from: "Tau <onboarding@resend.dev>",
+          from: "Tau <tau@tau.crfttunnel.live>",
           to: [email],
           subject: "Interview Scheduling Invitation",
           html: html,

@@ -24,13 +24,14 @@ export namespace Timeline {
     slots: ReadonlyArray<schema.interview_slot>;
     cols: number;
     onSlotCreate: (start: Date) => void;
+    onSlotClick?: (slotId: string) => void;
   };
 }
 
 export function Timeline(props: Timeline.Props) {
   const days = React.useMemo(
     () => eachDayOfInterval(props.interviewRound.period),
-    [props.interviewRound.period],
+    [props.interviewRound.period]
   );
 
   const todayRef = React.useRef<HTMLDivElement>(null);
@@ -43,7 +44,7 @@ export function Timeline(props: Timeline.Props) {
   }, []);
 
   const groupedSlots = Object.groupBy(props.slots, (s) =>
-    formatISO(s.start_at, { representation: "date" }),
+    formatISO(s.start_at, { representation: "date" })
   );
 
   return (
@@ -62,22 +63,23 @@ export function Timeline(props: Timeline.Props) {
         <div className="border-border/70 grid auto-cols-fr">
           <div className="h-8" />
 
-          {[...constants.DAY_HOURS, addHours(constants.DAY_HOURS.at(-1), 1)].map(
-            (hour) => (
-              <time
-                key={hour.toString()}
-                className="border-border/70 relative min-h-(--week-cells-height) border-b last:border-b-0"
+          {[
+            ...constants.DAY_HOURS,
+            addHours(constants.DAY_HOURS.at(-1), 1),
+          ].map((hour) => (
+            <time
+              key={hour.toString()}
+              className="border-border/70 relative min-h-(--week-cells-height) border-b last:border-b-0"
+            >
+              <Text
+                size="xsmall"
+                leading="compact"
+                className="bg-card absolute text-muted-foreground/70 -top-3 left-0 flex h-6 w-16 max-w-full items-center justify-end pe-2"
               >
-                <Text
-                  size="xsmall"
-                  leading="compact"
-                  className="bg-card absolute text-muted-foreground/70 -top-3 left-0 flex h-6 w-16 max-w-full items-center justify-end pe-2"
-                >
-                  {format(hour, "HH:mm")}
-                </Text>
-              </time>
-            ),
-          )}
+                {format(hour, "HH:mm")}
+              </Text>
+            </time>
+          ))}
         </div>
       </aside>
 
@@ -114,8 +116,12 @@ export function Timeline(props: Timeline.Props) {
                 {groupedSlots[formatISO(day, { representation: "date" })]
                   ?.toSorted((sa, sb) => compareAsc(sa.start_at, sb.start_at))
                   .map((s) => {
-                    const startHour = getHours(s.start_at) + getMinutes(s.start_at) / 60;
-                    const end = slot.end(s.start_at, props.interviewRound.duration);
+                    const startHour =
+                      getHours(s.start_at) + getMinutes(s.start_at) / 60;
+                    const end = slot.end(
+                      s.start_at,
+                      props.interviewRound.duration
+                    );
                     const endHour = getHours(end) + getMinutes(end) / 60;
                     const top = 32 + (startHour - constants.DAY_START) * 64;
                     const height = (endHour - startHour) * 64;
@@ -143,6 +149,13 @@ export function Timeline(props: Timeline.Props) {
                         <InterviewSlot
                           slot={slot}
                           interviewRound={props.interviewRound}
+                          onClick={
+                            props.onSlotClick
+                              ? () => {
+                                  props.onSlotClick?.(slot.id);
+                                }
+                              : undefined
+                          }
                         />
                       </div>
                     </div>
@@ -160,14 +173,16 @@ export function Timeline(props: Timeline.Props) {
                         hour={getHours(hour) + quarter * 0.25}
                         className={cx(
                           quarter === 0 && "top-0",
-                          quarter === 1 && "top-[calc(var(--week-cells-height)/4)]",
-                          quarter === 2 && "top-[calc(var(--week-cells-height)/4*2)]",
-                          quarter === 3 && "top-[calc(var(--week-cells-height)/4*3)]",
+                          quarter === 1 &&
+                            "top-[calc(var(--week-cells-height)/4)]",
+                          quarter === 2 &&
+                            "top-[calc(var(--week-cells-height)/4*2)]",
+                          quarter === 3 &&
+                            "top-[calc(var(--week-cells-height)/4*3)]"
                         )}
                         onClick={
-                          interviewRound.editable(props.interviewRound)
-                            ? props.onSlotCreate
-                            : undefined
+                          // interviewRound.editable(props.interviewRound)
+                          true ? props.onSlotCreate : undefined
                         }
                       />
                     ))}

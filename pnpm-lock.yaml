@@ -105,6 +105,9 @@ importers:
       '@tau/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@tau/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@tau/theme':
         specifier: workspace:*
         version: link:../../packages/theme
