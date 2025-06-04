@@ -66,7 +66,7 @@ export const auth = betterAuth({
         console.log("URL:", url);
         let actualURL;
         if (process.env["DATABASE_CONN_TYPE"] == "local") {
-          actualURL = "https://localhost:3000/api/auth" + url;
+          actualURL = "http://localhost:3000/api/auth" + url;
         } else {
           actualURL = url;
         }
