@@ -181,9 +181,8 @@ export function Timeline(props: Timeline.Props) {
                             "top-[calc(var(--week-cells-height)/4*3)]"
                         )}
                         onClick={
-                          interviewRound.editable(props.interviewRound)
-                            ? props.onSlotCreate
-                            : undefined
+                          // interviewRound.editable(props.interviewRound)
+                          true ? props.onSlotCreate : undefined
                         }
                       />
                     ))}

@@ -125,7 +125,7 @@ const reserveInterview = createServerFn({ method: "POST" })
       location: "NONE",
     });
 
-    const interviewerHTML = render(interviewerJSX);
+    const interviewerHTML = await render(interviewerJSX);
 
     const intervieweeJSX = Email.InterviewConfirmationEmail({
       recipientName: "None",
@@ -137,17 +137,19 @@ const reserveInterview = createServerFn({ method: "POST" })
       location: "NONE",
     });
 
-    const intervieweeHTML = render(intervieweeJSX);
+    const intervieweeHTML = await render(intervieweeJSX);
 
     await resend.emails.send({
-      from: "Răzvan <onboarding@resend.dev>",
+      // from: "Răzvan <onboarding@resend.dev>",
+      from: "Tau <tau@tau.crfttunnel.live>",
       to: [interviewer.email],
       subject: "Interview Schedule Confirmation",
       html: interviewerHTML,
     });
 
     await resend.emails.send({
-      from: "Răzvan <onboarding@resend.dev>",
+      // from: "Răzvan <onboarding@resend.dev>",
+      from: "Tau <tau@tau.crfttunnel.live>",
       to: [userEmail],
       subject: "Interview Scheduling Confirmartion",
       html: intervieweeHTML,

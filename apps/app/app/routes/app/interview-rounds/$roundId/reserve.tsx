@@ -31,10 +31,9 @@ function RouteComponent() {
   );
   const reserveInterview = useReserveInterview();
 
-  const [selectedSlot, setSelectedSlot] = React.useState<{
-    start: Date;
-    interviewer_email: string;
-  } | null>(null);
+  const [selectedSlot, setSelectedSlot] = React.useState<
+    (typeof slotsQuery.data)[number] | null
+  >(null);
   // } | null>({
   //   start: slotsQuery.data[0].start_at,
   //   interviewer_email: slotsQuery.data[0].interviewer_email,
@@ -42,9 +41,10 @@ function RouteComponent() {
   const [isReserving, setIsReserving] = React.useState(false);
 
   // Filter available slots (not assigned to any interviewee)
-  const availableSlots = slotsQuery.data.filter(
-    (slot) => !slot.interviewee_email
-  );
+  const availableSlots = slotsQuery.data;
+  // const availableSlots = slotsQuery.data.filter(
+  //   (slot) => !slot.interviewer.email
+  // );
 
   const handleSelectSlot = (start: Date) => {
     console.log("handleSelectSlot called with:", start);
@@ -59,22 +59,20 @@ function RouteComponent() {
     console.log("Found slot:", slot);
 
     if (slot) {
-      setSelectedSlot({
-        start: slot.start_at,
-        interviewer_email: slot.interviewer_email,
-      });
+      setSelectedSlot(slot);
     }
   };
 
   const handleReserveSlot = async () => {
     if (!selectedSlot || isReserving) return;
+    console.log(selectedSlot);
 
     setIsReserving(true);
     try {
       await reserveInterview.mutateAsync({
         roundId: params.roundId,
-        scheduled_time: selectedSlot.start.toISOString(),
-        interviewer_email: selectedSlot.interviewer_email,
+        scheduled_time: selectedSlot.start_at.toISOString(),
+        interviewer_email: selectedSlot.interviewer.email,
       });
 
       // Show success feedback
@@ -121,8 +119,8 @@ function RouteComponent() {
         <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
           <p className="text-sm text-blue-800">
             <strong>Selected slot:</strong>{" "}
-            {selectedSlot.start.toLocaleString()}
-            with {selectedSlot.interviewer_email}
+            {selectedSlot.start_at.toLocaleString()}
+            with {selectedSlot.interviewer.email}
           </p>
           <p className="text-sm text-blue-600 mt-1">
             Click "Reserve Slot" to confirm your interview appointment.
@@ -158,10 +156,7 @@ function RouteComponent() {
 
           if (slot) {
             console.log("Found slot by ID:", slot);
-            setSelectedSlot({
-              start: slot.start_at,
-              interviewer_email: slot.interviewer_email,
-            });
+            setSelectedSlot(slot);
           } else {
             console.error("No slot found with ID:", slotId);
             toast.error("Could not find the selected slot. Please try again.");

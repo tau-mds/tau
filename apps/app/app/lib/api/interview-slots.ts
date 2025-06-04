@@ -14,7 +14,7 @@ export const queries = {
       queryFn: (opts) =>
         ofRound({ data: { id }, signal: opts.signal }) as Promise<
           Array<
-            schema.interview_slot & {
+            { id: string & v.Brand<"ivsl_id">; start_at: Date } & {
               interviewer: schema.interviewer;
             }
           >

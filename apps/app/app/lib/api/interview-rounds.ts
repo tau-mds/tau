@@ -477,7 +477,7 @@ const schedule = createServerFn({ method: "POST" })
         }),
         body: JSON.stringify({ role: "interviewer" }),
       });
-      console.error(interviewer.email + " has been sent to!");
+      console.error(`${interviewer.email} has been sent to!`);
       await auth.api.signInMagicLink({
         headers: {},
         body: {
@@ -556,7 +556,7 @@ const open = createServerFn({ method: "POST" })
         headers: {},
         body: {
           email: interviewee.email,
-          callbackURL: `/app/interview-rounds/${context.round.id}/schedule`,
+          callbackURL: `/app/interview-rounds/${context.round.id}/reserve`,
           name: "candidate",
         },
         request: request,

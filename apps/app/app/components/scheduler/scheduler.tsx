@@ -52,9 +52,9 @@ export function Scheduler(props: Scheduler.Props) {
             slot={src.data.slot}
             interviewRound={props.interviewRound}
             // onClick={props.onSlotClick}
-            onClick={(e) => {
-              console.log("DragOverlay slot clicked:");
-            }}
+            // onClick={(e) => {
+            //   console.log("DragOverlay slot clicked:");
+            // }}
             isDragging
           />
         )}
