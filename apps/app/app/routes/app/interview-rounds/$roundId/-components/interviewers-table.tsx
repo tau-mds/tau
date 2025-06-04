@@ -14,7 +14,7 @@ export namespace InterviewersTable {
 
 export function InterviewersTable(props: InterviewersTable.Props) {
   const interviewersQuery = useSuspenseQuery(
-    api.interviewRounds.queries.interviewers(props.roundId),
+    api.interviewRounds.queries.interviewers(props.roundId)
   );
 
   const [_added, _setAdded] = React.useState<
@@ -24,6 +24,10 @@ export function InterviewersTable(props: InterviewersTable.Props) {
     Array<{ email: string; interviews_count: number }>
   >([]);
   const [_revoked, _setRevoked] = React.useState<Array<string>>([]);
+
+  const [adding, setAdding] = React.useState(false);
+  const [addEmail, setAddEmail] = React.useState("");
+  const [addCount, setAddCount] = React.useState(1);
 
   return (
     <Table.Root className="max-w-min">
@@ -66,8 +70,66 @@ export function InterviewersTable(props: InterviewersTable.Props) {
 
       <Table.Footer>
         <Table.Row>
-          <Table.Cell>
-            <Button variant="ghost">Add</Button>
+          <Table.Cell colSpan={2}>
+            {adding ? (
+              <form
+                className="flex items-center gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!addEmail.trim()) return;
+                  _setAdded((prev) => [
+                    ...prev,
+                    { email: addEmail.trim(), interviews_count: addCount },
+                  ]);
+                  setAddEmail("");
+                  setAddCount(1);
+                  setAdding(false);
+                }}
+              >
+                <label htmlFor="add-interviewer-email" className="sr-only">
+                  Interviewer Email
+                </label>
+                <input
+                  id="add-interviewer-email"
+                  type="email"
+                  name="email"
+                  placeholder="Enter email address"
+                  className="border rounded px-2 py-1 w-64"
+                  value={addEmail}
+                  onChange={(e) => setAddEmail(e.target.value)}
+                  required
+                  autoFocus
+                />
+                <input
+                  type="number"
+                  name="interviews_count"
+                  min={1}
+                  className="border rounded px-2 py-1 w-24"
+                  value={addCount}
+                  onChange={(e) => setAddCount(Number(e.target.value))}
+                  required
+                />
+                <Button type="submit" size="sm" variant="primary">
+                  Add
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setAdding(false);
+                    setAddEmail("");
+                    setAddCount(1);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </form>
+            ) : (
+              <Button variant="ghost" onClick={() => setAdding(true)}>
+                Add
+              </Button>
+            )}
           </Table.Cell>
         </Table.Row>
       </Table.Footer>

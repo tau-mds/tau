@@ -131,9 +131,9 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
 
           {adding && (
             <Table.Row>
-              <Table.Cell>
+              <Table.Cell colSpan={2}>
                 <form
-                  onBlur={console.debug}
+                  className="flex items-center gap-2"
                   onSubmit={(e) => {
                     e.preventDefault();
                     const interviewee =
@@ -148,18 +148,33 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
                     }
 
                     setAdded((prev) => new Set(prev).add(interviewee));
-                    e.currentTarget.reset();
-                    addingRef.current?.focus();
+                    setAdding(false);
                   }}
                 >
+                  <label htmlFor="interviewee-input" className="sr-only">
+                    Interviewee Email
+                  </label>
                   <input
-                    ref={(node) => {
-                      addingRef.current = node;
-                      node?.focus();
-                    }}
-                    onBlur={() => setAdding(false)}
+                    id="interviewee-input"
+                    ref={addingRef}
                     name="interviewee"
+                    type="email"
+                    placeholder="Enter email address"
+                    className="border rounded px-2 py-1 w-64"
+                    autoFocus
+                    required
                   />
+                  <Button type="submit" size="sm" variant="primary">
+                    Add
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setAdding(false)}
+                  >
+                    Cancel
+                  </Button>
                 </form>
               </Table.Cell>
             </Table.Row>
