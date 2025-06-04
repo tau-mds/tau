@@ -4,7 +4,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import type { ids } from "@tau/db/ids";
-import { Button, Editable, Table } from "@tau/ui";
+import { Button, Editable, Table, toast } from "@tau/ui";
 import React from "react";
 import { api } from "~/lib/api";
 
@@ -47,6 +47,12 @@ export function InterviewersTable(props: InterviewersTable.Props) {
 
   // Invite interviewers function
   const inviteInterviewers = async () => {
+    if (!isDraft) {
+      toast.error(
+        "You can only invite interviewees when the round is in draft status."
+      );
+      return;
+    }
     if (!_added.length) return;
     const roundId = ensureRoundSelected();
     if (!roundId) return;
@@ -70,162 +76,177 @@ export function InterviewersTable(props: InterviewersTable.Props) {
   };
 
   return (
-    <Table.Root className="max-w-min">
-      <Table.Header>
-        <Table.Row>
-          <Table.Head>
-            <Envelope className="size-3 inline-block mr-1" /> Email
-          </Table.Head>
+    <div>
+      <h2 className="text-lg font-semibold mb-2">Invite Interviewers</h2>
+      <Table.Root className="max-w-min">
+        <Table.Header>
+          <Table.Row>
+            <Table.Head>
+              <Envelope className="size-3 inline-block mr-1" /> Email
+            </Table.Head>
 
-          <Table.Head className="text-right">Interviews count</Table.Head>
-        </Table.Row>
-      </Table.Header>
-
-      <Table.Body>
-        {interviewersQuery.data.map((interviewer) => (
-          <Table.Row key={interviewer.email}>
-            <Table.Cell>{interviewer.email}</Table.Cell>
-            <Table.Cell className="text-right">
-              <Editable.Root
-                defaultValue={interviewer.interviews_count.toString()}
-                selectOnFocus={false}
-                onValueCommit={(d) => {
-                  if (+d.value !== interviewer.interviews_count) {
-                    setUpdated((prev) => [
-                      ...prev,
-                      { email: interviewer.email, interviews_count: +d.value },
-                    ]);
-                  }
-                }}
-              >
-                <Editable.Area>
-                  <Editable.Input type="number" className="outline-none" />
-                  <Editable.Preview />
-                </Editable.Area>
-              </Editable.Root>
-            </Table.Cell>
+            <Table.Head className="text-right">Interviews count</Table.Head>
           </Table.Row>
-        ))}
-        {/* Show interviewers to be invited */}
-        {_added.length > 0 && (
-          <React.Fragment>
-            {_added.map((item, idx) => (
-              <Table.Row
-                key={item.email}
-                className="bg-accent-surface text-accent-11 border-accent-11/10 hover:bg-accent-surface/80"
-              >
-                <Table.Cell>{item.email}</Table.Cell>
-                <Table.Cell className="text-right flex items-center justify-end gap-2">
-                  {item.interviews_count}
+        </Table.Header>
+
+        <Table.Body>
+          {interviewersQuery.data.map((interviewer) => (
+            <Table.Row key={interviewer.email}>
+              <Table.Cell>{interviewer.email}</Table.Cell>
+              <Table.Cell className="text-right">
+                <Editable.Root
+                  defaultValue={interviewer.interviews_count.toString()}
+                  selectOnFocus={false}
+                  onValueCommit={(d) => {
+                    if (+d.value !== interviewer.interviews_count) {
+                      setUpdated((prev) => [
+                        ...prev,
+                        {
+                          email: interviewer.email,
+                          interviews_count: +d.value,
+                        },
+                      ]);
+                    }
+                  }}
+                >
+                  <Editable.Area>
+                    <Editable.Input type="number" className="outline-none" />
+                    <Editable.Preview />
+                  </Editable.Area>
+                </Editable.Root>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+          {/* Show interviewers to be invited */}
+          {_added.length > 0 && (
+            <React.Fragment>
+              {_added.map((item, idx) => (
+                <Table.Row
+                  key={item.email}
+                  className="bg-accent-surface text-accent-11 border-accent-11/10 hover:bg-accent-surface/80"
+                >
+                  <Table.Cell>{item.email}</Table.Cell>
+                  <Table.Cell className="text-right flex items-center justify-end gap-2">
+                    {item.interviews_count}
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      className="ml-2"
+                      onClick={() =>
+                        _setAdded((prev) => prev.filter((_, i) => i !== idx))
+                      }
+                    >
+                      ×
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </React.Fragment>
+          )}
+        </Table.Body>
+
+        <Table.Footer>
+          <Table.Row>
+            <Table.Cell colSpan={2}>
+              {adding ? (
+                <form
+                  className="flex items-center gap-2"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!addEmail.trim()) return;
+                    _setAdded((prev) => [
+                      ...prev,
+                      { email: addEmail.trim(), interviews_count: addCount },
+                    ]);
+                    setAddEmail("");
+                    setAddCount(1);
+                    setAdding(false);
+                  }}
+                >
+                  <label htmlFor="add-interviewer-email" className="sr-only">
+                    Interviewer Email
+                  </label>
+                  <input
+                    id="add-interviewer-email"
+                    type="email"
+                    name="email"
+                    placeholder="Enter email address"
+                    className="border rounded px-2 py-1 w-64"
+                    value={addEmail}
+                    onChange={(e) => setAddEmail(e.target.value)}
+                    required
+                    autoFocus
+                    disabled={!isDraft}
+                  />
+                  <input
+                    type="number"
+                    name="interviews_count"
+                    min={1}
+                    className="border rounded px-2 py-1 w-24"
+                    value={addCount}
+                    onChange={(e) => setAddCount(Number(e.target.value))}
+                    required
+                    disabled={!isDraft}
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    variant="primary"
+                    disabled={!isDraft}
+                  >
+                    Add
+                  </Button>
                   <Button
                     type="button"
-                    size="icon"
+                    size="sm"
                     variant="ghost"
-                    className="ml-2"
-                    onClick={() =>
-                      _setAdded((prev) => prev.filter((_, i) => i !== idx))
-                    }
+                    onClick={() => {
+                      setAdding(false);
+                      setAddEmail("");
+                      setAddCount(1);
+                    }}
+                    disabled={!isDraft}
                   >
-                    ×
+                    Cancel
                   </Button>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </React.Fragment>
-        )}
-      </Table.Body>
-
-      <Table.Footer>
-        <Table.Row>
-          <Table.Cell colSpan={2}>
-            {adding ? (
-              <form
-                className="flex items-center gap-2"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (!addEmail.trim()) return;
-                  _setAdded((prev) => [
-                    ...prev,
-                    { email: addEmail.trim(), interviews_count: addCount },
-                  ]);
-                  setAddEmail("");
-                  setAddCount(1);
-                  setAdding(false);
-                }}
-              >
-                <label htmlFor="add-interviewer-email" className="sr-only">
-                  Interviewer Email
-                </label>
-                <input
-                  id="add-interviewer-email"
-                  type="email"
-                  name="email"
-                  placeholder="Enter email address"
-                  className="border rounded px-2 py-1 w-64"
-                  value={addEmail}
-                  onChange={(e) => setAddEmail(e.target.value)}
-                  required
-                  autoFocus
-                  disabled={!isDraft}
-                />
-                <input
-                  type="number"
-                  name="interviews_count"
-                  min={1}
-                  className="border rounded px-2 py-1 w-24"
-                  value={addCount}
-                  onChange={(e) => setAddCount(Number(e.target.value))}
-                  required
-                  disabled={!isDraft}
-                />
+                </form>
+              ) : (
                 <Button
-                  type="submit"
-                  size="sm"
-                  variant="primary"
-                  disabled={!isDraft}
+                  variant="ghost"
+                  onClick={() => {
+                    if (!isDraft) {
+                      toast.error(
+                        "You can only invite interviewees when the round is in draft status."
+                      );
+                      return;
+                    }
+                    setAdding(true);
+                  }}
                 >
                   Add
                 </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    setAdding(false);
-                    setAddEmail("");
-                    setAddCount(1);
-                  }}
-                  disabled={!isDraft}
-                >
-                  Cancel
-                </Button>
-              </form>
-            ) : (
+              )}
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell colSpan={2} className="text-right">
               <Button
-                variant="ghost"
-                onClick={() => setAdding(true)}
-                disabled={!isDraft}
+                onClick={inviteInterviewers}
+                disabled={
+                  !isDraft ||
+                  !currentTestRoundId ||
+                  updateInterviewers.isPending
+                }
               >
-                Add
+                {updateInterviewers.isPending
+                  ? "Inviting..."
+                  : "Invite Interviewers"}
               </Button>
-            )}
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell colSpan={2} className="text-right">
-            <Button
-              onClick={inviteInterviewers}
-              disabled={
-                !isDraft || !currentTestRoundId || updateInterviewers.isPending
-              }
-            >
-              {updateInterviewers.isPending
-                ? "Inviting..."
-                : "Invite Interviewers"}
-            </Button>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Footer>
-    </Table.Root>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Footer>
+      </Table.Root>
+    </div>
   );
 }

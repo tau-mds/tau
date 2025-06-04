@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { ids } from "@tau/db/ids";
-import { Button, CommandBar, Table } from "@tau/ui";
+import { Button, CommandBar, Table, toast } from "@tau/ui";
 import React from "react";
 import { api } from "~/lib/api";
 
@@ -15,6 +15,9 @@ export namespace IntervieweesTable {
 }
 
 export function IntervieweesTable(props: IntervieweesTable.Props) {
+  const roundQuery = useSuspenseQuery(
+    api.interviewRounds.queries.id(props.roundId)
+  );
   const interviewersQuery = useSuspenseQuery(
     api.interviewRounds.queries.interviewees(props.roundId)
   );
@@ -28,6 +31,12 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
   const addingRef = React.useRef<HTMLInputElement>(null);
 
   const inviteInterviewees = () => {
+    if (roundQuery.data?.status !== "draft") {
+      toast.error(
+        "You can only invite interviewees when the round is in draft status."
+      );
+      return;
+    }
     const addedArray = Array.from(added);
     const revokedArray = Array.from(revoked);
     console.log("Inviting interviewees:", addedArray);
@@ -43,7 +52,8 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
   };
 
   return (
-    <>
+    <div>
+      <h2 className="text-lg font-semibold mb-2">Interviewees Table</h2>
       <CommandBar.Root open={added.size + revoked.size > 0} disableAutoFocus>
         <CommandBar.Bar>
           <CommandBar.Value>
@@ -189,6 +199,12 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
               <Button
                 variant="ghost"
                 onClick={() => {
+                  if (roundQuery.data?.status !== "draft") {
+                    toast.error(
+                      "You can only invite interviewees when the round is in draft status."
+                    );
+                    return;
+                  }
                   setAdding(true);
                 }}
               >
@@ -206,6 +222,6 @@ export function IntervieweesTable(props: IntervieweesTable.Props) {
           </Table.Row>
         </Table.Footer>
       </Table.Root>
-    </>
+    </div>
   );
 }
