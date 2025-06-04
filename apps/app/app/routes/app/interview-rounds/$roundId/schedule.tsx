@@ -1,7 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { authClient } from "@tau/auth-client";
+import { auth } from "@tau/auth-server";
 import { ids } from "@tau/db/ids";
-import { Button } from "@tau/ui";
+import { Button, toast } from "@tau/ui";
 import React from "react";
 import { JsxFlags } from "typescript";
 
@@ -35,6 +37,7 @@ function RouteComponent() {
     )
   );
   const scheduleInterview = useScheduleInterview();
+  const { data } = authClient.useSession();
 
   const [slots, setSlots] = React.useState(slotsQuery.data);
   const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
@@ -43,10 +46,36 @@ function RouteComponent() {
   const handleCreateSlot = (start: Date) => {
     console.log("handleCreateSlot called with:", start);
 
+    const slotEndTime = new Date(
+      start.getTime() + roundQuery.data.duration * 60 * 1000
+    );
+
+    // Check for overlapping slots
+    const hasOverlap = slots.some((existingSlot) => {
+      const existingStart = existingSlot.start_at;
+      const existingEnd = new Date(
+        existingStart.getTime() + roundQuery.data.duration * 60 * 1000
+      );
+
+      // Check if new slot overlaps with existing slot
+      return (
+        (start >= existingStart && start < existingEnd) || // New slot starts during existing slot
+        (slotEndTime > existingStart && slotEndTime <= existingEnd) || // New slot ends during existing slot
+        (start <= existingStart && slotEndTime >= existingEnd) // New slot completely contains existing slot
+      );
+    });
+
+    if (hasOverlap) {
+      toast.error(
+        "Cannot create slot: This time conflicts with an existing slot."
+      );
+      return;
+    }
+
     const newSlot = {
       id: ids.generate(ids.interview_slot),
       interview_round_id: params.roundId,
-      interviewer_email: "mail@mail.com", // This should come from current user
+      interviewer_email: data?.user?.email || "",
       interviewee_email: null,
       start_at: start,
       assigned_at: null,
@@ -55,6 +84,18 @@ function RouteComponent() {
 
     setSlots((prevSlots) => [...prevSlots, newSlot]);
     setHasUnsavedChanges(true);
+  };
+
+  const handleDeleteSlot = (slotId: string) => {
+    console.log("Deleting slot with ID:", slotId);
+
+    // Remove the slot from local state
+    setSlots((prevSlots) => prevSlots.filter((slot) => slot.id !== slotId));
+
+    // Mark as having unsaved changes if there are any slots left to save
+    setHasUnsavedChanges(true);
+
+    toast.success("Slot deleted successfully!");
   };
 
   const handleSendSlots = async () => {
@@ -66,8 +107,7 @@ function RouteComponent() {
       const startTimes = slots
         .filter(
           (slot) =>
-            slot.interviewer_email === "mail@mail.com" && // Replace with current user email
-            !slot.assigned_at // Only unsaved slots
+            slot.interviewer_email === data?.user?.email && !slot.assigned_at // Only unsaved slots
         )
         .map((slot) => slot.start_at.toISOString());
 
@@ -80,10 +120,10 @@ function RouteComponent() {
       setHasUnsavedChanges(false);
 
       // Show success feedback
-      alert("Slots saved successfully!");
+      toast.success("Slots saved successfully!");
     } catch (error) {
       console.error("Failed to save slots:", error);
-      alert("Failed to save slots. Please try again.");
+      toast.error("Failed to save slots. Please try again.");
     } finally {
       setIsSending(false);
     }
@@ -115,6 +155,7 @@ function RouteComponent() {
       <Scheduler
         slots={slots}
         onCreateSlot={handleCreateSlot}
+        onSlotClick={handleDeleteSlot}
         interviewRound={roundQuery.data}
       />
     </div>
