@@ -25,9 +25,7 @@ export function NewDeviceEmail({ magicLink }: NewDeviceEmailProps) {
       >
         <Container style={{ padding: "20px", backgroundColor: "#fcfcfc" }}>
           <Section>
-            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello there,
-            </Text>
+            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Hello there,</Text>
             <Text style={{ fontSize: "16px", marginTop: "10px" }}>
               You have requested to sign in to Tau from a new device. Use the button below
               to securely sign in to Tau on your new device. After that, you will only

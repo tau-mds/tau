@@ -14,7 +14,6 @@ export function InterviewReminderEmail({
   date = new Date(),
   location = "online",
 }: InterviewReminderEmailProps) {
-
   const isOnline = location.toLowerCase() === "online";
   const dateObj = typeof date === "string" ? new Date(date) : date;
   const formattedDate = dateObj.toLocaleDateString("en-GB", {
@@ -34,9 +33,7 @@ export function InterviewReminderEmail({
       <Body style={{ backgroundColor: "#f9fafb", fontFamily: "Arial, sans-serif" }}>
         <Container style={{ padding: "20px", backgroundColor: "#ffffff" }}>
           <Section>
-            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello there,
-            </Text>
+            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Hello there,</Text>
 
             <Text>
               This is a friendly reminder that your interview for the{" "}

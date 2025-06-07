@@ -17,10 +17,9 @@ export function InterviewConfirmationEmail({
   date = new Date(),
   location = "online",
 }: InterviewConfirmationEmailProps) {
-  
   const isOnline = location.toLowerCase() === "online";
   const isCandidate = type === "candidate";
-  
+
   const dateObj = typeof date === "string" ? new Date(date) : date;
   const formattedDate = dateObj.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -39,14 +38,12 @@ export function InterviewConfirmationEmail({
       <Body style={{ backgroundColor: "#ffffff", fontFamily: "Arial, sans-serif" }}>
         <Container style={{ padding: "20px", backgroundColor: "#ffffff" }}>
           <Section>
-            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello there,
-            </Text>
+            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Hello there,</Text>
             <Text>
               {isCandidate ? (
                 <>
-                  Your interview for the <strong>{jobRole}</strong> role has been scheduled.
-                  Here are your interview details:
+                  Your interview for the <strong>{jobRole}</strong> role has been
+                  scheduled. Here are your interview details:
                 </>
               ) : (
                 <>

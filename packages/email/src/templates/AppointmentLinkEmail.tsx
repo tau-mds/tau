@@ -1,4 +1,12 @@
-import {Body, Container, Head, Html, Link, Section, Text} from "@react-email/components";
+import {
+  Body,
+  Container,
+  Head,
+  Html,
+  Link,
+  Section,
+  Text,
+} from "@react-email/components";
 
 interface AppointmentLinkEmailProps {
   role: "candidate" | "interviewer";
@@ -6,11 +14,7 @@ interface AppointmentLinkEmailProps {
   date: string | Date;
 }
 
-export function AppointmentLinkEmail({
-  magicLink,
-  role,
-}: AppointmentLinkEmailProps) {
-
+export function AppointmentLinkEmail({ magicLink, role }: AppointmentLinkEmailProps) {
   return (
     <Html>
       <Head />
@@ -22,9 +26,7 @@ export function AppointmentLinkEmail({
       >
         <Container style={{ padding: "20px", backgroundColor: "#fcfcfc" }}>
           <Section>
-            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello there,
-            </Text>
+            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Hello there,</Text>
             <Text style={{ fontSize: "16px", marginTop: "10px" }}>
               {role === "candidate"
                 ? "You have been invited to an interview on Tau as a candidate. Best of luck!"
