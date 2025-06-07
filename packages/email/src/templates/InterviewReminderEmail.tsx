@@ -2,23 +2,31 @@ import { Body, Container, Head, Html, Section, Text } from "@react-email/compone
 import { format } from "date-fns";
 
 interface InterviewReminderEmailProps {
-  recipientName: string;
-  role: string;
+  jobRole: string;
   interviewer: string;
-  date: Date;
-  time: string;
+  date: Date | string;
   location: string;
 }
 
 export function InterviewReminderEmail({
-  recipientName = "there",
-  role = "candidate",
+  jobRole = "sales manager",
   interviewer = "Andrew",
   date = new Date(),
-  time = "10:00 AM",
   location = "online",
 }: InterviewReminderEmailProps) {
+
   const isOnline = location.toLowerCase() === "online";
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  const formattedDate = dateObj.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+  const formattedTime = dateObj.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <Html>
@@ -27,18 +35,18 @@ export function InterviewReminderEmail({
         <Container style={{ padding: "20px", backgroundColor: "#ffffff" }}>
           <Section>
             <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello {recipientName},
+              Hello there,
             </Text>
 
             <Text>
               This is a friendly reminder that your interview for the{" "}
-              <strong>{role}</strong> role is coming up.
+              <strong>{jobRole}</strong> role is coming up.
             </Text>
 
             <Text>
-              <strong>📅 Date:</strong> {format(date, "EEEE, MMMM d, yyyy")}
+              <strong>📅 Date:</strong> {formattedDate}
               <br />
-              <strong>🕒 Time:</strong> {time}
+              <strong>🕒 Time:</strong> {formattedTime}
               <br />
               <strong>👤 Interviewer:</strong> {interviewer}
               <br />

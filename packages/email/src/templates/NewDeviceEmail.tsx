@@ -9,12 +9,11 @@ import {
 } from "@react-email/components";
 
 interface NewDeviceEmailProps {
-  recipientName: string;
   role: "candidate" | "interviewer";
   magicLink: string;
 }
 
-export function NewDeviceEmail({ recipientName, magicLink }: NewDeviceEmailProps) {
+export function NewDeviceEmail({ magicLink }: NewDeviceEmailProps) {
   return (
     <Html>
       <Head />
@@ -27,7 +26,7 @@ export function NewDeviceEmail({ recipientName, magicLink }: NewDeviceEmailProps
         <Container style={{ padding: "20px", backgroundColor: "#fcfcfc" }}>
           <Section>
             <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello {recipientName},
+              Hello there,
             </Text>
             <Text style={{ fontSize: "16px", marginTop: "10px" }}>
               You have requested to sign in to Tau from a new device. Use the button below

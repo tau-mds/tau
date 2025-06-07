@@ -1,10 +1,6 @@
 import { Body, Container, Head, Html, Section, Text } from "@react-email/components";
 
-interface WelcomeEmailProps {
-  recipientName?: string;
-}
-
-export function WelcomeEmail({ recipientName }: WelcomeEmailProps) {
+export function WelcomeEmail() {
   return (
     <Html>
       <Head />
@@ -15,7 +11,7 @@ export function WelcomeEmail({ recipientName }: WelcomeEmailProps) {
               Welcome to Tau Interview Scheduling!
             </Text>
 
-            <Text style={{ fontSize: "16px" }}>Hello {recipientName},</Text>
+            <Text style={{ fontSize: "16px" }}>Hello there,</Text>
 
             <Text style={{ fontSize: "16px" }}>
               We're excited to have you on board. With Tau, scheduling interviews is

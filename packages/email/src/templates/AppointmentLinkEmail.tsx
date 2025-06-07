@@ -1,24 +1,16 @@
-import {
-  Body,
-  Container,
-  Head,
-  Html,
-  Link,
-  Section,
-  Text,
-} from "@react-email/components";
+import {Body, Container, Head, Html, Link, Section, Text} from "@react-email/components";
 
 interface AppointmentLinkEmailProps {
-  recipientName: string;
   role: "candidate" | "interviewer";
   magicLink: string;
+  date: string | Date;
 }
 
 export function AppointmentLinkEmail({
-  recipientName,
   magicLink,
   role,
 }: AppointmentLinkEmailProps) {
+
   return (
     <Html>
       <Head />
@@ -31,7 +23,7 @@ export function AppointmentLinkEmail({
         <Container style={{ padding: "20px", backgroundColor: "#fcfcfc" }}>
           <Section>
             <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello {recipientName},
+              Hello there,
             </Text>
             <Text style={{ fontSize: "16px", marginTop: "10px" }}>
               {role === "candidate"
