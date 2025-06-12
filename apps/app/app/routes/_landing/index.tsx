@@ -11,12 +11,15 @@ import Clock from "~icons/lucide/clock";
 import Users from "~icons/lucide/users";
 import UserRoundCheck from "~icons/lucide/user-round-check";
 import { ThemeSwitcher } from "~/components/theme-switcher";
+import { authClient } from "@tau/auth-client";
 
 export const Route = createFileRoute("/_landing/")({
   component: LandingPage,
 });
 
 export default function LandingPage() {
+  const auth = authClient.useSession();
+
   return (
     <div className="flex min-h-screen flex-col w-full">
       {/* Header */}
@@ -60,9 +63,15 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex items-center gap-4">
-            <Button asChild>
-              <Link to="/auth/signin">Sign In</Link>
-            </Button>
+            {!auth.data?.user ? (
+              <Button asChild>
+                <Link to="/auth/signin">Sign In</Link>
+              </Button>
+            ) : (
+              <Button asChild>
+                <Link to="/app">Go to app</Link>
+              </Button>
+            )}
             <ThemeSwitcher />
           </div>
         </div>
