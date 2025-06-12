@@ -1,14 +1,12 @@
 import { Body, Container, Head, Html, Section, Text } from "@react-email/components";
 
 interface InterviewReminderEmailProps {
-  jobRole: string;
   interviewer: string;
   date: Date | string;
   location: string;
 }
 
 export function InterviewReminderEmail({
-  jobRole = "sales manager",
   interviewer = "Andrew",
   date = new Date(),
   location = "online",
@@ -35,8 +33,7 @@ export function InterviewReminderEmail({
             <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Hello there,</Text>
 
             <Text>
-              This is a friendly reminder that your interview for the{" "}
-              <strong>{jobRole}</strong> role is coming up.
+              This is a friendly reminder that your interview is scheduled for:{" "}
             </Text>
 
             <Text>

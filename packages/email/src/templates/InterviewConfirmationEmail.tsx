@@ -2,7 +2,6 @@ import { Body, Container, Head, Html, Section, Text } from "@react-email/compone
 
 interface InterviewConfirmationEmailProps {
   type: "candidate" | "interviewer";
-  jobRole: string;
   interviewer: string;
   candidate: string;
   date: Date | string;
@@ -11,7 +10,6 @@ interface InterviewConfirmationEmailProps {
 
 export function InterviewConfirmationEmail({
   type,
-  jobRole,
   interviewer,
   candidate,
   date = new Date(),
@@ -42,13 +40,11 @@ export function InterviewConfirmationEmail({
             <Text>
               {isCandidate ? (
                 <>
-                  Your interview for the <strong>{jobRole}</strong> role has been
-                  scheduled. Here are your interview details:
+                  Your interview has been scheduled. Here are your interview details:
                 </>
               ) : (
                 <>
-                  An interview for the <strong>{jobRole}</strong> role has been scheduled.
-                  Here are the details:
+                  An interview has been scheduled. Here are the details:
                 </>
               )}
             </Text>
