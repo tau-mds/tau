@@ -112,6 +112,3 @@ function Component() {
     </>
   );
 }
-
-const now = new Date("2025-05-05T13:30");
-console.debug({ now });
