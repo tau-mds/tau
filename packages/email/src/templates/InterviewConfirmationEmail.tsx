@@ -1,26 +1,36 @@
 import { Body, Container, Head, Html, Section, Text } from "@react-email/components";
 
 interface InterviewConfirmationEmailProps {
-  recipientName: string;
-  role: "candidate" | "interviewer";
+  type: "candidate" | "interviewer";
+  jobRole: string;
   interviewer: string;
   candidate: string;
-  date: string;
-  time: string;
+  date: Date | string;
   location: string;
 }
 
 export function InterviewConfirmationEmail({
-  recipientName,
-  role,
+  type,
+  jobRole,
   interviewer,
   candidate,
-  date,
-  time,
+  date = new Date(),
   location = "online",
 }: InterviewConfirmationEmailProps) {
   const isOnline = location.toLowerCase() === "online";
-  const isCandidate = role === "candidate";
+  const isCandidate = type === "candidate";
+
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  const formattedDate = dateObj.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+  const formattedTime = dateObj.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <Html>
@@ -28,27 +38,25 @@ export function InterviewConfirmationEmail({
       <Body style={{ backgroundColor: "#ffffff", fontFamily: "Arial, sans-serif" }}>
         <Container style={{ padding: "20px", backgroundColor: "#ffffff" }}>
           <Section>
-            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hello {recipientName},
-            </Text>
+            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Hello there,</Text>
             <Text>
               {isCandidate ? (
                 <>
-                  Your interview for the <strong>{role}</strong> role has been scheduled.
-                  Here are your interview details:
+                  Your interview for the <strong>{jobRole}</strong> role has been
+                  scheduled. Here are your interview details:
                 </>
               ) : (
                 <>
-                  An interview for the <strong>{role}</strong> role has been scheduled.
+                  An interview for the <strong>{jobRole}</strong> role has been scheduled.
                   Here are the details:
                 </>
               )}
             </Text>
 
             <Text>
-              <strong>📅 Date:</strong> {date}
+              <strong>📅 Date:</strong> {formattedDate}
               <br />
-              <strong>🕒 Time:</strong> {time}
+              <strong>🕒 Time:</strong> {formattedTime}
               <br />
               <strong>👤 {isCandidate ? "Interviewer" : "Candidate"}:</strong>{" "}
               {isCandidate ? interviewer : candidate}
