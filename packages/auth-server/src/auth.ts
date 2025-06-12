@@ -71,9 +71,9 @@ export const auth = betterAuth({
           actualURL = url;
         }
         const mail = Email.AppointmentLinkEmail({
-          recipientName: "Domnul Rizescu",
           magicLink: actualURL,
           role: parsedBody.role,
+          date: parsedBody.date,
         });
         const html = await render(mail);
         await resend.emails.send({

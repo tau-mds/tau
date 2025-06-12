@@ -1,5 +1,4 @@
 import { Body, Container, Head, Html, Section, Text } from "@react-email/components";
-import { format } from "date-fns";
 
 interface InterviewReminderEmailProps {
   jobRole: string;

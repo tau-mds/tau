@@ -1,3 +1,7 @@
+---
+title: "@tau/email Reference"
+---
+
 # Sending Emails with Resend (`@tau/email`)
 
 Tau uses the [Resend](https://resend.com/) email service, wrapped in the `@tau/email` package, to send transactional emails such as interview invitations and reminders.
