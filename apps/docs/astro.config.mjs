@@ -6,8 +6,6 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 import react from "@astrojs/react";
 
-import tailwindcss from "@tailwindcss/vite";
-
 // https://astro.build/config
 export default defineConfig({
   integrations: [
@@ -24,12 +22,11 @@ export default defineConfig({
         Header: "./src/components/header.astro",
       },
       sidebar: [
+        { label: "Coding standards", slug: "coding-standards" },
+        { label: "Design patterns", slug: "design-patterns" },
         {
           label: "Guides",
-          items: [
-            { label: "Example Guide", slug: "guides/example" },
-            { label: "Contributing", slug: "guides/contributing" },
-          ],
+          items: [{ label: "Contributing", slug: "guides/contributing" }],
         },
         {
           label: "Reference",
