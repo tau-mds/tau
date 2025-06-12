@@ -1,12 +1,4 @@
-import {
-  Body,
-  Container,
-  Head,
-  Html,
-  Link,
-  Section,
-  Text,
-} from "@react-email/components";
+import { Body, Container, Head, Html, Link, Section, Text } from "@react-email/components";
 
 interface AppointmentLinkEmailProps {
   role: "candidate" | "interviewer";
