@@ -36,10 +36,10 @@ export const get = createServerFn().handler(async () => {
 export const set = createServerFn({ method: "POST" })
   .validator(v.undefinedable(preferredWidth, MIN_WIDTH))
   .handler((ctx) => {
-    setCookie(COOKIE, ctx.data.toString(), {
+    setCookie(COOKIE, ctx.data, {
       httpOnly: false,
       sameSite: "lax",
-      secure: process.env["NODE_ENV"] === "production",
+      secure: import.meta.env["NODE_ENV"] === "production",
       path: "/",
       maxAge: 60 * 60 * 24 * 365 * 10,
     });

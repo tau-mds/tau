@@ -1,7 +1,7 @@
 {
   "extends": ["@tau/tsconfig/react.json"],
   "compilerOptions": {
-    "types": ["unplugin-icons/types/react"],
+    "types": ["unplugin-icons/types/react", "@vitest/browser/providers/playwright"],
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]

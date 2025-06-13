@@ -48,7 +48,8 @@ export const set = createServerFn({ method: "POST" })
     setCookie(COOKIE, ctx.data, {
       httpOnly: false,
       sameSite: "lax",
-      secure: process.env["NODE_ENV"] === "production",
+      secure: import.meta.env["NODE_ENV"] === "production",
+      // secure: process.env["NODE_ENV"] === "production",
       path: "/",
       maxAge: 60 * 60 * 24 * 365 * 10,
     });
