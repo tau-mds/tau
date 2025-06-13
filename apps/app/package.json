@@ -9,7 +9,8 @@
     "preview": "node --env-file=.env .output/server/index.mjs",
     "start": "node .output/server/index.mjs",
     "lint": "biome check . --write",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "vitest -c vitest.config.ts"
   },
   "dependencies": {
     "@dnd-kit/dom": "^0.1.12",
